@@ -18,9 +18,23 @@ module.exports = {
   WIDGET_PET: process.env.NEXT_PUBLIC_WIDGET_PET || true, // 是否显示宠物挂件
   WIDGET_PET_LINK:
     process.env.NEXT_PUBLIC_WIDGET_PET_LINK ||
-    'https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json', // 挂件模型地址 @see https://github.com/xiazeyu/live2d-widget-models
+    'https://cdn.jsdelivr.net/npm/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json', // 默认改为可爱女孩，更贴近古风气质；可改为任意模型 jsonPath
   WIDGET_PET_SWITCH_THEME:
     process.env.NEXT_PUBLIC_WIDGET_PET_SWITCH_THEME || true, // 点击宠物挂件切换博客主题
+  // 视觉/行为增强参数
+  WIDGET_PET_WIDTH: process.env.NEXT_PUBLIC_WIDGET_PET_WIDTH || 280,
+  WIDGET_PET_HEIGHT: process.env.NEXT_PUBLIC_WIDGET_PET_HEIGHT || 260,
+  WIDGET_PET_POSITION: process.env.NEXT_PUBLIC_WIDGET_PET_POSITION || 'right', // left|right
+  WIDGET_PET_H_OFFSET: process.env.NEXT_PUBLIC_WIDGET_PET_H_OFFSET || 24,
+  WIDGET_PET_V_OFFSET: process.env.NEXT_PUBLIC_WIDGET_PET_V_OFFSET || 16,
+  WIDGET_PET_DRAGGABLE: process.env.NEXT_PUBLIC_WIDGET_PET_DRAGGABLE || true,
+  WIDGET_PET_MOBILE: process.env.NEXT_PUBLIC_WIDGET_PET_MOBILE || false,
+  WIDGET_PET_OPACITY: process.env.NEXT_PUBLIC_WIDGET_PET_OPACITY || 0.95,
+  WIDGET_PET_FIRST_VISIT_ANIM: process.env.NEXT_PUBLIC_WIDGET_PET_FIRST_VISIT_ANIM || true,
+  WIDGET_PET_IDLE_FADE: process.env.NEXT_PUBLIC_WIDGET_PET_IDLE_FADE || true,
+  WIDGET_PET_MINIMIZE_BTN: process.env.NEXT_PUBLIC_WIDGET_PET_MINIMIZE_BTN || true,
+  WIDGET_PET_CSS_FILTER: process.env.NEXT_PUBLIC_WIDGET_PET_CSS_FILTER || 'saturate(1.05) contrast(1.02)',
+  WIDGET_PET_CANVAS_STYLE: process.env.NEXT_PUBLIC_WIDGET_PET_CANVAS_STYLE || 'filter: drop-shadow(0 10px 24px rgba(0,0,0,0.18));',
 
   SPOILER_TEXT_TAG: process.env.NEXT_PUBLIC_SPOILER_TEXT_TAG || '', // Spoiler文本隐藏功能，如Notion中 [sp]希望被spoiler的文字[sp]，填入[sp] 即可
 
