@@ -22,7 +22,7 @@ import IconFont from './IconFont'
 const ExternalPlugin = props => {
   // 读取自Notion的配置
   const { NOTION_CONFIG } = props
-  const {lang} = useGlobal()
+  const {lang, theme} = useGlobal()
   const DISABLE_PLUGIN = siteConfig('DISABLE_PLUGIN', null, NOTION_CONFIG)
   const THEME_SWITCH = siteConfig('THEME_SWITCH', null, NOTION_CONFIG)
   const DEBUG = siteConfig('DEBUG', null, NOTION_CONFIG)
@@ -114,6 +114,7 @@ const ExternalPlugin = props => {
     null,
     NOTION_CONFIG
   )
+  const IMMERSIVE_CURSOR = siteConfig('IMMERSIVE_CURSOR', true, NOTION_CONFIG)
   const CUSTOM_EXTERNAL_JS = siteConfig(
     'CUSTOM_EXTERNAL_JS',
     null,
@@ -190,6 +191,7 @@ const ExternalPlugin = props => {
     <>
       {/* 全局样式嵌入 */}
       <GlobalStyle />
+      {IMMERSIVE_CURSOR && theme !== 'proxio' && <CursorDot />}
       {ENABLE_ICON_FONT && <IconFont />}
       {MOUSE_FOLLOW && <MouseFollow />}
       {THEME_SWITCH && <ThemeSwitch />}
@@ -511,6 +513,9 @@ const LA51 = dynamic(() => import('@/components/LA51'), {
   ssr: false
 })
 const TianliGPT = dynamic(() => import('@/components/TianliGPT'), {
+  ssr: false
+})
+const CursorDot = dynamic(() => import('@/components/CursorDot'), {
   ssr: false
 })
 
