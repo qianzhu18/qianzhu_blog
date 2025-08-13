@@ -34,7 +34,7 @@ module.exports = {
   WIDGET_PET_IDLE_FADE: process.env.NEXT_PUBLIC_WIDGET_PET_IDLE_FADE || true,
   WIDGET_PET_MINIMIZE_BTN: process.env.NEXT_PUBLIC_WIDGET_PET_MINIMIZE_BTN || true,
   WIDGET_PET_CSS_FILTER: process.env.NEXT_PUBLIC_WIDGET_PET_CSS_FILTER || 'saturate(1.05) contrast(1.02)',
-  WIDGET_PET_CANVAS_STYLE: process.env.NEXT_PUBLIC_WIDGET_PET_CANVAS_STYLE || 'filter: drop-shadow(0 10px 24px rgba(0,0,0,0.18));',
+  WIDGET_PET_CANVAS_STYLE: process.env.NEXT_PUBLIC_WIDGET_PET_CANVAS_STYLE || 'filter: hue-rotate(165deg) saturate(1.1) drop-shadow(0 10px 24px rgba(0,0,0,0.18));',
 
   SPOILER_TEXT_TAG: process.env.NEXT_PUBLIC_SPOILER_TEXT_TAG || '', // Spoiler文本隐藏功能，如Notion中 [sp]希望被spoiler的文字[sp]，填入[sp] 即可
 
