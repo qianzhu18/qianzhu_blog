@@ -2,6 +2,8 @@
  * 悬浮在网页上的挂件
  */
 module.exports = {
+  // 沉浸式指针
+  IMMERSIVE_CURSOR: process.env.NEXT_PUBLIC_IMMERSIVE_CURSOR || true,
   THEME_SWITCH: process.env.NEXT_PUBLIC_THEME_SWITCH || false, // 是否显示切换主题按钮
   // Chatbase 是否显示chatbase机器人 https://www.chatbase.co/
   CHATBASE_ID: process.env.NEXT_PUBLIC_CHATBASE_ID || null,
@@ -21,6 +23,17 @@ module.exports = {
     'https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json', // 挂件模型地址 @see https://github.com/xiazeyu/live2d-widget-models
   WIDGET_PET_SWITCH_THEME:
     process.env.NEXT_PUBLIC_WIDGET_PET_SWITCH_THEME || true, // 点击宠物挂件切换博客主题
+  WIDGET_PET_WIDTH: process.env.NEXT_PUBLIC_WIDGET_PET_WIDTH || 280, // 画布宽度
+  WIDGET_PET_HEIGHT: process.env.NEXT_PUBLIC_WIDGET_PET_HEIGHT || 250, // 画布高度
+  WIDGET_PET_POSITION: process.env.NEXT_PUBLIC_WIDGET_PET_POSITION || 'right', // left | right
+  WIDGET_PET_H_OFFSET: process.env.NEXT_PUBLIC_WIDGET_PET_H_OFFSET || 20, // 水平偏移(px)
+  WIDGET_PET_V_OFFSET: process.env.NEXT_PUBLIC_WIDGET_PET_V_OFFSET || 0, // 垂直偏移(px)
+  WIDGET_PET_DRAGGABLE: process.env.NEXT_PUBLIC_WIDGET_PET_DRAGGABLE || true, // 是否允许拖拽
+  WIDGET_PET_MOBILE: process.env.NEXT_PUBLIC_WIDGET_PET_MOBILE || false, // 移动端是否显示
+  WIDGET_PET_OPACITY: process.env.NEXT_PUBLIC_WIDGET_PET_OPACITY || 0.9, // 透明度 0-1
+  WIDGET_PET_FIRST_VISIT_ANIM: process.env.NEXT_PUBLIC_WIDGET_PET_FIRST_VISIT_ANIM || true, // 首次访问动画
+  WIDGET_PET_IDLE_FADE: process.env.NEXT_PUBLIC_WIDGET_PET_IDLE_FADE || true, // 空闲时淡出
+  WIDGET_PET_MINIMIZE_BTN: process.env.NEXT_PUBLIC_WIDGET_PET_MINIMIZE_BTN || true, // 显示最小化按钮
 
   SPOILER_TEXT_TAG: process.env.NEXT_PUBLIC_SPOILER_TEXT_TAG || '', // Spoiler文本隐藏功能，如Notion中 [sp]希望被spoiler的文字[sp]，填入[sp] 即可
 
