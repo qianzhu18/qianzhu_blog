@@ -62,10 +62,12 @@ export const getThemeConfig = async themeQuery => {
  */
 export const getBaseLayoutByTheme = theme => {
   const LayoutBase = ThemeComponents['LayoutBase']
-  const isDefaultTheme = !theme || theme === BLOG.THEME
+  const force = BLOG.FORCE_THEME
+  const effectiveTheme = force || theme
+  const isDefaultTheme = !effectiveTheme || effectiveTheme === BLOG.THEME
   if (!isDefaultTheme) {
     return dynamic(
-      () => import(`@/themes/${theme}`).then(m => m['LayoutBase']),
+      () => import(`@/themes/${effectiveTheme}`).then(m => m['LayoutBase']),
       { ssr: true }
     )
   }
@@ -95,7 +97,8 @@ export const getLayoutByTheme = ({ layoutName, theme }) => {
     ThemeComponents[layoutName] || ThemeComponents.LayoutSlug
 
   const router = useRouter()
-  const themeQuery = getQueryParam(router?.asPath, 'theme') || theme
+  const force = BLOG.FORCE_THEME
+  const themeQuery = force || getQueryParam(router?.asPath, 'theme') || theme
   const isDefaultTheme = !themeQuery || themeQuery === BLOG.THEME
 
   // 加载非当前默认主题
