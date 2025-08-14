@@ -29,6 +29,8 @@ export default function Live2D() {
   // 鼠标靠近反馈半径
   const hoverRadius = Number(siteConfig('WIDGET_PET_HOVER_RADIUS', 120))
   const hoverScale = Number(siteConfig('WIDGET_PET_HOVER_SCALE', 1.08))
+  // 动作反馈参数：靠近抬眼、远离低头（通过模拟姿态偏移）
+  const lookAmplitude = Number(siteConfig('WIDGET_PET_LOOK_AMPLITUDE', 8)) // 0~15
 
   useEffect(() => {
     if (!showPet) return
@@ -154,10 +156,19 @@ export default function Live2D() {
                 root.style.transformOrigin = 'center'
                 root.style.transition = 'transform 80ms ease-out'
               })
+
+              // 姿态/表情模拟：通过滤镜和轻微旋转模拟抬眼/低头
+              const pitch = (dy / hoverRadius) * lookAmplitude // -/+ 倾斜
+              petCanvas.style.transform = `rotateX(${Math.max(Math.min(-pitch, 10), -10)}deg)`
+              petCanvas.style.transition = 'transform 100ms ease-out'
+              const sat = 1 + 0.05 * t
+              petCanvas.style.filter = `${cssFilter} saturate(${sat})`
             }
             function onLeave(){
               root.style.transform = 'translate(0px, 0px) scale(1)'
               root.style.transition = 'transform 160ms ease-out'
+              petCanvas.style.transform = 'rotateX(0deg)'
+              petCanvas.style.filter = cssFilter
             }
             window.addEventListener('mousemove', onMove, { passive: true })
             window.addEventListener('scroll', onLeave, { passive: true })

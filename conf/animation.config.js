@@ -48,4 +48,6 @@ module.exports = {
   ORNAMENTS_COLOR: process.env.NEXT_PUBLIC_ORNAMENTS_COLOR || 'rgba(7,49,49,0.35)',
   ORNAMENTS_WIDTH: process.env.NEXT_PUBLIC_ORNAMENTS_WIDTH || 90, // px
   ORNAMENTS_OPACITY: process.env.NEXT_PUBLIC_ORNAMENTS_OPACITY || 0.55
+  ,
+  ORNAMENTS_STYLE: process.env.NEXT_PUBLIC_ORNAMENTS_STYLE || 'mist' // mist|wave
 }

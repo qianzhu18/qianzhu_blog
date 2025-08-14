@@ -36,4 +36,14 @@
   } else {
     setTimeout(bindSmoothAnchors, 200);
   }
+
+  // 观察进入视口，为 .fx-fade-rise 添加 in-view
+  try {
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(en=>{
+        if (en.isIntersecting) en.target.classList.add('in-view');
+      })
+    },{ threshold: 0.15 })
+    document.querySelectorAll('.fx-fade-rise').forEach(el=>io.observe(el))
+  } catch (_) {}
 })();

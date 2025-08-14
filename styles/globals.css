@@ -56,12 +56,23 @@ body {
 }
 
 /* 微交互：按钮与卡片悬停上浮与阴影 */
-.btn, .card, button, [role="button"] {
+.btn, .card, button, [role="button"], .group .card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.btn:hover, .card:hover, button:hover, [role="button"]:hover {
+.btn:hover, .card:hover, button:hover, [role="button"]:hover, .group:hover .card {
   transform: translateY(-3px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+/* 古风微动效：淡入+轻浮动（用于卡片/按钮组合） */
+.fx-fade-rise {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.fx-fade-rise.in-view {
+  opacity: 1;
+  transform: translateY(0px);
 }
 
 /* 现有阴影卡片增加微交互 */
