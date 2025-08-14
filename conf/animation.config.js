@@ -33,4 +33,12 @@ module.exports = {
   ANIMATE_CSS_URL:
     process.env.NEXT_PUBLIC_ANIMATE_CSS_URL ||
     'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css' // 动画CDN
+
+  ,
+  // 滚动阻尼（Lenis）
+  LENIS_ENABLE: process.env.NEXT_PUBLIC_LENIS_ENABLE || true, // 是否启用丝滑滚动
+  LENIS_DURATION: process.env.NEXT_PUBLIC_LENIS_DURATION || 1.35, // 越大越丝滑
+  LENIS_SMOOTH_TOUCH: process.env.NEXT_PUBLIC_LENIS_SMOOTH_TOUCH || true, // 触屏设备也启用
+  LENIS_MOUSE_MULTIPLIER: process.env.NEXT_PUBLIC_LENIS_MOUSE_MULTIPLIER || 1, // 鼠标力度
+  LENIS_TOUCH_MULTIPLIER: process.env.NEXT_PUBLIC_LENIS_TOUCH_MULTIPLIER || 2 // 触摸力度
 }

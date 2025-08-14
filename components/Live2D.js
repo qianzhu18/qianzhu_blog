@@ -10,7 +10,8 @@ import { useEffect } from 'react'
 export default function Live2D() {
   const { theme, switchTheme } = useGlobal()
   const showPet = JSON.parse(siteConfig('WIDGET_PET'))
-  const petLink = siteConfig('WIDGET_PET_LINK')
+  // 推荐古风少女模型（默认 koharu，可在 Notion 中切换）
+  const petLink = siteConfig('WIDGET_PET_LINK') || 'https://cdn.jsdelivr.net/npm/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json'
   const petSwitchTheme = siteConfig('WIDGET_PET_SWITCH_THEME')
   const petWidth = Number(siteConfig('WIDGET_PET_WIDTH', 280))
   const petHeight = Number(siteConfig('WIDGET_PET_HEIGHT', 260))

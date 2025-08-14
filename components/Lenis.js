@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { loadExternalResource } from '@/lib/utils'
+import { siteConfig } from '@/lib/config'
 
 /**
  * 滚动阻尼特效
@@ -10,6 +11,12 @@ const Lenis = () => {
   const lenisRef = useRef(null) // 用于存储 Lenis 实例
 
   useEffect(() => {
+    const enable = siteConfig('LENIS_ENABLE', true)
+    const duration = Number(siteConfig('LENIS_DURATION', 1.35))
+    const smoothTouch = JSON.parse(siteConfig('LENIS_SMOOTH_TOUCH', true))
+    const mouseMultiplier = Number(siteConfig('LENIS_MOUSE_MULTIPLIER', 1))
+    const touchMultiplier = Number(siteConfig('LENIS_TOUCH_MULTIPLIER', 2))
+    if (!enable) return
     // 异步加载
     async function loadLenis() {
       loadExternalResource('/js/lenis.js', 'js').then(() => {
@@ -22,14 +29,14 @@ const Lenis = () => {
 
         // 创建 Lenis 实例
         const lenis = new Lenis({
-          duration: 1.2,
+          duration: duration,
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
           direction: 'vertical', // vertical, horizontal
           gestureDirection: 'vertical', // vertical, horizontal, both
           smooth: true,
-          mouseMultiplier: 1,
-          smoothTouch: false,
-          touchMultiplier: 2,
+          mouseMultiplier: mouseMultiplier,
+          smoothTouch: smoothTouch,
+          touchMultiplier: touchMultiplier,
           infinite: false,
         })
 
