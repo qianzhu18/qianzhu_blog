@@ -26,12 +26,15 @@ export default function Live2D() {
   const minimizeBtn = JSON.parse(siteConfig('WIDGET_PET_MINIMIZE_BTN', true))
   const canvasStyle = siteConfig('WIDGET_PET_CANVAS_STYLE', '')
   const cssFilter = siteConfig('WIDGET_PET_CSS_FILTER', '')
+  // 鼠标靠近反馈半径
+  const hoverRadius = Number(siteConfig('WIDGET_PET_HOVER_RADIUS', 120))
+  const hoverScale = Number(siteConfig('WIDGET_PET_HOVER_SCALE', 1.08))
 
   useEffect(() => {
     if (!showPet) return
     if (!showOnMobile && isMobile()) return
 
-    loadExternalResource(
+        loadExternalResource(
       'https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js',
       'js'
     ).then(() => {
@@ -126,6 +129,38 @@ export default function Live2D() {
           if (petSwitchTheme) {
             const canvas = document.getElementById('live2d')
             canvas && (canvas.onclick = () => switchTheme())
+          }
+
+          // 鼠标跟随反馈（靠近放大、远离回落，不拦截滚动）
+          const root = document.getElementById('live2d-widget')
+          const petCanvas = document.getElementById('live2d')
+          if (root && petCanvas) {
+            const base = { x: 0, y: 0, s: 1 }
+            let rafId
+            function onMove(e){
+              const rect = petCanvas.getBoundingClientRect()
+              const cx = rect.left + rect.width / 2
+              const cy = rect.top + rect.height / 2
+              const dx = e.clientX - cx
+              const dy = e.clientY - cy
+              const dist = Math.sqrt(dx*dx + dy*dy)
+              const t = Math.max(0, 1 - Math.min(dist / hoverRadius, 1)) // 0..1
+              const tx = (dx / 40) * t
+              const ty = (dy / 40) * t
+              const sc = 1 + (hoverScale - 1) * t
+              cancelAnimationFrame(rafId)
+              rafId = requestAnimationFrame(()=>{
+                root.style.transform = `translate(${tx}px, ${ty}px) scale(${sc})`
+                root.style.transformOrigin = 'center'
+                root.style.transition = 'transform 80ms ease-out'
+              })
+            }
+            function onLeave(){
+              root.style.transform = 'translate(0px, 0px) scale(1)'
+              root.style.transition = 'transform 160ms ease-out'
+            }
+            window.addEventListener('mousemove', onMove, { passive: true })
+            window.addEventListener('scroll', onLeave, { passive: true })
           }
         } catch (error) {
           console.error('Live2D init error', error)

@@ -115,6 +115,7 @@ const ExternalPlugin = props => {
     NOTION_CONFIG
   )
   const IMMERSIVE_CURSOR = siteConfig('IMMERSIVE_CURSOR', true, NOTION_CONFIG)
+  const ORNAMENTS_ENABLE = siteConfig('ORNAMENTS_ENABLE', true, NOTION_CONFIG)
   const CUSTOM_EXTERNAL_JS = siteConfig(
     'CUSTOM_EXTERNAL_JS',
     null,
@@ -192,6 +193,7 @@ const ExternalPlugin = props => {
       {/* 全局样式嵌入 */}
       <GlobalStyle />
       {IMMERSIVE_CURSOR && theme !== 'proxio' && <CursorDot />}
+      {ORNAMENTS_ENABLE && <Ornaments />}
       {ENABLE_ICON_FONT && <IconFont />}
       {MOUSE_FOLLOW && <MouseFollow />}
       {THEME_SWITCH && <ThemeSwitch />}
@@ -515,6 +517,7 @@ const LA51 = dynamic(() => import('@/components/LA51'), {
 const TianliGPT = dynamic(() => import('@/components/TianliGPT'), {
   ssr: false
 })
+const Ornaments = dynamic(() => import('@/components/Ornaments'), { ssr: false })
 const CursorDot = dynamic(() => import('@/components/CursorDot'), {
   ssr: false
 })

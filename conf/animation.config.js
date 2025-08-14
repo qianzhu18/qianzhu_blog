@@ -41,4 +41,11 @@ module.exports = {
   LENIS_SMOOTH_TOUCH: process.env.NEXT_PUBLIC_LENIS_SMOOTH_TOUCH || true, // 触屏设备也启用
   LENIS_MOUSE_MULTIPLIER: process.env.NEXT_PUBLIC_LENIS_MOUSE_MULTIPLIER || 1, // 鼠标力度
   LENIS_TOUCH_MULTIPLIER: process.env.NEXT_PUBLIC_LENIS_TOUCH_MULTIPLIER || 2 // 触摸力度
+  ,
+  // 侧边装饰动画（不拦截事件）
+  ORNAMENTS_ENABLE: process.env.NEXT_PUBLIC_ORNAMENTS_ENABLE || true, // 开关
+  ORNAMENTS_SIDE: process.env.NEXT_PUBLIC_ORNAMENTS_SIDE || 'right', // left|right
+  ORNAMENTS_COLOR: process.env.NEXT_PUBLIC_ORNAMENTS_COLOR || 'rgba(7,49,49,0.35)',
+  ORNAMENTS_WIDTH: process.env.NEXT_PUBLIC_ORNAMENTS_WIDTH || 90, // px
+  ORNAMENTS_OPACITY: process.env.NEXT_PUBLIC_ORNAMENTS_OPACITY || 0.55
 }
