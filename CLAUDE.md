@@ -1,6 +1,28 @@
-# CLAUDE.md
+# CLAUDE.md - NotionNext 千浅主题 v2.0
+
+> 🎨 古雅今用，科技有温度 - 现代化设计升级版  
+> 📅 更新时间：2025-08-15  
+> 🚀 当前版本：qianqian v2.0 (现代化设计版)
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## 🎯 qianqian v2.0 版本特性
+
+### 🎨 视觉设计升级
+- **现代化卡片系统**：参考dewx.top设计，立体感卡片布局
+- **优雅渐变背景**：多层次渐变和玻璃态效果  
+- **丰富交互动画**：悬浮、缩放、阴影变化等现代效果
+- **智能暗色适配**：完善的深色模式支持
+
+### ⚡ 性能优化
+- **滚动体验优化**：Lenis参数调优，减少阻尼感
+- **响应式增强**：全设备适配的现代布局
+- **动画性能**：GPU加速的流畅动画效果
+
+### 🛠️ 技术架构
+- **CSS变量系统**：完整的设计令牌管理
+- **模块化样式**：可复用的现代UI组件
+- **TypeScript友好**：完善的类型定义支持
 
 ## Development Commands
 
