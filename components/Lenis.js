@@ -30,7 +30,14 @@ const Lenis = () => {
         // 创建 Lenis 实例
         const lenis = new Lenis({
           duration: duration,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
+          easing: (t) => {
+            // 优化的缓动函数，减少拖拽感，提升响应性
+            if (t < 0.5) {
+              return 4 * t * t * t;
+            } else {
+              return 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
+          },
           direction: 'vertical', // vertical, horizontal
           gestureDirection: 'vertical', // vertical, horizontal, both
           smooth: true,
@@ -38,6 +45,8 @@ const Lenis = () => {
           smoothTouch: smoothTouch,
           touchMultiplier: touchMultiplier,
           infinite: false,
+          normalizeWheel: true, // 标准化滚轮事件
+          syncTouch: true, // 同步触摸和滚动
         })
 
         // 存储实例到 ref

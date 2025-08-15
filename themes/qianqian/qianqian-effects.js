@@ -18,6 +18,11 @@ export const initQianqianEffects = () => {
   
   // 4. 初始化古风装饰元素
   initAncientStyleDecorations()
+  
+  // 5. 调整桌宠以匹配古风主题
+  setTimeout(() => {
+    adjustPetColorsForTheme()
+  }, 1000) // 延迟确保Live2D已加载
 }
 
 // 渐入动效系统
@@ -63,13 +68,27 @@ const initSmoothScrolling = () => {
       e.preventDefault()
       const target = document.querySelector(this.getAttribute('href'))
       if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        })
+        // 使用 Lenis 实例进行平滑滚动（如果可用）
+        if (window.lenis) {
+          window.lenis.scrollTo(target, { 
+            duration: 0.6,
+            offset: -80 // 顶部偏移量
+          })
+        } else {
+          // 降级到原生滚动
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          })
+        }
       }
     })
   })
+  
+  // 优化滚动性能
+  if (window.CSS && CSS.supports('scroll-behavior', 'smooth')) {
+    document.documentElement.style.scrollBehavior = 'smooth'
+  }
 }
 
 // 页面微动效
@@ -174,15 +193,104 @@ const initAncientStyleDecorations = () => {
 
 // 动态调整桌宠颜色以匹配主题
 export const adjustPetColorsForTheme = () => {
-  const petCanvas = document.querySelector('#live2dcanvas')
-  if (petCanvas) {
-    // 为桌宠添加古风滤镜效果
+  const petCanvas = document.querySelector('#live2d')
+  const petWidget = document.querySelector('#live2d-widget')
+  
+  if (petCanvas && petWidget) {
+    // 为桌宠添加千浅主题的古风滤镜效果
     petCanvas.style.filter = `
       hue-rotate(165deg) 
-      saturate(1.1) 
-      contrast(1.02)
-      drop-shadow(0 8px 16px rgba(74, 144, 226, 0.15))
+      saturate(1.15) 
+      contrast(1.05)
+      brightness(1.02)
+      drop-shadow(0 12px 24px rgba(74, 144, 226, 0.18))
+      drop-shadow(0 4px 8px rgba(74, 144, 226, 0.08))
     `
+    
+    // 为整个桌宠容器添加古风氛围
+    petWidget.style.filter = `drop-shadow(0 8px 32px rgba(74, 144, 226, 0.12))`
+    
+    // 添加古风装饰光效
+    const existingGlow = petWidget.querySelector('.qianqian-pet-glow')
+    if (!existingGlow) {
+      const glowEffect = document.createElement('div')
+      glowEffect.className = 'qianqian-pet-glow'
+      glowEffect.style.cssText = `
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        right: -20px;
+        bottom: -20px;
+        background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 0.8s ease;
+        pointer-events: none;
+        z-index: -1;
+        animation: qianqian-glow-pulse 4s ease-in-out infinite;
+      `
+      petWidget.style.position = 'relative'
+      petWidget.insertBefore(glowEffect, petWidget.firstChild)
+      
+      // 鼠标悬停时显示光效
+      petWidget.addEventListener('mouseenter', () => {
+        glowEffect.style.opacity = '0.6'
+      })
+      petWidget.addEventListener('mouseleave', () => {
+        glowEffect.style.opacity = '0'
+      })
+    }
+  }
+  
+  // 添加相关样式到页面
+  if (!document.querySelector('#qianqian-pet-styles')) {
+    const style = document.createElement('style')
+    style.id = 'qianqian-pet-styles'
+    style.textContent = `
+      @keyframes qianqian-glow-pulse {
+        0%, 100% { 
+          transform: scale(0.95);
+          opacity: 0.3;
+        }
+        50% { 
+          transform: scale(1.02);
+          opacity: 0.6;
+        }
+      }
+      
+      /* 拖拽时的视觉反馈 */
+      #live2d-widget:active {
+        filter: drop-shadow(0 12px 40px rgba(74, 144, 226, 0.25)) !important;
+        transform: scale(1.02) !important;
+        transition: all 0.2s ease !important;
+      }
+      
+      /* 桌宠容器的古风边框装饰 */
+      #live2d-widget::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: conic-gradient(from 0deg, transparent, rgba(74, 144, 226, 0.1), transparent, rgba(74, 144, 226, 0.1), transparent);
+        border-radius: 20px;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        z-index: -1;
+        animation: qianqian-border-rotate 8s linear infinite;
+      }
+      
+      #live2d-widget:hover::before {
+        opacity: 0.7;
+      }
+      
+      @keyframes qianqian-border-rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `
+    document.head.appendChild(style)
   }
 }
 

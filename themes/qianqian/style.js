@@ -11,12 +11,32 @@ const Style = () => {
     /* 千浅主题 - 全局样式定义 */
     :root {
         --qianqian-primary: #4A90E2;
-        --qianqian-text: #2C2C2C;
-        --qianqian-bg: #FEFEFE;
-        --qianqian-bg-muted: #F5F7FA;
+        --qianqian-secondary: #6B73FF;
         --qianqian-accent: #FF6B6B;
-        --qianqian-border: #E8EAED;
+        --qianqian-text: #2C2C2C;
+        --qianqian-text-light: #64748B;
+        --qianqian-bg: #FEFEFE;
+        --qianqian-bg-muted: #F8FAFC;
+        --qianqian-bg-card: #FFFFFF;
+        --qianqian-border: #E2E8F0;
+        --qianqian-border-light: #F1F5F9;
         --qianqian-shadow: rgba(74, 144, 226, 0.1);
+        --qianqian-shadow-card: rgba(0, 0, 0, 0.04);
+        --qianqian-shadow-hover: rgba(74, 144, 226, 0.15);
+        --qianqian-gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --qianqian-gradient-2: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --qianqian-gradient-3: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    }
+    
+    .dark {
+        --qianqian-text: #E2E8F0;
+        --qianqian-text-light: #94A3B8;
+        --qianqian-bg: #0F172A;
+        --qianqian-bg-muted: #1E293B;
+        --qianqian-bg-card: #1E293B;
+        --qianqian-border: #334155;
+        --qianqian-border-light: #475569;
+        --qianqian-shadow-card: rgba(0, 0, 0, 0.3);
     }
 
     // 底色 - 千浅风格
@@ -357,11 +377,158 @@ const Style = () => {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.common-carousel .swiper-button-next svg,
-.common-carousel .swiper-button-prev svg{
-  height: auto;
-  width: auto;
-}
+        /* 现代化滚动条设计 */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.05);
+          border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: linear-gradient(45deg, var(--qianqian-primary), var(--qianqian-secondary));
+          border-radius: 4px;
+          transition: all 0.3s ease;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(45deg, #357ABD, #5A67D8);
+        }
+        
+        /* 现代化卡片阴影系统 */
+        .shadow-modern {
+          box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .shadow-modern-lg {
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .shadow-modern-xl {
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* 文本截断样式 */
+        .line-clamp-1 {
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+        }
+        .line-clamp-2 {
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+        }
+        .line-clamp-3 {
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+        }
+        
+        /* 现代化渐变背景 */
+        .bg-gradient-modern {
+          background: var(--qianqian-gradient-1);
+        }
+        .bg-gradient-modern-blue {
+          background: var(--qianqian-gradient-2);
+        }
+        .bg-gradient-modern-purple {
+          background: var(--qianqian-gradient-3);
+        }
+        
+        /* 玻璃态效果 */
+        .glass-effect {
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glass-effect-dark {
+          background: rgba(0, 0, 0, 0.1);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 现代化动画 */
+        .hover-lift {
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* 加载动画 */
+        @keyframes shimmer {
+          0% {
+            background-position: -468px 0;
+          }
+          100% {
+            background-position: 468px 0;
+          }
+        }
+        .shimmer {
+          animation: shimmer 1.5s ease-in-out infinite;
+          background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+          background-size: 800px 104px;
+        }
+        
+        /* 千浅特效样式增强 */
+        .fx-fade-rise {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .fx-fade-rise.in-view {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        /* 现代化按钮样式 */
+        .btn-modern {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 12px 24px;
+          font-weight: 600;
+          text-decoration: none;
+          border-radius: 12px;
+          transition: all 0.3s ease;
+          overflow: hidden;
+        }
+        .btn-modern::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: left 0.5s;
+        }
+        .btn-modern:hover::before {
+          left: 100%;
+        }
+        
+        /* 响应式字体 */
+        @media (max-width: 640px) {
+          .text-responsive-xl {
+            font-size: 1.5rem;
+            line-height: 2rem;
+          }
+        }
+        @media (min-width: 641px) {
+          .text-responsive-xl {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+          }
+        }
+        @media (min-width: 1024px) {
+          .text-responsive-xl {
+            font-size: 3rem;
+            line-height: 1;
+          }
+        }
   `}</style>
 }
 

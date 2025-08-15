@@ -53,9 +53,9 @@ export const Header = props => {
     return (
         <>
             {/* <!-- ====== Navbar Section Start --> */}
-            <div className='ud-header absolute left-0 top-0 z-40 flex w-full items-center bg-transparent'>
+            <div className='ud-header fixed left-0 top-0 z-40 flex w-full items-center bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200/20 dark:border-gray-700/20 transition-all duration-300'>
                 <div className='container'>
-                    <div className='relative -mx-4 flex items-center justify-between'>
+                    <div className='relative -mx-4 flex items-center justify-between py-3'>
                         {/* Logo */}
                         <Logo {...props} />
                         {/* 右侧菜单 */}
@@ -65,6 +65,8 @@ export const Header = props => {
                     </div>
                 </div>
             </div>
+            {/* 顶部导航占位空间 */}
+            <div className='h-16'></div>
             {/* <!-- ====== Navbar Section End --> */}
         </>
     )

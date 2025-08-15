@@ -43,7 +43,8 @@ This is a **NotionNext** blog system built with Next.js that transforms Notion p
 │   ├── cache/             # Cache management (memory, Redis, local file)
 │   └── lang/              # Multi-language support
 ├── themes/                # Multiple theme implementations
-│   ├── proxio/           # Current default theme
+│   ├── qianqian/         # Current default theme (千浅主题, based on proxio)
+│   ├── proxio/           # Original proxio theme
 │   ├── hexo/             # Hexo-style theme
 │   ├── next/             # Next-style theme
 │   └── [20+ other themes]
@@ -57,10 +58,19 @@ This is a **NotionNext** blog system built with Next.js that transforms Notion p
 The project uses a **dynamic theme loading system**:
 
 - **Theme Selection Priority**: `FORCE_THEME` > URL `?theme=` parameter > Notion config > `blog.config.js`
-- **Default Theme**: `proxio` (configured in `blog.config.js`)
+- **Default Theme**: `qianqian` (千浅主题 - 古雅今用，科技有温度, based on proxio)
 - **Theme Structure**: Each theme has `index.js`, `config.js`, `style.js`, and `components/` directory
 - **Dynamic Loading**: Themes are loaded dynamically using Next.js dynamic imports
 - **Theme Components**: Resolved via webpack alias `@theme-components`
+
+### Qianqian Theme Features
+
+The current `qianqian` theme includes:
+- **Ancient-Modern Design**: Blends traditional Chinese aesthetics with modern UI
+- **Enhanced Animations**: Fade-rise animations via `qianqian-effects.js`
+- **Micro Interactions**: Button ripple effects and smooth scrolling
+- **Decorative Elements**: Ancient-style ornamental components
+- **Pet Integration**: Enhanced Live2D pet with theme-matched color filters
 
 ### Configuration Architecture
 

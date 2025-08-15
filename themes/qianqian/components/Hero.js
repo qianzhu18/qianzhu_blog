@@ -5,7 +5,7 @@ import CONFIG from '../config'
 import Link from 'next/link'
 
 /**
- * 英雄大图区块
+ * 英雄大图区块 - 现代化设计
  */
 export const Hero = props => {
     const config = props?.NOTION_CONFIG || CONFIG
@@ -21,7 +21,7 @@ export const Hero = props => {
             {/* <!-- ====== Hero Section Start --> */}
             <div
                 id='home'
-                className='h-screen relative overflow-hidden bg-primary '>
+                className='h-screen relative overflow-hidden bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900'>
                 {/* 横幅图片 */}
                 {!bannerIframe && bannerImage && (
                     <LazyImage
@@ -30,56 +30,85 @@ export const Hero = props => {
                         src={bannerImage} />
                 )}
                 <iframe src={bannerIframe} className='w-full absolute h-screen left-0 top-0 pointer-events-none' />
-                  {/* 可选全屏遮罩，增强标题可读性，不改变布局 */}
+                  {/* 现代化渐变遮罩 */}
                   {overlayEnable && (
-                    <div
-                      className='absolute inset-0 z-10 pointer-events-none'
-                      style={{ background: overlayColor }}
-                    />
+                    <div className='absolute inset-0 z-10 pointer-events-none'>
+                      <div className='absolute inset-0 bg-gradient-to-br from-blue-900/40 via-purple-900/50 to-indigo-900/40' />
+                      <div className='absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent' />
+                    </div>
                   )}
+                  
+                  {/* 动态装饰元素 */}
+                  <div className='absolute inset-0 z-5 pointer-events-none'>
+                    <div className='absolute top-1/4 left-1/4 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-pulse' />
+                    <div className='absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl animate-pulse' style={{animationDelay: '1s'}} />
+                    <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-indigo-400/10 rounded-full blur-3xl animate-pulse' style={{animationDelay: '2s'}} />
+                  </div>
+
                   {/* 底部渐变保留，提升层次感 */}
                   <div className='h-1/3 w-full absolute left-0 bottom-0 z-10'>
-                      <div className='h-full w-full absolute group-hover:opacity-100 transition-all duration-1000 bg-gradient-to-b from-transparent to-white dark:to-black'/>
+                      <div className='h-full w-full absolute group-hover:opacity-100 transition-all duration-1000 bg-gradient-to-b from-transparent via-white/5 to-white dark:to-black'/>
                   </div>
 
             </div>
-            {/* 文字标题等 */}
-            <div className='w-full pb-15 dark:text-white'>
-                <div className='container -mx-4 flex flex-wrap items-center'>
-                    <div className='w-full px-4'>
-                        <div
-                            className='hero-content wow fadeInUp mx-auto max-w-[780px] text-center'
-                            data-wow-delay='0.5s'>
-                            {/* 主标题 */}
-                              <h1
-                                className='mb-6 text-3xl font-bold leading-snug sm:text-4xl sm:leading-snug lg:text-5xl lg:leading-[1.2] text-white'
-                                style={titleShadow ? { textShadow: '0 2px 12px rgba(0,0,0,0.45)' } : undefined}
-                              >
-                                {siteConfig('PROXIO_HERO_TITLE_1', null, config)}
-                              </h1>
-                            {/* 次标题 */}
-                              <p
-                                className='mx-auto mb-9 max-w-[600px] text-base font-medium sm:text-lg sm:leading-[1.44] text-white'
-                                style={titleShadow ? { textShadow: '0 1px 8px rgba(0,0,0,0.35)' } : undefined}
-                              >
-                                {siteConfig('PROXIO_HERO_TITLE_2', null, config)}
-                              </p>
-                            {/* 按钮组 */}
-                            <ul className='mb-10 flex flex-wrap items-center justify-center gap-5'>
-                                {siteConfig('PROXIO_HERO_BUTTON_1_TEXT', null, config) && (
-                                    <li>
+            {/* 文字标题等 - 现代化设计 */}
+            <div className='w-full pb-15 dark:text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20'>
+                <div className='container mx-auto px-4'>
+                    <div className='flex flex-wrap items-center justify-center'>
+                        <div className='w-full'>
+                            <div className='hero-content wow fadeInUp mx-auto max-w-[900px] text-center space-y-8'>
+                                {/* 装饰性标签 */}
+                                <div className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20'>
+                                  <span className='w-2 h-2 bg-blue-400 rounded-full animate-pulse'></span>
+                                  <span className='text-sm font-medium text-white/90'>千浅雅境</span>
+                                </div>
+                                
+                                {/* 主标题 - 渐变文字效果 */}
+                                <h1 className='text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight'>
+                                  <span className='bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent drop-shadow-2xl'>
+                                    {siteConfig('PROXIO_HERO_TITLE_1', null, config)}
+                                  </span>
+                                </h1>
+                                
+                                {/* 次标题 */}
+                                <p className='mx-auto max-w-[700px] text-lg md:text-xl font-medium text-white/90 leading-relaxed drop-shadow-lg'>
+                                  {siteConfig('PROXIO_HERO_TITLE_2', null, config)}
+                                </p>
+                                
+                                {/* 现代化按钮组 */}
+                                <div className='flex flex-wrap items-center justify-center gap-4 pt-4'>
+                                    {siteConfig('PROXIO_HERO_BUTTON_1_TEXT', null, config) && (
                                         <Link
                                             href={siteConfig('PROXIO_HERO_BUTTON_1_URL', '')}
-                                              className='inline-flex items-center justify-center rounded-2xl bg-white/95 px-7 py-[14px] text-center text-base font-medium text-dark shadow-1 transition duration-300 ease-in-out hover:bg-white'>
-                                            {siteConfig('PROXIO_HERO_BUTTON_1_TEXT', null, config)}
+                                            className='group relative inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-gray-900 bg-white rounded-2xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:bg-gray-50'>
+                                            <span className='relative z-10'>{siteConfig('PROXIO_HERO_BUTTON_1_TEXT', null, config)}</span>
+                                            <div className='absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
                                         </Link>
-                                    </li>
-                                )}
-
-                            </ul>
+                                    )}
+                                    
+                                    {/* 次要按钮 */}
+                                    <Link
+                                        href='/archive'
+                                        className='inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl hover:bg-white/20 transform hover:-translate-y-1 transition-all duration-300'>
+                                        <span>浏览文章</span>
+                                        <svg className='ml-2 w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+                                        </svg>
+                                    </Link>
+                                </div>
+                                
+                                {/* 滚动提示 */}
+                                <div className='pt-12 animate-bounce'>
+                                  <div className='flex flex-col items-center gap-2 text-white/60'>
+                                    <span className='text-sm'>向下滚动</span>
+                                    <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 14l-7 7m0 0l-7-7m7 7V3' />
+                                    </svg>
+                                  </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             {/* <!-- ====== Hero Section End --> */}
