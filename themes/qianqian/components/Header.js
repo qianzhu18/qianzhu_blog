@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { DarkModeButton } from './DarkModeButton'
 import { Logo } from './Logo'
 import { MenuList } from './MenuList'
+import CONFIG from './config'
 
 /**
  * 顶部导航栏
@@ -61,6 +62,8 @@ export const Header = props => {
                         {/* 右侧菜单 */}
                         <div className='flex items-center gap-4 justify-end pr-16 lg:pr-0'>
                             <MenuList {...props} />
+                            {/* 主题切换器 */}
+                            {siteConfig('THEME_SWITCH', false, CONFIG) && <DarkModeButton />}
                         </div>
                     </div>
                 </div>

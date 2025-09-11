@@ -18,6 +18,18 @@ export const initQianqianEffects = () => {
   
   // 4. 初始化古风装饰元素
   initAncientStyleDecorations()
+  
+  // 5. 现代化视差效果
+  initModernParallaxEffects()
+  
+  // 6. 玻璃态效果增强
+  initGlassMorphismEffects()
+  
+  // 7. 动态背景效果
+  initDynamicBackground()
+  
+  // 8. 3D卡片效果
+  init3DCardEffects()
 }
 
 // 渐入动效系统
@@ -184,6 +196,136 @@ export const adjustPetColorsForTheme = () => {
       drop-shadow(0 8px 16px rgba(74, 144, 226, 0.15))
     `
   }
+}
+
+// 现代化视差效果
+const initModernParallaxEffects = () => {
+  const parallaxElements = document.querySelectorAll('[data-parallax]')
+  
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset
+    
+    parallaxElements.forEach(el => {
+      const speed = el.dataset.parallax || 0.5
+      const yPos = -(scrolled * speed)
+      el.style.transform = `translateY(${yPos}px)`
+    })
+  })
+}
+
+// 玻璃态效果增强
+const initGlassMorphismEffects = () => {
+  const glassElements = document.querySelectorAll('.glass-effect, .glass-effect-dark')
+  
+  glassElements.forEach(el => {
+    el.addEventListener('mousemove', function(e) {
+      const rect = this.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      
+      const centerX = rect.width / 2
+      const centerY = rect.height / 2
+      
+      const angleX = (y - centerY) / 20
+      const angleY = (centerX - x) / 20
+      
+      this.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg)`
+    })
+    
+    el.addEventListener('mouseleave', function() {
+      this.style.transform = ''
+    })
+  })
+}
+
+// 动态背景效果
+const initDynamicBackground = () => {
+  // 只在大屏幕上启用
+  if (window.innerWidth < 768) return
+  
+  const canvas = document.createElement('canvas')
+  canvas.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.1;
+  `
+  
+  document.body.appendChild(canvas)
+  
+  const ctx = canvas.getContext('2d')
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+  
+  const particles = []
+  const particleCount = 30
+  
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      size: Math.random() * 2 + 1
+    })
+  }
+  
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    
+    particles.forEach(particle => {
+      particle.x += particle.vx
+      particle.y += particle.vy
+      
+      if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1
+      if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1
+      
+      ctx.beginPath()
+      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
+      ctx.fillStyle = 'rgba(74, 144, 226, 0.3)'
+      ctx.fill()
+    })
+    
+    requestAnimationFrame(animate)
+  }
+  
+  animate()
+  
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+  })
+}
+
+// 3D卡片效果
+const init3DCardEffects = () => {
+  const cards = document.querySelectorAll('article > div, .card, .shadow-card')
+  
+  cards.forEach(card => {
+    card.addEventListener('mousemove', function(e) {
+      const rect = this.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      
+      const centerX = rect.width / 2
+      const centerY = rect.height / 2
+      
+      const rotateX = (y - centerY) / 15
+      const rotateY = (centerX - x) / 15
+      
+      this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`
+      this.style.transition = 'transform 0.1s ease-out'
+    })
+    
+    card.addEventListener('mouseleave', function() {
+      this.style.transform = ''
+      this.style.transition = 'transform 0.3s ease-out'
+    })
+  })
 }
 
 // 页面加载完成后初始化

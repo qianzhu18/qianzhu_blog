@@ -457,6 +457,63 @@ const Style = () => {
           box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
         
+        /* 3D悬浮效果 */
+        .hover-3d {
+          transform-style: preserve-3d;
+          transition: transform 0.3s ease;
+        }
+        .hover-3d:hover {
+          transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.02);
+        }
+        
+        /* 现代化发光效果 */
+        .glow-effect {
+          transition: box-shadow 0.3s ease;
+        }
+        .glow-effect:hover {
+          box-shadow: 0 0 20px rgba(74, 144, 226, 0.3), 0 0 40px rgba(74, 144, 226, 0.1);
+        }
+        
+        /* 现代化边框动画 */
+        .border-animate {
+          position: relative;
+          overflow: hidden;
+        }
+        .border-animate::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.4), transparent);
+          transition: left 0.5s ease;
+        }
+        .border-animate:hover::before {
+          left: 100%;
+        }
+        
+        /* 现代化渐变文字 */
+        .gradient-text {
+          background: linear-gradient(135deg, var(--qianqian-primary), var(--qianqian-secondary));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+        
+        /* 现代化脉冲动画 */
+        .pulse-animation {
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+          0%, 100% {
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+          }
+          50% {
+            box-shadow: 0 0 30px rgba(74, 144, 226, 0.5);
+          }
+        }
+        
         /* 加载动画 */
         @keyframes shimmer {
           0% {
