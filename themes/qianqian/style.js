@@ -8,48 +8,51 @@
 const Style = () => {
     return <style jsx global>{`
 
-    /* 千浅主题 - 全局样式定义 */
+    /* 千浅主题 v2.0 - 现代化设计升级 */
     :root {
-        --qianqian-primary: #4A90E2;
-        --qianqian-secondary: #6B73FF;
-        --qianqian-accent: #FF6B6B;
-        --qianqian-text: #2C2C2C;
-        --qianqian-text-light: #64748B;
-        --qianqian-bg: #FEFEFE;
-        --qianqian-bg-muted: #F8FAFC;
-        --qianqian-bg-card: #FFFFFF;
-        --qianqian-border: #E2E8F0;
-        --qianqian-border-light: #F1F5F9;
-        --qianqian-shadow: rgba(74, 144, 226, 0.1);
-        --qianqian-shadow-card: rgba(0, 0, 0, 0.04);
-        --qianqian-shadow-hover: rgba(74, 144, 226, 0.15);
-        --qianqian-gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --qianqian-gradient-2: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        --qianqian-gradient-3: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        --dewx-primary: #FE9600;
+        --dewx-primary-dark: #E88600;
+        --dewx-secondary: #FF6B6B;
+        --dewx-accent: #4ECDC4;
+        --dewx-text: #2C2C2C;
+        --dewx-text-light: #64748B;
+        --dewx-text-muted: #94A3B8;
+        --dewx-bg: #FFFFFF;
+        --dewx-bg-muted: #F8FAFC;
+        --dewx-bg-card: #FFFFFF;
+        --dewx-border: #E2E8F0;
+        --dewx-border-light: #F1F5F9;
+        --dewx-shadow: rgba(0, 0, 0, 0.08);
+        --dewx-shadow-card: 0 1px 35px -8px rgba(0, 0, 0, 0.8);
+        --dewx-shadow-hover: rgba(254, 150, 0, 0.15);
+        --dewx-gradient-1: linear-gradient(135deg, #FE9600 0%, #FF6B6B 100%);
+        --dewx-gradient-2: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --dewx-gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --dewx-gradient-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     }
     
     .dark {
-        --qianqian-text: #E2E8F0;
-        --qianqian-text-light: #94A3B8;
-        --qianqian-bg: #0F172A;
-        --qianqian-bg-muted: #1E293B;
-        --qianqian-bg-card: #1E293B;
-        --qianqian-border: #334155;
-        --qianqian-border-light: #475569;
-        --qianqian-shadow-card: rgba(0, 0, 0, 0.3);
+        --dewx-text: #E2E8F0;
+        --dewx-text-light: #94A3B8;
+        --dewx-text-muted: #64748B;
+        --dewx-bg: #0F172A;
+        --dewx-bg-muted: #1E293B;
+        --dewx-bg-card: #1E293B;
+        --dewx-border: #334155;
+        --dewx-border-light: #475569;
+        --dewx-shadow-card: 0 1px 35px -8px rgba(0, 0, 0, 0.9);
     }
 
-    // 底色 - 千浅风格
+    // 底色 - 现代化杂志风格
     body{
-        background-color: var(--qianqian-bg) !important;
-        color: var(--qianqian-text) !important;
-        font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", 
-                     -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+        background: var(--dewx-gradient-bg) !important;
+        color: var(--dewx-text) !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif !important;
         transition: all 0.3s ease;
     }
     .dark body{
-        background-color: #1a1a1a !important;
-        color: #e8eaed !important;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+        color: var(--dewx-text) !important;
     }
 
     /* 隐藏默认光标，启用自定义光标 */
@@ -62,45 +65,45 @@ const Style = () => {
     #theme-qianqian .bg-primary,
     #theme-proxio .bg-primary {
         --tw-bg-opacity: 1;
-        background-color: var(--qianqian-primary) !important;
+        background-color: var(--dewx-primary) !important;
     }
 
-    /* 千浅风格 - 按钮样式 */
+    /* 现代化按钮样式 */
     .btn, button, [role="button"] {
-        background-color: var(--qianqian-primary) !important;
+        background-color: var(--dewx-primary) !important;
         color: white !important;
         border: none !important;
         border-radius: 8px !important;
         padding: 12px 24px !important;
-        font-weight: 500 !important;
+        font-weight: 600 !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: 0 2px 8px var(--qianqian-shadow) !important;
+        box-shadow: 0 2px 8px var(--dewx-shadow) !important;
         position: relative !important;
         overflow: hidden !important;
     }
 
     .btn:hover, button:hover, [role="button"]:hover {
         transform: translateY(-2px) !important;
-        box-shadow: 0 8px 24px var(--qianqian-shadow) !important;
-        background-color: var(--qianqian-accent) !important;
+        box-shadow: 0 8px 24px var(--dewx-shadow-hover) !important;
+        background-color: var(--dewx-primary-dark) !important;
     }
 
-    /* 千浅风格 - 卡片样式 */
+    /* 现代化卡片样式 - 参考dewx.top */
     .card, .shadow-card {
-        background-color: var(--qianqian-bg) !important;
-        border: 1px solid var(--qianqian-border) !important;
+        background-color: var(--dewx-bg-card) !important;
+        border: 1px solid var(--dewx-border) !important;
         border-radius: 12px !important;
         padding: 24px !important;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+        box-shadow: var(--dewx-shadow-card) !important;
         position: relative !important;
         overflow: hidden !important;
     }
 
     .card:hover, .shadow-card:hover {
         transform: translateY(-4px) !important;
-        box-shadow: 0 12px 32px rgba(74, 144, 226, 0.12) !important;
-        border-color: var(--qianqian-primary) !important;
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15) !important;
+        border-color: var(--dewx-primary) !important;
     }
 
     /* 千浅风格 - 渐入动效 */
@@ -132,15 +135,15 @@ const Style = () => {
         margin: 32px 0 !important;
     }
 
-    /* 千浅风格 - 链接样式 */
+    /* 现代化链接样式 */
     a {
-        color: var(--qianqian-primary) !important;
+        color: var(--dewx-primary) !important;
         text-decoration: none !important;
         transition: all 0.2s ease !important;
     }
 
     a:hover {
-        color: var(--qianqian-accent) !important;
+        color: var(--dewx-primary-dark) !important;
         text-decoration: underline !important;
     }
     
@@ -394,12 +397,12 @@ const Style = () => {
           background: linear-gradient(45deg, #357ABD, #5A67D8);
         }
         
-        /* 现代化卡片阴影系统 */
+        /* 现代化卡片阴影系统 - 参考dewx.top */
         .shadow-modern {
-          box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 1px 35px -8px rgba(0, 0, 0, 0.8);
         }
         .shadow-modern-lg {
-          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+          box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
         }
         .shadow-modern-xl {
           box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -427,13 +430,16 @@ const Style = () => {
         
         /* 现代化渐变背景 */
         .bg-gradient-modern {
-          background: var(--qianqian-gradient-1);
+          background: var(--dewx-gradient-1);
         }
         .bg-gradient-modern-blue {
-          background: var(--qianqian-gradient-2);
+          background: var(--dewx-gradient-2);
         }
         .bg-gradient-modern-purple {
-          background: var(--qianqian-gradient-3);
+          background: var(--dewx-gradient-3);
+        }
+        .bg-gradient-magazine {
+          background: var(--dewx-gradient-bg);
         }
         
         /* 玻璃态效果 */
@@ -471,7 +477,7 @@ const Style = () => {
           transition: box-shadow 0.3s ease;
         }
         .glow-effect:hover {
-          box-shadow: 0 0 20px rgba(74, 144, 226, 0.3), 0 0 40px rgba(74, 144, 226, 0.1);
+          box-shadow: 0 0 20px rgba(254, 150, 0, 0.3), 0 0 40px rgba(254, 150, 0, 0.1);
         }
         
         /* 现代化边框动画 */
@@ -486,7 +492,7 @@ const Style = () => {
           left: -100%;
           width: 100%;
           height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.4), transparent);
+          background: linear-gradient(90deg, transparent, rgba(254, 150, 0, 0.4), transparent);
           transition: left 0.5s ease;
         }
         .border-animate:hover::before {
@@ -495,7 +501,7 @@ const Style = () => {
         
         /* 现代化渐变文字 */
         .gradient-text {
-          background: linear-gradient(135deg, var(--qianqian-primary), var(--qianqian-secondary));
+          background: linear-gradient(135deg, var(--dewx-primary), var(--dewx-secondary));
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -507,10 +513,10 @@ const Style = () => {
         }
         @keyframes pulse-glow {
           0%, 100% {
-            box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+            box-shadow: 0 0 20px rgba(254, 150, 0, 0.3);
           }
           50% {
-            box-shadow: 0 0 30px rgba(74, 144, 226, 0.5);
+            box-shadow: 0 0 30px rgba(254, 150, 0, 0.5);
           }
         }
         

@@ -77,17 +77,17 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
   // 添加样式
   const style = document.createElement('style')
   style.id = 'pet-control-panel-styles'
-  style.textContent = \`
+  style.textContent = `
     #pet-control-panel {
       position: fixed;
       top: 20%;
-      \${petPosition === 'right' ? 'right: 20px;' : 'left: 20px;'}
+      ${petPosition === 'right' ? 'right: 20px;' : 'left: 20px;'}
       width: 260px;
       background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.9));
       backdrop-filter: saturate(180%) blur(20px);
-      border: 1px solid rgba(74, 144, 226, 0.2);
+      border: 1px solid rgba(254, 150, 0, 0.2);
       border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(74, 144, 226, 0.15);
+      box-shadow: 0 8px 32px rgba(254, 150, 0, 0.15);
       z-index: 9999;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       user-select: none;
@@ -105,7 +105,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
       justify-content: space-between;
       align-items: center;
       padding: 12px 16px;
-      border-bottom: 1px solid rgba(74, 144, 226, 0.1);
+      border-bottom: 1px solid rgba(254, 150, 0, 0.1);
       cursor: pointer;
     }
     
@@ -115,7 +115,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
       gap: 8px;
       font-weight: 600;
       font-size: 14px;
-      color: #4A90E2;
+      color: #FE9600;
     }
     
     .pet-icon {
@@ -125,7 +125,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
     .pet-panel-toggle {
       background: none;
       border: none;
-      color: #4A90E2;
+      color: #FE9600;
       cursor: pointer;
       padding: 4px;
       border-radius: 4px;
@@ -133,7 +133,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
     }
     
     .pet-panel-toggle:hover {
-      background: rgba(74, 144, 226, 0.1);
+      background: rgba(254, 150, 0, 0.1);
     }
     
     .toggle-icon {
@@ -176,7 +176,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
       -webkit-appearance: none;
       height: 6px;
       border-radius: 3px;
-      background: rgba(74, 144, 226, 0.2);
+      background: rgba(254, 150, 0, 0.2);
       outline: none;
     }
     
@@ -185,14 +185,14 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: #4A90E2;
+      background: #FE9600;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(74, 144, 226, 0.3);
     }
     
     .pet-slider-value {
       font-size: 11px;
-      color: #4A90E2;
+      color: #FE9600;
       font-weight: 500;
       min-width: 40px;
       text-align: center;
@@ -210,7 +210,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
       border: 1px solid rgba(74, 144, 226, 0.3);
       border-radius: 8px;
       background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(248,250,252,0.6));
-      color: #4A90E2;
+      color: #FE9600;
       font-size: 11px;
       font-weight: 500;
       cursor: pointer;
@@ -238,7 +238,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
       border: 1px solid rgba(74, 144, 226, 0.2);
       border-radius: 6px;
       background: rgba(255,255,255,0.6);
-      color: #4A90E2;
+      color: #FE9600;
       font-size: 10px;
       font-weight: 500;
       cursor: pointer;
@@ -247,7 +247,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
     
     .pet-preset-btn:hover, .pet-preset-btn.active {
       background: rgba(74, 144, 226, 0.1);
-      border-color: #4A90E2;
+      border-color: #FE9600;
     }
     
     .pet-info-section {
@@ -258,11 +258,11 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
     
     .pet-info-text {
       font-size: 11px;
-      color: #4A90E2;
+      color: #FE9600;
       text-align: center;
       opacity: 0.7;
     }
-  \`
+  `
   
   document.head.appendChild(style)
   document.body.appendChild(panel)
@@ -310,7 +310,7 @@ function setupPetControlEvents(petPosition, petHOffset, petVOffset) {
     sizeValue.textContent = Math.round(value * 100) + '%'
     const petWidget = document.getElementById('live2d-widget')
     if (petWidget) {
-      petWidget.style.transform = \`scale(\${value})\`
+      petWidget.style.transform = `scale(${value})`
       petWidget.style.transformOrigin = 'bottom ' + petPosition
     }
   }

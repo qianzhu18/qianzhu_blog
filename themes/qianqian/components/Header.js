@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { DarkModeButton } from './DarkModeButton'
 import { Logo } from './Logo'
 import { MenuList } from './MenuList'
-import CONFIG from './config'
+import CONFIG from '../config'
 
 /**
  * 顶部导航栏

@@ -1,0 +1,556 @@
+
+> notion-next@4.8.4 dev
+> next dev
+
+  ▲ Next.js 14.2.4
+  - Local:        http://localhost:3000
+  - Experiments (use with caution):
+    · scrollRestoration
+
+ ✓ Starting...
+[Locales] 02ab3b8678004aa69e9e415905ef32a5
+[Locales] en:7c1d570661754c8fbc568e00a01fd70e
+/bin/sh: yarn: command not found
+[默认主题] /Users/mac/千逐数字资产/notion_next/NotionNext/themes/qianqian
+ ✓ Ready in 1836ms
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 847ms (215 modules)
+ ○ Compiling / ...
+Browserslist: browsers data (caniuse-lite) is 10 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ ⨯ ./components/Live2D.js
+Error: 
+  [31mx[0m Expected unicode escape
+    ,-[[36;1;4m/Users/mac/千逐数字资产/notion_next/NotionNext/components/Live2D.js[0m:77:1]
+ [2m77[0m |   // 添加样式
+ [2m78[0m |   const style = document.createElement('style')
+ [2m79[0m |   style.id = 'pet-control-panel-styles'
+ [2m80[0m |   style.textContent = \`
+    : [31;1m                      ^[0m
+ [2m81[0m |     #pet-control-panel {
+ [2m82[0m |       position: fixed;
+ [2m83[0m |       top: 20%;
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/Live2D.js
+./themes/simple/components/SideBar.js
+./themes/ lazy ^\.\/.*$ namespace object
+./themes/theme.js
+ ⨯ ./components/Live2D.js
+Error: 
+  [31mx[0m Expected unicode escape
+    ,-[[36;1;4m/Users/mac/千逐数字资产/notion_next/NotionNext/components/Live2D.js[0m:77:1]
+ [2m77[0m |   // 添加样式
+ [2m78[0m |   const style = document.createElement('style')
+ [2m79[0m |   style.id = 'pet-control-panel-styles'
+ [2m80[0m |   style.textContent = \`
+    : [31;1m                      ^[0m
+ [2m81[0m |     #pet-control-panel {
+ [2m82[0m |       position: fixed;
+ [2m83[0m |       top: 20%;
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/Live2D.js
+./themes/simple/components/SideBar.js
+./themes/ lazy ^\.\/.*$ namespace object
+./themes/theme.js
+[默认主题] /Users/mac/千逐数字资产/notion_next/NotionNext/themes/qianqian
+ ⨯ ./components/Live2D.js
+Error: 
+  [31mx[0m Expected unicode escape
+    ,-[[36;1;4m/Users/mac/千逐数字资产/notion_next/NotionNext/components/Live2D.js[0m:77:1]
+ [2m77[0m |   // 添加样式
+ [2m78[0m |   const style = document.createElement('style')
+ [2m79[0m |   style.id = 'pet-control-panel-styles'
+ [2m80[0m |   style.textContent = \`
+    : [31;1m                      ^[0m
+ [2m81[0m |     #pet-control-panel {
+ [2m82[0m |       position: fixed;
+ [2m83[0m |       top: 20%;
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/Live2D.js
+./themes/simple/components/SideBar.js
+./themes/ lazy ^\.\/.*$ namespace object
+./themes/theme.js
+ HEAD / 500 in 13832ms
+ GET / 500 in 339ms
+ HEAD / 500 in 174ms
+ GET / 500 in 28ms
+ ⨯ ./components/Live2D.js
+Error: 
+  [31mx[0m Expected ';', '}' or <eof>
+     ,-[[36;1;4m/Users/mac/千逐数字资产/notion_next/NotionNext/components/Live2D.js[0m:77:1]
+ [2m 77[0m |       // 添加样式
+ [2m 78[0m |       const style = document.createElement('style')
+ [2m 79[0m |       style.id = 'pet-control-panel-styles'
+ [2m 80[0m | [31;1m,[0m[31;1m-[0m[31;1m>[0m   style.textContent = `
+ [2m 81[0m | [31;1m|[0m       #pet-control-panel {
+ [2m 82[0m | [31;1m|[0m         position: fixed;
+ [2m 83[0m | [31;1m|[0m         top: 20%;
+ [2m 84[0m | [31;1m|[0m         ${petPosition === 'right' ? 'right: 20px;' : 'left: 20px;'}
+ [2m 85[0m | [31;1m|[0m         width: 260px;
+ [2m 86[0m | [31;1m|[0m         background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.9));
+ [2m 87[0m | [31;1m|[0m         backdrop-filter: saturate(180%) blur(20px);
+ [2m 88[0m | [31;1m|[0m         border: 1px solid rgba(74, 144, 226, 0.2);
+ [2m 89[0m | [31;1m|[0m         border-radius: 16px;
+ [2m 90[0m | [31;1m|[0m         box-shadow: 0 8px 32px rgba(74, 144, 226, 0.15);
+ [2m 91[0m | [31;1m|[0m         z-index: 9999;
+ [2m 92[0m | [31;1m|[0m         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+ [2m 93[0m | [31;1m|[0m         user-select: none;
+ [2m 94[0m | [31;1m|[0m         opacity: 0.9;
+ [2m 95[0m | [31;1m|[0m         transition: all 0.3s ease;
+ [2m 96[0m | [31;1m|[0m       }
+ [2m 97[0m | [31;1m|[0m       
+ [2m 98[0m | [31;1m|[0m       #pet-control-panel:hover {
+ [2m 99[0m | [31;1m|[0m         opacity: 1;
+ [2m100[0m | [31;1m|[0m         box-shadow: 0 12px 40px rgba(74, 144, 226, 0.2);
+ [2m101[0m | [31;1m|[0m       }
+ [2m102[0m | [31;1m|[0m       
+ [2m103[0m | [31;1m|[0m       .pet-panel-header {
+ [2m104[0m | [31;1m|[0m         display: flex;
+ [2m105[0m | [31;1m|[0m         justify-content: space-between;
+ [2m106[0m | [31;1m|[0m         align-items: center;
+ [2m107[0m | [31;1m|[0m         padding: 12px 16px;
+ [2m108[0m | [31;1m|[0m         border-bottom: 1px solid rgba(74, 144, 226, 0.1);
+ [2m109[0m | [31;1m|[0m         cursor: pointer;
+ [2m110[0m | [31;1m|[0m       }
+ [2m111[0m | [31;1m|[0m       
+ [2m112[0m | [31;1m|[0m       .pet-panel-title {
+ [2m113[0m | [31;1m|[0m         display: flex;
+ [2m114[0m | [31;1m|[0m         align-items: center;
+ [2m115[0m | [31;1m|[0m         gap: 8px;
+ [2m116[0m | [31;1m|[0m         font-weight: 600;
+ [2m117[0m | [31;1m|[0m         font-size: 14px;
+ [2m118[0m | [31;1m|[0m         color: #4A90E2;
+ [2m119[0m | [31;1m|[0m       }
+ [2m120[0m | [31;1m|[0m       
+ [2m121[0m | [31;1m|[0m       .pet-icon {
+ [2m122[0m | [31;1m|[0m         font-size: 16px;
+ [2m123[0m | [31;1m|[0m       }
+ [2m124[0m | [31;1m|[0m       
+ [2m125[0m | [31;1m|[0m       .pet-panel-toggle {
+ [2m126[0m | [31;1m|[0m         background: none;
+ [2m127[0m | [31;1m|[0m         border: none;
+ [2m128[0m | [31;1m|[0m         color: #4A90E2;
+ [2m129[0m | [31;1m|[0m         cursor: pointer;
+ [2m130[0m | [31;1m|[0m         padding: 4px;
+ [2m131[0m | [31;1m|[0m         border-radius: 4px;
+ [2m132[0m | [31;1m|[0m         transition: background-color 0.2s;
+ [2m133[0m | [31;1m|[0m       }
+ [2m134[0m | [31;1m|[0m       
+ [2m135[0m | [31;1m|[0m       .pet-panel-toggle:hover {
+ [2m136[0m | [31;1m|[0m         background: rgba(74, 144, 226, 0.1);
+ [2m137[0m | [31;1m|[0m       }
+ [2m138[0m | [31;1m|[0m       
+ [2m139[0m | [31;1m|[0m       .toggle-icon {
+ [2m140[0m | [31;1m|[0m         display: inline-block;
+ [2m141[0m | [31;1m|[0m         transition: transform 0.3s ease;
+ [2m142[0m | [31;1m|[0m       }
+ [2m143[0m | [31;1m|[0m       
+ [2m144[0m | [31;1m|[0m       .pet-panel-content {
+ [2m145[0m | [31;1m|[0m         padding: 16px;
+ [2m146[0m | [31;1m|[0m         max-height: 500px;
+ [2m147[0m | [31;1m|[0m         overflow: hidden;
+ [2m148[0m | [31;1m|[0m         transition: all 0.3s ease;
+ [2m149[0m | [31;1m|[0m       }
+ [2m150[0m | [31;1m|[0m       
+ [2m151[0m | [31;1m|[0m       .pet-panel-content.collapsed {
+ [2m152[0m | [31;1m|[0m         max-height: 0;
+ [2m153[0m | [31;1m|[0m         padding: 0 16px;
+ [2m154[0m | [31;1m|[0m       }
+ [2m155[0m | [31;1m|[0m       
+ [2m156[0m | [31;1m|[0m       .pet-control-section {
+ [2m157[0m | [31;1m|[0m         margin-bottom: 16px;
+ [2m158[0m | [31;1m|[0m       }
+ [2m159[0m | [31;1m|[0m       
+ [2m160[0m | [31;1m|[0m       .pet-control-label {
+ [2m161[0m | [31;1m|[0m         display: block;
+ [2m162[0m | [31;1m|[0m         font-size: 12px;
+ [2m163[0m | [31;1m|[0m         font-weight: 500;
+ [2m164[0m | [31;1m|[0m         color: #666;
+ [2m165[0m | [31;1m|[0m         margin-bottom: 8px;
+ [2m166[0m | [31;1m|[0m       }
+ [2m167[0m | [31;1m|[0m       
+ [2m168[0m | [31;1m|[0m       .pet-slider-container {
+ [2m169[0m | [31;1m|[0m         display: flex;
+ [2m170[0m | [31;1m|[0m         align-items: center;
+ [2m171[0m | [31;1m|[0m         gap: 12px;
+ [2m172[0m | [31;1m|[0m       }
+ [2m173[0m | [31;1m|[0m       
+ [2m174[0m | [31;1m|[0m       .pet-slider-container input[type="range"] {
+ [2m175[0m | [31;1m|[0m         flex: 1;
+ [2m176[0m | [31;1m|[0m         -webkit-appearance: none;
+ [2m177[0m | [31;1m|[0m         height: 6px;
+ [2m178[0m | [31;1m|[0m         border-radius: 3px;
+ [2m179[0m | [31;1m|[0m         background: rgba(74, 144, 226, 0.2);
+ [2m180[0m | [31;1m|[0m         outline: none;
+ [2m181[0m | [31;1m|[0m       }
+ [2m182[0m | [31;1m|[0m       
+ [2m183[0m | [31;1m|[0m       .pet-slider-container input[type="range"]::-webkit-slider-thumb {
+ [2m184[0m | [31;1m|[0m         -webkit-appearance: none;
+ [2m185[0m | [31;1m|[0m         width: 18px;
+ [2m186[0m | [31;1m|[0m         height: 18px;
+ [2m187[0m | [31;1m|[0m         border-radius: 50%;
+ [2m188[0m | [31;1m|[0m         background: #4A90E2;
+ [2m189[0m | [31;1m|[0m         cursor: pointer;
+ [2m190[0m | [31;1m|[0m         box-shadow: 0 2px 6px rgba(74, 144, 226, 0.3);
+ [2m191[0m | [31;1m|[0m       }
+ [2m192[0m | [31;1m|[0m       
+ [2m193[0m | [31;1m|[0m       .pet-slider-value {
+ [2m194[0m | [31;1m|[0m         font-size: 11px;
+ [2m195[0m | [31;1m|[0m         color: #4A90E2;
+ [2m196[0m | [31;1m|[0m         font-weight: 500;
+ [2m197[0m | [31;1m|[0m         min-width: 40px;
+ [2m198[0m | [31;1m|[0m         text-align: center;
+ [2m199[0m | [31;1m|[0m       }
+ [2m200[0m | [31;1m|[0m       
+ [2m201[0m | [31;1m|[0m       .pet-control-buttons {
+ [2m202[0m | [31;1m|[0m         display: flex;
+ [2m203[0m | [31;1m|[0m         gap: 8px;
+ [2m204[0m | [31;1m|[0m         margin: 16px 0;
+ [2m205[0m | [31;1m|[0m       }
+ [2m206[0m | [31;1m|[0m       
+ [2m207[0m | [31;1m|[0m       .pet-btn {
+ [2m208[0m | [31;1m|[0m         flex: 1;
+ [2m209[0m | [31;1m|[0m         padding: 8px 12px;
+ [2m210[0m | [31;1m|[0m         border: 1px solid rgba(74, 144, 226, 0.3);
+ [2m211[0m | [31;1m|[0m         border-radius: 8px;
+ [2m212[0m | [31;1m|[0m         background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(248,250,252,0.6));
+ [2m213[0m | [31;1m|[0m         color: #4A90E2;
+ [2m214[0m | [31;1m|[0m         font-size: 11px;
+ [2m215[0m | [31;1m|[0m         font-weight: 500;
+ [2m216[0m | [31;1m|[0m         cursor: pointer;
+ [2m217[0m | [31;1m|[0m         transition: all 0.2s ease;
+ [2m218[0m | [31;1m|[0m         display: flex;
+ [2m219[0m | [31;1m|[0m         align-items: center;
+ [2m220[0m | [31;1m|[0m         justify-content: center;
+ [2m221[0m | [31;1m|[0m         gap: 4px;
+ [2m222[0m | [31;1m|[0m       }
+ [2m223[0m | [31;1m|[0m       
+ [2m224[0m | [31;1m|[0m       .pet-btn:hover {
+ [2m225[0m | [31;1m|[0m         background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(255,255,255,0.9));
+ [2m226[0m | [31;1m|[0m         transform: translateY(-1px);
+ [2m227[0m | [31;1m|[0m         box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+ [2m228[0m | [31;1m|[0m       }
+ [2m229[0m | [31;1m|[0m       
+ [2m230[0m | [31;1m|[0m       .pet-preset-buttons {
+ [2m231[0m | [31;1m|[0m         display: grid;
+ [2m232[0m | [31;1m|[0m         grid-template-columns: 1fr 1fr 1fr;
+ [2m233[0m | [31;1m|[0m         gap: 6px;
+ [2m234[0m | [31;1m|[0m       }
+ [2m235[0m | [31;1m|[0m       
+ [2m236[0m | [31;1m|[0m       .pet-preset-btn {
+ [2m237[0m | [31;1m|[0m         padding: 6px 8px;
+ [2m238[0m | [31;1m|[0m         border: 1px solid rgba(74, 144, 226, 0.2);
+ [2m239[0m | [31;1m|[0m         border-radius: 6px;
+ [2m240[0m | [31;1m|[0m         background: rgba(255,255,255,0.6);
+ [2m241[0m | [31;1m|[0m         color: #4A90E2;
+ [2m242[0m | [31;1m|[0m         font-size: 10px;
+ [2m243[0m | [31;1m|[0m         font-weight: 500;
+ [2m244[0m | [31;1m|[0m         cursor: pointer;
+ [2m245[0m | [31;1m|[0m         transition: all 0.2s ease;
+ [2m246[0m | [31;1m|[0m       }
+ [2m247[0m | [31;1m|[0m       
+ [2m248[0m | [31;1m|[0m       .pet-preset-btn:hover, .pet-preset-btn.active {
+ [2m249[0m | [31;1m|[0m         background: rgba(74, 144, 226, 0.1);
+ [2m250[0m | [31;1m|[0m         border-color: #4A90E2;
+ [2m251[0m | [31;1m|[0m       }
+ [2m252[0m | [31;1m|[0m       
+ [2m253[0m | [31;1m|[0m       .pet-info-section {
+ [2m254[0m | [31;1m|[0m         border-top: 1px solid rgba(74, 144, 226, 0.1);
+ [2m255[0m | [31;1m|[0m         padding-top: 12px;
+ [2m256[0m | [31;1m|[0m         margin-top: 16px;
+ [2m257[0m | [31;1m|[0m       }
+ [2m258[0m | [31;1m|[0m       
+ [2m259[0m | [31;1m|[0m       .pet-info-text {
+ [2m260[0m | [31;1m|[0m         font-size: 11px;
+ [2m261[0m | [31;1m|[0m         color: #4A90E2;
+ [2m262[0m | [31;1m|[0m         text-align: center;
+ [2m263[0m | [31;1m|[0m         opacity: 0.7;
+ [2m264[0m | [31;1m|[0m       }
+ [2m265[0m | [31;1m|[0m     \`
+ [2m266[0m | [31;1m|[0m     
+ [2m267[0m | [31;1m|[0m     document.head.appendChild(style)
+ [2m268[0m | [31;1m|[0m     document.body.appendChild(panel)
+ [2m269[0m | [31;1m|[0m   
+ [2m270[0m | [31;1m|[0m     // 绑定事件
+ [2m271[0m | [31;1m|[0m     setupPetControlEvents(petPosition, petHOffset, petVOffset)
+ [2m272[0m | [31;1m|[0m   }
+ [2m273[0m | [31;1m|[0m   
+ [2m274[0m | [31;1m|[0m   /**
+ [2m275[0m | [31;1m|[0m    * 设置桌宠控制面板事件
+ [2m276[0m | [31;1m|[0m    */
+ [2m277[0m | [31;1m|[0m   /**
+ [2m278[0m | [31;1m|[0m    * 设置桌宠控制面板事件
+ [2m279[0m | [31;1m|[0m    */
+ [2m280[0m | [31;1m|[0m   function setupPetControlEvents(petPosition, petHOffset, petVOffset) {
+ [2m281[0m | [31;1m|[0m     const panel = document.getElementById('pet-control-panel')
+ [2m282[0m | [31;1m|[0m     const content = panel.querySelector('.pet-panel-content')
+ [2m283[0m | [31;1m|[0m     const toggle = panel.querySelector('.pet-panel-toggle')
+ [2m284[0m | [31;1m|[0m     const toggleIcon = panel.querySelector('.toggle-icon')
+ [2m285[0m | [31;1m|[0m     
+ [2m286[0m | [31;1m|[0m     // 面板展开/收起
+ [2m287[0m | [31;1m|[0m     panel.querySelector('.pet-panel-header').onclick = () => {
+ [2m288[0m | [31;1m|[0m       const isCollapsed = content.classList.contains('collapsed')
+ [2m289[0m | [31;1m|[0m       content.classList.toggle('collapsed')
+ [2m290[0m | [31;1m|[0m       toggleIcon.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(-90deg)'
+ [2m291[0m | [31;1m|[0m     }
+ [2m292[0m | [31;1m|[0m     
+ [2m293[0m | [31;1m|[0m     // 透明度控制
+ [2m294[0m | [31;1m|[0m     const opacitySlider = panel.querySelector('#pet-opacity-slider')
+ [2m295[0m | [31;1m|[0m     const opacityValue = opacitySlider.parentElement.querySelector('.pet-slider-value')
+ [2m296[0m | [31;1m|[0m     opacitySlider.oninput = () => {
+ [2m297[0m | [31;1m|[0m       const value = parseFloat(opacitySlider.value)
+ [2m298[0m | [31;1m|[0m       opacityValue.textContent = Math.round(value * 100) + '%'
+ [2m299[0m | [31;1m|[0m       const petWidget = document.getElementById('live2d-widget')
+ [2m300[0m | [31;1m|[0m       if (petWidget) {
+ [2m301[0m | [31;1m|[0m         petWidget.style.opacity = value
+ [2m302[0m | [31;1m|[0m       }
+ [2m303[0m | [31;1m|[0m     }
+ [2m304[0m | [31;1m|[0m     
+ [2m305[0m | [31;1m|[0m     // 大小控制
+ [2m306[0m | [31;1m|[0m     const sizeSlider = panel.querySelector('#pet-size-slider')
+ [2m307[0m | [31;1m|[0m     const sizeValue = sizeSlider.parentElement.querySelector('.pet-slider-value')
+ [2m308[0m | [31;1m|[0m     sizeSlider.oninput = () => {
+ [2m309[0m | [31;1m|[0m       const value = parseFloat(sizeSlider.value)
+ [2m310[0m | [31;1m|[0m       sizeValue.textContent = Math.round(value * 100) + '%'
+ [2m311[0m | [31;1m|[0m       const petWidget = document.getElementById('live2d-widget')
+ [2m312[0m | [31;1m|[0m       if (petWidget) {
+ [2m313[0m | [31;1m|[0m         petWidget.style.transform = \`scale(\${value})\`
+ [2m314[0m | [31;1m|[0m         petWidget.style.transformOrigin = 'bottom ' + petPosition
+ [2m315[0m | [31;1m|[0m       }
+ [2m316[0m | [31;1m|[0m     }
+ [2m317[0m | [31;1m|[0m     
+ [2m318[0m | [31;1m|[0m     // 灵敏度控制
+ [2m319[0m | [31;1m|[0m     const sensitivitySlider = panel.querySelector('#pet-sensitivity-slider')
+ [2m320[0m | [31;1m|[0m     const sensitivityValue = sensitivitySlider.parentElement.querySelector('.pet-slider-value')
+ [2m321[0m | [31;1m|[0m     const sensitivityLabels = { 60: '低', 120: '标准', 160: '高', 200: '极高' }
+ [2m322[0m | [31;1m|[0m     sensitivitySlider.oninput = () => {
+ [2m323[0m | [31;1m|[0m       const value = parseInt(sensitivitySlider.value)
+ [2m324[0m | [31;1m|[0m       sensitivityValue.textContent = sensitivityLabels[value] || '自定义'
+ [2m325[0m | [31;1m|[0m       // 更新全局悬停半径
+ [2m326[0m | [31;1m|[0m       window.petHoverRadius = value
+ [2m327[0m | [31;1m|[0m     }
+ [2m328[0m | [31;1m|[0m     
+ [2m329[0m | [31;1m|[0m     // 重置位置
+ [2m330[0m | [31;1m|[0m     panel.querySelector('#pet-reset-position').onclick = () => {
+ [2m331[0m | [31;1m|[0m       const petWidget = document.getElementById('live2d-widget')
+ [2m332[0m | [31;1m|[0m       if (petWidget) {
+ [2m333[0m | [31;1m|[0m         petWidget.style.transform = 'scale(' + sizeSlider.value + ')'
+ [2m334[0m | [31;1m|[0m         petWidget.style.right = petPosition === 'right' ? petHOffset + 'px' : 'auto'
+ [2m335[0m | [31;1m|[0m         petWidget.style.left = petPosition === 'left' ? petHOffset + 'px' : 'auto'
+ [2m336[0m | [31;1m|[0m         petWidget.style.bottom = petVOffset + 'px'
+ [2m337[0m | [31;1m|[0m       }
+ [2m338[0m | [31;1m|[0m     }
+ [2m339[0m | [31;1m|[0m     
+ [2m340[0m | [31;1m|[0m     // 隐藏/显示切换
+ [2m341[0m | [31;1m|[0m     panel.querySelector('#pet-hide-toggle').onclick = () => {
+ [2m342[0m | [31;1m|[0m       const petWidget = document.getElementById('live2d-widget')
+ [2m343[0m | [31;1m|[0m       const hideText = panel.querySelector('.hide-text')
+ [2m344[0m | [31;1m|[0m       if (petWidget) {
+ [2m345[0m | [31;1m|[0m         const isHidden = petWidget.style.display === 'none'
+ [2m346[0m | [31;1m|[0m         petWidget.style.display = isHidden ? 'block' : 'none'
+ [2m347[0m | [31;1m|[0m         hideText.textContent = isHidden ? '隐藏桌宠' : '显示桌宠'
+ [2m348[0m | [31;1m|[0m       }
+ [2m349[0m | [31;1m|[0m     }
+ [2m350[0m | [31;1m|[0m     
+ [2m351[0m | [31;1m|[0m     // 预设模式
+ [2m352[0m | [31;1m|[0m     panel.querySelectorAll('.pet-preset-btn').forEach(btn => {
+ [2m353[0m | [31;1m|[0m       btn.onclick = () => {
+ [2m354[0m | [31;1m|[0m         panel.querySelectorAll('.pet-preset-btn').forEach(b => b.classList.remove('active'))
+ [2m355[0m | [31;1m|[0m         btn.classList.add('active')
+ [2m356[0m | [31;1m|[0m         
+ [2m357[0m | [31;1m|[0m         const preset = btn.dataset.preset
+ [2m358[0m | [31;1m|[0m         switch(preset) {
+ [2m359[0m | [31;1m|[0m           case 'focus':
+ [2m360[0m | [31;1m|[0m             opacitySlider.value = '0.4'
+ [2m361[0m | [31;1m|[0m             sizeSlider.value = '0.8'
+ [2m362[0m | [31;1m|[0m             sensitivitySlider.value = '60'
+ [2m363[0m | [31;1m|[0m             break
+ [2m364[0m | [31;1m|[0m           case 'interactive':
+ [2m365[0m | [31;1m|[0m             opacitySlider.value = '1.0'
+ [2m366[0m | [31;1m|[0m             sizeSlider.value = '1.2'
+ [2m367[0m | [31;1m|[0m             sensitivitySlider.value = '160'
+ [2m368[0m | [31;1m|[0m             break
+ [2m369[0m | [31;1m|[0m           case 'minimal':
+ [2m370[0m | [31;1m|[0m             opacitySlider.value = '0.6'
+ [2m371[0m | [31;1m|[0m             sizeSlider.value = '0.7'
+ [2m372[0m | [31;1m|[0m             sensitivitySlider.value = '200'
+ [2m373[0m | [31;1m|[0m             break
+ [2m374[0m | [31;1m|[0m         }
+ [2m375[0m | [31;1m|[0m         
+ [2m376[0m | [31;1m|[0m         // 触发所有滑块的输入事件
+ [2m377[0m | [31;1m|[0m         opacitySlider.oninput()
+ [2m378[0m | [31;1m|[0m         sizeSlider.oninput()
+ [2m379[0m | [31;1m|[0m         sensitivitySlider.oninput()
+ [2m380[0m | [31;1m|[0m       }
+ [2m381[0m | [31;1m|[0m     })
+ [2m382[0m | [31;1m|[0m   }
+ [2m383[0m | [31;1m|[0m   
+ [2m384[0m | [31;1m|[0m   /**
+ [2m385[0m | [31;1m|[0m    * Live2D 桌宠（L2Dwidget.init）：古风少女、低打扰、可配置
+ [2m386[0m | [31;1m|[0m    */
+ [2m387[0m | [31;1m|[0m   export default function Live2D() {
+ [2m388[0m | [31;1m|[0m     const { theme, switchTheme } = useGlobal()
+ [2m389[0m | [31;1m|[0m     const showPet = JSON.parse(siteConfig('WIDGET_PET'))
+ [2m390[0m | [31;1m|[0m     // 推荐古风少女模型（默认 koharu，可在 Notion 中切换）
+ [2m391[0m | [31;1m|[0m     const petLink = siteConfig('WIDGET_PET_LINK') || 'https://cdn.jsdelivr.net/npm/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json'
+ [2m392[0m | [31;1m|[0m     const petSwitchTheme = siteConfig('WIDGET_PET_SWITCH_THEME')
+ [2m393[0m | [31;1m|[0m     const petWidth = Number(siteConfig('WIDGET_PET_WIDTH', 280))
+ [2m394[0m | [31;1m|[0m     const petHeight = Number(siteConfig('WIDGET_PET_HEIGHT', 260))
+ [2m395[0m | [31;1m|[0m     const petPosition = siteConfig('WIDGET_PET_POSITION', 'right')
+ [2m396[0m | [31;1m|[0m     const petHOffset = Number(siteConfig('WIDGET_PET_H_OFFSET', 24))
+ [2m397[0m | [31;1m|[0m     const petVOffset = Number(siteConfig('WIDGET_PET_V_OFFSET', 16))
+ [2m398[0m | [31;1m|[0m     const draggable = JSON.parse(siteConfig('WIDGET_PET_DRAGGABLE', true))
+ [2m399[0m | [31;1m|[0m     const showOnMobile = JSON.parse(siteConfig('WIDGET_PET_MOBILE', false))
+ [2m400[0m | [31;1m|[0m     const opacity = Number(siteConfig('WIDGET_PET_OPACITY', 0.95))
+ [2m401[0m | [31;1m|[0m     const firstVisitAnim = JSON.parse(siteConfig('WIDGET_PET_FIRST_VISIT_ANIM', true))
+ [2m402[0m | [31;1m|[0m     const idleFade = JSON.parse(siteConfig('WIDGET_PET_IDLE_FADE', true))
+ [2m403[0m | [31;1m|[0m     const minimizeBtn = JSON.parse(siteConfig('WIDGET_PET_MINIMIZE_BTN', true))
+ [2m404[0m | [31;1m|[0m     const canvasStyle = siteConfig('WIDGET_PET_CANVAS_STYLE', '')
+ [2m405[0m | [31;1m|[0m     const cssFilter = siteConfig('WIDGET_PET_CSS_FILTER', '')
+ [2m406[0m | [31;1m|[0m     // 鼠标靠近反馈半径
+ [2m407[0m | [31;1m|[0m     const hoverRadius = Number(siteConfig('WIDGET_PET_HOVER_RADIUS', 120))
+ [2m408[0m | [31;1m|[0m     const hoverScale = Number(siteConfig('WIDGET_PET_HOVER_SCALE', 1.08))
+ [2m409[0m | [31;1m|[0m     // 动作反馈参数：靠近抬眼、远离低头（通过模拟姿态偏移）
+ [2m410[0m | [31;1m|[0m     const lookAmplitude = Number(siteConfig('WIDGET_PET_LOOK_AMPLITUDE', 8)) // 0~15
+ [2m411[0m | [31;1m|[0m   
+ [2m412[0m | [31;1m|[0m     useEffect(() => {
+ [2m413[0m | [31;1m|[0m       if (!showPet) return
+ [2m414[0m | [31;1m|[0m       if (!showOnMobile && isMobile()) return
+ [2m415[0m | [31;1m|[0m   
+ [2m416[0m | [31;1m|[0m           loadExternalResource(
+ [2m417[0m | [31;1m|[0m         'https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js',
+ [2m418[0m | [31;1m|[0m         'js'
+ [2m419[0m | [31;1m|[0m       ).then(() => {
+ [2m420[0m | [31;1m|[0m         if (typeof window !== 'undefined' && window.L2Dwidget) {
+ [2m421[0m | [31;1m|[0m           try {
+ [2m422[0m | [31;1m|[0m             const STORAGE_KEY = 'live2d_first_visited'
+ [2m423[0m | [31;1m|[0m             const isFirst = !localStorage.getItem(STORAGE_KEY)
+ [2m424[0m | [31;1m|[0m             if (firstVisitAnim && isFirst) localStorage.setItem(STORAGE_KEY, '1')
+ [2m425[0m | [31;1m|[0m   
+ [2m426[0m | [31;1m|[0m             window.L2Dwidget.init({
+ [2m427[0m | [31;1m|[0m               pluginModelPath: petLink,
+ [2m428[0m | [31;1m|[0m               model: { jsonPath: petLink },
+ [2m429[0m | [31;1m|[0m               display: {
+ [2m430[0m | [31;1m|[0m                 position: petPosition,
+ [2m431[0m | [31;1m|[0m                 width: petWidth,
+ [2m432[0m | [31;1m|[0m                 height: petHeight,
+ [2m433[0m | [31;1m|[0m                 hOffset: petHOffset,
+ [2m434[0m | [31;1m|[0m                 vOffset: petVOffset,
+ [2m435[0m | [31;1m|[0m                 superSample: 2
+ [2m436[0m | [31;1m|[0m               },
+ [2m437[0m | [31;1m|[0m               mobile: { show: showOnMobile },
+ [2m438[0m | [31;1m|[0m               react: { opacityDefault: opacity, opacityOnHover: 1 },
+ [2m439[0m | [31;1m|[0m               dialog: { enable: true },
+ [2m440[0m | [31;1m|[0m               dev: { border: false },
+ [2m441[0m | [31;1m|[0m               draggable
+ [2m442[0m | [31;1m|[0m             })
+ [2m443[0m | [31;1m|[0m   
+ [2m444[0m | [31;1m|[0m             // 统一色调/质感
+ [2m445[0m | [31;1m|[0m             const canvas = document.getElementById('live2d')
+ [2m446[0m | [31;1m|[0m             if (canvas) {
+ [2m447[0m | [31;1m|[0m               if (cssFilter) {
+ [2m448[0m | [31;1m|[0m                 canvas.style.filter = cssFilter
+ [2m449[0m | [31;1m|[0m                 const root = document.getElementById('live2d-widget')
+ [2m450[0m | [31;1m|[0m                 root && (root.style.filter = cssFilter)
+ [2m451[0m | [31;1m|[0m               }
+ [2m452[0m | [31;1m|[0m               if (canvasStyle) {
+ [2m453[0m | [31;1m|[0m                 try {
+ [2m454[0m | [31;1m|[0m[31;1m-[0m[31;1m>[0m                 canvas.setAttribute('style', `${canvas.getAttribute('style') || ''}; ${canvasStyle}`)
+     : [31;1m`[0m[31;1m---[0m[33;1m                                              ^[0m
+     : [31;1m`[0m[31;1m---[0m[31;1m-[0m [31;1mThis is the expression part of an expression statement[0m
+ [2m455[0m |                   } catch (_) {}
+ [2m456[0m |                 }
+ [2m457[0m |               }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/Live2D.js
+./themes/simple/components/SideBar.js
+./themes/ lazy ^\.\/.*$ namespace object
+./themes/theme.js
+ ⨯ ./themes/qianqian/components/Header.js:13:1
+Module not found: Can't resolve './config'
+[0m [90m 11 |[39m [36mimport[39m { [33mLogo[39m } [36mfrom[39m [32m'./Logo'[39m[0m
+[0m [90m 12 |[39m [36mimport[39m { [33mMenuList[39m } [36mfrom[39m [32m'./MenuList'[39m[0m
+[0m[31m[1m>[22m[39m[90m 13 |[39m [36mimport[39m [33mCONFIG[39m [36mfrom[39m [32m'./config'[39m[0m
+[0m [90m    |[39m [31m[1m^[22m[39m[0m
+[0m [90m 14 |[39m[0m
+[0m [90m 15 |[39m [90m/**[39m[0m
+[0m [90m 16 |[39m [90m * 顶部导航栏[39m[0m
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./themes/qianqian/index.js
+./themes/theme.js
+./pages/_app.js
+ ⨯ ./themes/qianqian/components/Header.js:13:1
+Module not found: Can't resolve './config'
+[0m [90m 11 |[39m [36mimport[39m { [33mLogo[39m } [36mfrom[39m [32m'./Logo'[39m[0m
+[0m [90m 12 |[39m [36mimport[39m { [33mMenuList[39m } [36mfrom[39m [32m'./MenuList'[39m[0m
+[0m[31m[1m>[22m[39m[90m 13 |[39m [36mimport[39m [33mCONFIG[39m [36mfrom[39m [32m'./config'[39m[0m
+[0m [90m    |[39m [31m[1m^[22m[39m[0m
+[0m [90m 14 |[39m[0m
+[0m [90m 15 |[39m [90m/**[39m[0m
+[0m [90m 16 |[39m [90m * 顶部导航栏[39m[0m
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./themes/qianqian/index.js
+./themes/theme.js
+./pages/_app.js
+ ⨯ ./themes/qianqian/components/Header.js:13:1
+Module not found: Can't resolve './config'
+[0m [90m 11 |[39m [36mimport[39m { [33mLogo[39m } [36mfrom[39m [32m'./Logo'[39m[0m
+[0m [90m 12 |[39m [36mimport[39m { [33mMenuList[39m } [36mfrom[39m [32m'./MenuList'[39m[0m
+[0m[31m[1m>[22m[39m[90m 13 |[39m [36mimport[39m [33mCONFIG[39m [36mfrom[39m [32m'./config'[39m[0m
+[0m [90m    |[39m [31m[1m^[22m[39m[0m
+[0m [90m 14 |[39m[0m
+[0m [90m 15 |[39m [90m/**[39m[0m
+[0m [90m 16 |[39m [90m * 顶部导航栏[39m[0m
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./themes/qianqian/index.js
+./themes/theme.js
+./pages/_app.js
+ ⨯ ./themes/qianqian/components/Header.js:13:1
+Module not found: Can't resolve './config'
+[0m [90m 11 |[39m [36mimport[39m { [33mLogo[39m } [36mfrom[39m [32m'./Logo'[39m[0m
+[0m [90m 12 |[39m [36mimport[39m { [33mMenuList[39m } [36mfrom[39m [32m'./MenuList'[39m[0m
+[0m[31m[1m>[22m[39m[90m 13 |[39m [36mimport[39m [33mCONFIG[39m [36mfrom[39m [32m'./config'[39m[0m
+[0m [90m    |[39m [31m[1m^[22m[39m[0m
+[0m [90m 14 |[39m[0m
+[0m [90m 15 |[39m [90m/**[39m[0m
+[0m [90m 16 |[39m [90m * 顶部导航栏[39m[0m
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./themes/qianqian/index.js
+./themes/theme.js
+./pages/_app.js
+ HEAD / 500 in 3559ms
+ GET / 500 in 30ms
+[?25h

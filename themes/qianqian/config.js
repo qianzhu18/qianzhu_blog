@@ -1,5 +1,6 @@
 /**
- * 千浅主题配置 - 古雅今用，科技有温度
+ * 千浅主题 v2.0 配置 - 现代化设计升级
+ * 参考 dewx.top 风格 - 现代化杂志布局
  */
 const CONFIG = {
     PROXIO_WELCOME_COVER_ENABLE: true, //是否显示页面进入的欢迎文字
@@ -7,8 +8,8 @@ const CONFIG = {
 
     // 英雄区块导航
     PROXIO_HERO_ENABLE: true, // 开启英雄区
-    PROXIO_HERO_TITLE_1: '古雅今用，科技有温度', // 英雄区文字
-    PROXIO_HERO_TITLE_2: '在千浅雅境中，让思绪自由流淌', // 英雄区文字
+    PROXIO_HERO_TITLE_1: '欢迎来到我的数字世界', // 英雄区文字
+    PROXIO_HERO_TITLE_2: '探索技术、设计与创新的无限可能', // 英雄区文字
     // 英雄区两个按钮，如果TEXT留空则隐藏按钮
     PROXIO_HERO_BUTTON_1_TEXT: '开始体验', // 英雄区按钮
     PROXIO_HERO_BUTTON_1_URL:

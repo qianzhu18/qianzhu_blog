@@ -21,7 +21,7 @@ export const Hero = props => {
             {/* <!-- ====== Hero Section Start --> */}
             <div
                 id='home'
-                className='h-screen relative overflow-hidden bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900'>
+                className='h-screen relative overflow-hidden bg-gradient-to-br from-orange-600 via-pink-600 to-purple-700'>
                 {/* 横幅图片 */}
                 {!bannerIframe && bannerImage && (
                     <LazyImage
@@ -33,16 +33,16 @@ export const Hero = props => {
                   {/* 现代化渐变遮罩 */}
                   {overlayEnable && (
                     <div className='absolute inset-0 z-10 pointer-events-none'>
-                      <div className='absolute inset-0 bg-gradient-to-br from-blue-900/40 via-purple-900/50 to-indigo-900/40' />
-                      <div className='absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent' />
+                      <div className='absolute inset-0 bg-gradient-to-br from-orange-700/40 via-pink-700/50 to-purple-700/40' />
+                      <div className='absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent' />
                     </div>
                   )}
                   
                   {/* 动态装饰元素 */}
                   <div className='absolute inset-0 z-5 pointer-events-none'>
-                    <div className='absolute top-1/4 left-1/4 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-pulse' />
-                    <div className='absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl animate-pulse' style={{animationDelay: '1s'}} />
-                    <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-indigo-400/10 rounded-full blur-3xl animate-pulse' style={{animationDelay: '2s'}} />
+                    <div className='absolute top-1/4 left-1/4 w-64 h-64 bg-orange-400/15 rounded-full blur-3xl animate-pulse' />
+                    <div className='absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-400/15 rounded-full blur-3xl animate-pulse' style={{animationDelay: '1s'}} />
+                    <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-purple-400/15 rounded-full blur-3xl animate-pulse' style={{animationDelay: '2s'}} />
                   </div>
 
                   {/* 底部渐变保留，提升层次感 */}
