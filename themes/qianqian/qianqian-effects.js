@@ -19,7 +19,10 @@ export const initQianqianEffects = () => {
   // 4. 初始化古风装饰元素
   initAncientStyleDecorations()
   
-  // 5. 调整桌宠以匹配古风主题
+  // 5. 初始化返回顶部按钮
+  initBackToTopButton()
+  
+  // 6. 调整桌宠以匹配古风主题
   setTimeout(() => {
     adjustPetColorsForTheme()
   }, 1000) // 延迟确保Live2D已加载
@@ -137,6 +140,45 @@ const initPageMicroInteractions = () => {
     `
     document.head.appendChild(style)
   }
+}
+
+// 返回顶部按钮控制
+const initBackToTopButton = () => {
+  const cdTopButton = document.getElementById('cd-top-button')
+  
+  if (!cdTopButton) return
+  
+  // 监听滚动事件
+  const handleScroll = () => {
+    const scrollY = window.scrollY || document.documentElement.scrollTop
+    
+    if (scrollY > 300) {
+      // 显示按钮
+      cdTopButton.style.visibility = 'visible'
+      cdTopButton.style.opacity = '1'
+      cdTopButton.style.transform = 'translateY(0)'
+    } else {
+      // 隐藏按钮
+      cdTopButton.style.visibility = 'hidden'
+      cdTopButton.style.opacity = '0'
+      cdTopButton.style.transform = 'translateY(20px)'
+    }
+  }
+  
+  // 初始检查
+  handleScroll()
+  
+  // 添加滚动监听
+  window.addEventListener('scroll', handleScroll)
+  
+  // 点击事件（已在React中处理，这里作为备用）
+  cdTopButton.addEventListener('click', (e) => {
+    e.preventDefault()
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  })
 }
 
 // 古风装饰元素

@@ -32,22 +32,16 @@ module.exports = {
   // ANIMATE.css 动画
   ANIMATE_CSS_URL:
     process.env.NEXT_PUBLIC_ANIMATE_CSS_URL ||
-    'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css' // 动画CDN
+    'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css', // 动画CDN
 
-  ,
   // 滚动阻尼（Lenis）
-  LENIS_ENABLE: process.env.NEXT_PUBLIC_LENIS_ENABLE || true, // 是否启用丝滑滚动
-  LENIS_DURATION: process.env.NEXT_PUBLIC_LENIS_DURATION || 0.8, // 优化滚动速度，减少阻尼感
-  LENIS_SMOOTH_TOUCH: process.env.NEXT_PUBLIC_LENIS_SMOOTH_TOUCH || true, // 触屏设备也启用
-  LENIS_MOUSE_MULTIPLIER: process.env.NEXT_PUBLIC_LENIS_MOUSE_MULTIPLIER || 1.2, // 增加鼠标响应力度
-  LENIS_TOUCH_MULTIPLIER: process.env.NEXT_PUBLIC_LENIS_TOUCH_MULTIPLIER || 1.8 // 减少触摸阻尼
-  ,
+  LENIS_ENABLE: false, // 关闭滚动阻尼
+
   // 侧边装饰动画（不拦截事件）
   ORNAMENTS_ENABLE: process.env.NEXT_PUBLIC_ORNAMENTS_ENABLE || true, // 开关
   ORNAMENTS_SIDE: process.env.NEXT_PUBLIC_ORNAMENTS_SIDE || 'right', // left|right
   ORNAMENTS_COLOR: process.env.NEXT_PUBLIC_ORNAMENTS_COLOR || 'rgba(7,49,49,0.35)',
   ORNAMENTS_WIDTH: process.env.NEXT_PUBLIC_ORNAMENTS_WIDTH || 90, // px
-  ORNAMENTS_OPACITY: process.env.NEXT_PUBLIC_ORNAMENTS_OPACITY || 0.55
-  ,
+  ORNAMENTS_OPACITY: process.env.NEXT_PUBLIC_ORNAMENTS_OPACITY || 0.55,
   ORNAMENTS_STYLE: process.env.NEXT_PUBLIC_ORNAMENTS_STYLE || 'mist' // mist|wave
 }

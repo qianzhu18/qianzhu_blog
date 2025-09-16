@@ -592,6 +592,82 @@ const Style = () => {
             line-height: 1;
           }
         }
+
+        /* 趣味组件 - 返回顶部按钮样式 */
+        .cd-top {
+          display: inline-block;
+          height: 40px;
+          width: 40px;
+          position: fixed;
+          bottom: 40px;
+          right: 20px;
+          border-radius: 50%;
+          background-color: var(--qianqian-primary);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+          overflow: hidden;
+          text-indent: 100%;
+          white-space: nowrap;
+          transition: all 0.3s ease;
+          z-index: 1000;
+        }
+
+        .cd-top::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 0;
+          height: 0;
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+          border-bottom: 12px solid white;
+        }
+
+        .cd-top:hover {
+          background-color: var(--qianqian-accent);
+          transform: scale(1.1);
+        }
+
+        /* cd-top 可见状态 */
+        .cd-is-visible {
+          visibility: visible;
+          opacity: 1;
+        }
+
+        /* cd-top 淡出效果 */
+        .cd-fade-out {
+          opacity: 0.8;
+        }
+
+        /* faa-float 浮动动画 */
+        .faa-float {
+          animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+
+        /* animated 动画类 */
+        .animated {
+          animation-duration: 1s;
+          animation-fill-mode: both;
+        }
+
+        /* Live2D画布样式 */
+        #live2d {
+          transition: opacity 0.3s ease;
+        }
+
+        #live2d:hover {
+          opacity: 0.8;
+        }
   `}</style>
 }
 

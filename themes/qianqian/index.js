@@ -17,7 +17,7 @@ import { Features } from './components/Features'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
-import { Pricing } from './components/Pricing'
+// import { Pricing } from './components/Pricing'
 import { Team } from './components/Team'
 import { Testimonials } from './components/Testimonials'
 import CONFIG from './config'
@@ -43,6 +43,7 @@ import Lenis from '@/components/Lenis'
 import Announcement from './components/Announcement'
 import CursorDot from '@/components/CursorDot'
 import LoadingCover from './components/LoadingCover'
+import Live2D from '@/components/Live2D'
 import Script from 'next/script'
 
 /**
@@ -79,10 +80,15 @@ const LayoutBase = props => {
             {/* 悬浮按钮 */}
             <BackToTopButton />
 
+            {/* 趣味组件 - 返回顶部按钮 */}
+            <a id="cd-top-button" className="cd-top faa-float animated cd-is-visible cd-fade-out" style={{ top: '-172px', position: 'fixed', right: '20px', zIndex: 1000, cursor: 'pointer', visibility: 'hidden', opacity: '0' }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}></a>
+
             {/* 鼠标阻尼动画 */}
             <Lenis />
             {/* 鼠标跟随动画 */}
             <CursorDot />
+            {/* 数字桌宠组件 */}
+            <Live2D />
             {/* 千浅主题特效系统 */}
             <Script 
                 src="/themes/qianqian/qianqian-effects.js" 
@@ -288,7 +294,7 @@ const LayoutArchive = props => (
  * @param {*} props
  * @returns
  */
-const Layout404 = props => {
+const Layout404 = () => {
     return (
         <>
             {/* <!-- ====== 404 Section Start --> */}
@@ -492,7 +498,7 @@ const LayoutTagIndex = props => {
  * @param {*} props
  * @returns
  */
-const LayoutSignIn = props => {
+const LayoutSignIn = () => {
     const enableClerk = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
     const title = siteConfig('PROXIO_SIGNIN', '登录')
     const description = siteConfig(
@@ -522,7 +528,7 @@ const LayoutSignIn = props => {
  * @param {*} props
  * @returns
  */
-const LayoutSignUp = props => {
+const LayoutSignUp = () => {
     const enableClerk = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 
     const title = siteConfig('PROXIO_SIGNIN', '注册')
