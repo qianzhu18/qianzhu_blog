@@ -3,6 +3,7 @@ import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { isMobile, loadExternalResource } from '@/lib/utils'
 import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 /**
  * 创建数字桌宠控制面板
@@ -280,7 +281,6 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
 function setupPetControlEvents(petPosition, petHOffset, petVOffset) {
   const panel = document.getElementById('pet-control-panel')
   const content = panel.querySelector('.pet-panel-content')
-  const toggle = panel.querySelector('.pet-panel-toggle')
   const toggleIcon = panel.querySelector('.toggle-icon')
   
   // 面板展开/收起
@@ -310,7 +310,7 @@ function setupPetControlEvents(petPosition, petHOffset, petVOffset) {
     sizeValue.textContent = Math.round(value * 100) + '%'
     const petWidget = document.getElementById('live2d-widget')
     if (petWidget) {
-      petWidget.style.transform = `scale(${value})`
+      petWidget.style.transform = 'scale(' + value + ')'
       petWidget.style.transformOrigin = 'bottom ' + petPosition
     }
   }
@@ -390,6 +390,9 @@ export default function Live2D() {
   // 推荐古风少女模型（默认 koharu，可在 Notion 中切换）
   const petLink = siteConfig('WIDGET_PET_LINK') || 'https://cdn.jsdelivr.net/npm/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json'
   const petSwitchTheme = siteConfig('WIDGET_PET_SWITCH_THEME')
+  const petPanel = JSON.parse(siteConfig('WIDGET_PET_PANEL', true))
+  const petPaths = siteConfig('WIDGET_PET_PATHS', '')
+  const inkMode = JSON.parse(siteConfig('WIDGET_PET_INK_MODE', true))
   const petWidth = Number(siteConfig('WIDGET_PET_WIDTH', 280))
   const petHeight = Number(siteConfig('WIDGET_PET_HEIGHT', 260))
   const petPosition = siteConfig('WIDGET_PET_POSITION', 'right')
@@ -408,9 +411,20 @@ export default function Live2D() {
   const hoverScale = Number(siteConfig('WIDGET_PET_HOVER_SCALE', 1.08))
   // 动作反馈参数：靠近抬眼、远离低头（通过模拟姿态偏移）
   const lookAmplitude = Number(siteConfig('WIDGET_PET_LOOK_AMPLITUDE', 8)) // 0~15
+  const router = useRouter()
+
+  // 路由匹配：若配置了 WIDGET_PET_PATHS，仅在匹配的路径前缀下显示
+  const pathPrefixes = (petPaths || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean)
+  const onAllowedPath = pathPrefixes.length === 0
+    ? true
+    : (router?.asPath ? pathPrefixes.some(p => router.asPath.startsWith(p)) : false)
 
   useEffect(() => {
     if (!showPet) return
+    if (!onAllowedPath) return
     if (!showOnMobile && isMobile()) return
 
         loadExternalResource(
@@ -451,7 +465,7 @@ export default function Live2D() {
             }
             if (canvasStyle) {
               try {
-                canvas.setAttribute('style', `${canvas.getAttribute('style') || ''}; ${canvasStyle}`)
+                canvas.setAttribute('style', (canvas.getAttribute('style') || '') + '; ' + canvasStyle)
               } catch (_) {}
             }
           }
@@ -473,12 +487,12 @@ export default function Live2D() {
             })
           }
 
-          // 数字桌宠控制面板
-          if (true) { // 总是显示控制面板
+          // 数字桌宠控制面板（可配置开启/关闭）
+          if (petPanel) {
             createPetControlPanel(petPosition, petHOffset, petVOffset)
           }
 
-          // 最小化按钮 - 古风设计
+          // 最小化按钮 - 古风设计（墨色/默认）
           if (minimizeBtn) {
             const btn = document.createElement('button')
             btn.innerText = '—'
@@ -486,35 +500,41 @@ export default function Live2D() {
             btn.setAttribute('title', '隐藏桌宠')
             btn.style.position = 'fixed'
             btn.style.zIndex = 10001
-            btn.style[petPosition] = `${petHOffset + 4}px`
-            btn.style.bottom = `${petVOffset + petHeight + 6}px`
+            btn.style[petPosition] = (petHOffset + 4) + 'px'
+            btn.style.bottom = (petVOffset + petHeight + 6) + 'px'
             btn.style.width = '28px'
             btn.style.height = '28px'
             btn.style.lineHeight = '28px'
             btn.style.textAlign = 'center'
-            btn.style.border = '1px solid rgba(74, 144, 226, 0.3)'
+            const accent = inkMode ? '#444' : '#4A90E2'
+            const neutralBorder = inkMode ? 'rgba(0,0,0,0.25)' : 'rgba(74, 144, 226, 0.3)'
+            const neutralShadow = inkMode ? 'rgba(0,0,0,0.18)' : 'rgba(74, 144, 226, 0.15)'
+            const neutralShadowHover = inkMode ? 'rgba(0,0,0,0.25)' : 'rgba(74, 144, 226, 0.25)'
+            btn.style.border = `1px solid ${neutralBorder}`
             btn.style.borderRadius = '14px' // 更圆润
-            btn.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,250,252,0.85))'
+            btn.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.92), rgba(248,250,252,0.88))'
             btn.style.backdropFilter = 'saturate(180%) blur(12px)'
-            btn.style.boxShadow = '0 4px 16px rgba(74, 144, 226, 0.15), inset 0 1px 0 rgba(255,255,255,0.7)'
+            btn.style.boxShadow = `0 4px 16px ${neutralShadow}, inset 0 1px 0 rgba(255,255,255,0.7)`
             btn.style.cursor = 'pointer'
             btn.style.fontSize = '14px'
-            btn.style.color = '#4A90E2'
+            btn.style.color = accent
             btn.style.fontWeight = '500'
             btn.style.transition = 'all 0.2s ease'
             btn.style.userSelect = 'none'
             
             btn.onmouseenter = () => {
-              btn.style.borderColor = '#4A90E2'
-              btn.style.background = 'linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(255,255,255,0.9))'
+              btn.style.borderColor = accent
+              btn.style.background = inkMode
+                ? 'linear-gradient(135deg, rgba(0,0,0,0.04), rgba(255,255,255,0.95))'
+                : 'linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(255,255,255,0.9))'
               btn.style.transform = 'translateY(-1px) scale(1.05)'
-              btn.style.boxShadow = '0 6px 20px rgba(74, 144, 226, 0.25), inset 0 1px 0 rgba(255,255,255,0.8)'
+              btn.style.boxShadow = `0 6px 20px ${neutralShadowHover}, inset 0 1px 0 rgba(255,255,255,0.8)`
             }
             btn.onmouseleave = () => {
-              btn.style.borderColor = 'rgba(74, 144, 226, 0.3)'
-              btn.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,250,252,0.85))'
+              btn.style.borderColor = neutralBorder
+              btn.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.92), rgba(248,250,252,0.88))'
               btn.style.transform = 'translateY(0px) scale(1)'
-              btn.style.boxShadow = '0 4px 16px rgba(74, 144, 226, 0.15), inset 0 1px 0 rgba(255,255,255,0.7)'
+              btn.style.boxShadow = `0 4px 16px ${neutralShadow}, inset 0 1px 0 rgba(255,255,255,0.7)`
             }
             btn.onclick = (e) => {
               e.preventDefault()
@@ -599,15 +619,14 @@ export default function Live2D() {
             }
             
             // 拖拽事件处理
-            function onMouseDown(e) {
+            function onMouseDown() {
               isDragging = true
               dragStartTime = Date.now()
               root.style.transition = 'none' // 拖拽时移除过渡效果
               document.body.style.userSelect = 'none' // 防止拖拽时选中文本
             }
             
-            function onMouseUp(e) {
-              const dragDuration = Date.now() - dragStartTime
+            function onMouseUp() {
               isDragging = false
               document.body.style.userSelect = ''
               
@@ -632,8 +651,8 @@ export default function Live2D() {
         }
       }
     })
-  }, [theme])
+  }, [theme, onAllowedPath])
 
-  if (!showPet) return null
+  if (!showPet || !onAllowedPath) return null
   return null
 }

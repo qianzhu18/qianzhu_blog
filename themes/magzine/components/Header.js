@@ -121,20 +121,18 @@ export default function Header(props) {
   return (
     <div
       id='top-navbar-wrapper'
-      className={
-        'sticky top-0 w-full z-40 shadow bg-white dark:bg-hexo-black-gray '
-      }>
+      className='sticky top-0 w-full z-40 magzine-nav'>
       {/* 导航栏菜单内容 */}
       <div
         id='top-navbar'
-        className='px-4 lg:px-0 flex w-full mx-auto max-w-screen-3xl h-20 transition-all duration-200 items-center justify-between'>
+        className='px-4 lg:px-0 flex w-full mx-auto max-w-screen-3xl h-20 transition-all duration-200 items-center justify-between magzine-nav-inner'>
         {/* 搜索栏 */}
         {showSearchInput && (
           <input
             autoFocus
             id='simple-search'
             onKeyUp={onKeyUp}
-            className='outline-none dark:bg-hexo-black-gray dark:text flex flex-row text-base relative w-full border-b py-2'
+            className='outline-none bg-transparent text-slate-100 flex flex-row text-base relative w-full border-b border-slate-500/60 py-2 focus:border-cyan-300 transition-colors duration-200'
             aria-label='Submit search'
             type='search'
             name='s'
@@ -150,7 +148,7 @@ export default function Header(props) {
             <div className='flex gap-x-2 lg:gap-x-4 h-full'>
               <LogoBar {...props} className={'text-sm md:text-md lg:text-lg'} />
               {/* 桌面端顶部菜单 */}
-              <ul className='hidden md:flex items-center gap-x-4 py-1 text-sm md:text-md'>
+              <ul className='hidden md:flex items-center gap-x-4 py-1 text-sm md:text-md magzine-menu'>
                 {links &&
                   links?.map((link, index) => (
                     <MenuItemDrop key={index} link={link} />
@@ -165,7 +163,7 @@ export default function Header(props) {
           {/* 搜索按钮 */}
           <div
             onClick={toggleShowSearchInput}
-            className='flex text-center items-center cursor-pointer p-2.5 hover:bg-black hover:bg-opacity-10 rounded-full'>
+            className='flex text-center items-center cursor-pointer magzine-icon-button'>
             <i
               className={
                 showSearchInput
@@ -176,12 +174,12 @@ export default function Header(props) {
           </div>
 
           {/* 深色模式切换 */}
-          <div className='p-2.5 hover:bg-black hover:bg-opacity-10 rounded-full'>
+          <div className='magzine-icon-button'>
             <DarkModeButton />
           </div>
 
           {/* 移动端显示开关 */}
-          <div className='mr-1 flex md:hidden justify-end items-center text-lg space-x-4 font-serif dark:text-gray-200'>
+          <div className='mr-1 flex md:hidden justify-end items-center text-lg space-x-4 font-serif text-slate-100'>
             <div onClick={toggleMenuOpen} className='cursor-pointer p-2'>
               {isOpen ? (
                 <i className='fas fa-times' />
@@ -196,7 +194,7 @@ export default function Header(props) {
             <>
               <SignedOut>
                 <SignInButton mode='modal'>
-                  <button className='bg-gray-800 hover:bg-gray-900 text-white rounded-lg px-3 py-2'>
+                  <button className='magzine-button magzine-button--primary px-4 py-2'>
                     {locale.COMMON.SIGN_IN}
                   </button>
                 </SignInButton>
@@ -216,7 +214,7 @@ export default function Header(props) {
         collapseRef={collapseRef}
         isOpen={isOpen}
         className='md:hidden'>
-        <div className='bg-white dark:bg-hexo-black-gray pt-1 py-2'>
+        <div className='pt-1 py-3 px-3'>
           <MenuBarMobile
             {...props}
             onHeightChange={param =>

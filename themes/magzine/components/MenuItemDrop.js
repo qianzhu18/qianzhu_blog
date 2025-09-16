@@ -4,8 +4,6 @@ import { useState } from 'react'
 
 export const MenuItemDrop = ({ link }) => {
   const [show, changeShow] = useState(false)
-  //   const show = true
-  //   const changeShow = () => {}
   const router = useRouter()
 
   if (!link || !link.show) {
@@ -16,51 +14,48 @@ export const MenuItemDrop = ({ link }) => {
 
   return (
     <li
-      className='cursor-pointer list-none items-center h-full'
+      className='cursor-pointer list-none items-center h-full magzine-menu-item-wrapper'
       onMouseOver={() => changeShow(true)}
       onMouseOut={() => changeShow(false)}>
       {hasSubMenu && (
         <div
-          className={
-            'px-2 h-full whitespace-nowrap duration-300 justify-between dark:text-gray-300 cursor-pointer flex flex-nowrap items-center ' +
-            (selected
-              ? 'bg-gray-600 text-white hover:text-white'
-              : 'hover:text-gray-600')
-          }>
+          className={`magzine-menu-item ${
+            selected ? 'magzine-menu-item--active' : ''
+          }`}>
           <div className='items-center flex'>
             {link?.icon && <i className={`${link?.icon} pr-2`} />} {link?.name}
             <i
-              className={`px-1 fas fa-chevron-down duration-500 transition-all ${show ? ' rotate-180' : ''}`}></i>
+              className={`px-1 fas fa-chevron-down duration-500 transition-all ${
+                show ? 'rotate-180' : ''
+              }`}></i>
           </div>
         </div>
       )}
 
       {!hasSubMenu && (
         <div
-          className={
-            'px-3 gap-x-1 h-full whitespace-nowrap duration-300 text-md justify-between dark:text-gray-300 cursor-pointer flex flex-nowrap items-center ' +
-            (selected
-              ? 'bg-gray-600 text-white hover:text-white'
-              : 'hover:text-gray-600')
-          }>
+          className={`magzine-menu-item ${
+            selected ? 'magzine-menu-item--active' : ''
+          }`}>
           <Link href={link?.href} target={link?.target}>
             {link?.icon && <i className={link?.icon} />} {link?.name}
           </Link>
         </div>
       )}
 
-      {/* 子菜单 */}
       {hasSubMenu && (
         <ul
-          className={`${show ? 'visible opacity-100 top-14 pointer-events-auto' : 'invisible opacity-0 top-20 pointer-events-none'} p-1 absolute border bg-white dark:bg-black dark:border-gray-800 transition-all duration-150 z-20 block rounded-lg drop-shadow-lg`}>
+          className={`${
+            show
+              ? 'visible opacity-100 top-14 pointer-events-auto'
+              : 'invisible opacity-0 top-20 pointer-events-none'
+          } p-1 absolute transition-all duration-150 z-20 block rounded-lg magzine-submenu`}>
           {link?.subMenus?.map(sLink => {
             return (
-              <li
-                key={sLink.id}
-                className='py-3 pr-6 hover:bg-gray-100 dark:hover:bg-gray-900 dark:text-gray-200 tracking-widest transition-color duration-200 dark:border-gray-800 '>
+              <li key={sLink.id} className='magzine-submenu-item'>
                 <Link href={sLink.href} target={link?.target}>
-                  <span className='text-sm ml-2'>
-                    {link?.icon && <i className={`${sLink?.icon} pr-2`}> </i>}
+                  <span className='text-sm ml-2 flex items-center gap-2'>
+                    {sLink?.icon && <i className={`${sLink?.icon}`} />}
                     {sLink.title}
                   </span>
                 </Link>

@@ -3,8 +3,6 @@ import Link from 'next/link'
 
 /**
  * 分类
- * @param {*} param0
- * @returns
  */
 const CategoryGroup = ({ currentCategory, categoryOptions }) => {
   const { locale } = useGlobal()
@@ -12,9 +10,11 @@ const CategoryGroup = ({ currentCategory, categoryOptions }) => {
     return <></>
   }
   return (
-    <div id='category-list' className='pt-4'>
-      <div className='text-xl font-bold mb-2'>{locale.COMMON.CATEGORY}</div>
-      <div className=''>
+    <div id='category-list' className='pt-4 magzine-side-card magzine-reveal'>
+      <div className='text-xl font-bold mb-2 text-slate-100'>
+        {locale.COMMON.CATEGORY}
+      </div>
+      <div className='flex flex-wrap gap-2'>
         {categoryOptions?.map((category, index) => {
           const selected = currentCategory === category.name
           return (
@@ -22,13 +22,8 @@ const CategoryGroup = ({ currentCategory, categoryOptions }) => {
               key={index}
               href={`/category/${category.name}`}
               passHref
-              className={
-                (selected
-                  ? 'bg-gray-600 text-white '
-                  : 'dark:text-gray-400 text-gray-900 ') +
-                'text-lg hover:underline flex text-md items-center duration-300 cursor-pointer py-1 whitespace-nowrap'
-              }>
-              <span>
+              className={`magzine-pill ${selected ? 'magzine-pill--active' : ''}`}>
+              <span className='text-sm'>
                 {category.name} {category?.count && `(${category?.count})`}
               </span>
             </Link>

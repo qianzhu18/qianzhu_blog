@@ -53,6 +53,48 @@ const LayoutBase = props => {
   const { children } = props
   const [tocVisible, changeTocVisible] = useState(false)
   const searchModal = useRef(null)
+  const progressRef = useRef(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const doc = document.documentElement
+      const scrollTop = doc.scrollTop || document.body.scrollTop
+      const scrollHeight = doc.scrollHeight - doc.clientHeight
+      const progress = scrollHeight > 0 ? scrollTop / scrollHeight : 0
+      if (progressRef.current) {
+        progressRef.current.style.transform = `scaleX(${progress})`
+      }
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    if (!isBrowser) {
+      return () => {}
+    }
+    const elements = document.querySelectorAll('.magzine-reveal')
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+          }
+        })
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -10% 0px'
+      }
+    )
+
+    elements.forEach(el => observer.observe(el))
+
+    return () => observer.disconnect()
+  }, [router?.asPath])
 
   return (
     <ThemeGlobalMagzine.Provider
@@ -62,7 +104,10 @@ const LayoutBase = props => {
 
       <div
         id='theme-magzine'
-        className={`${siteConfig('FONT_STYLE')} bg-white dark:bg-hexo-black-gray w-full h-full min-h-screen flex flex-col justify-between dark:text-gray-300 scroll-smooth`}>
+        className={`${siteConfig('FONT_STYLE')} theme-magzine-app text-slate-100 w-full h-full min-h-screen flex flex-col justify-between scroll-smooth relative`}>
+        <div className='magzine-progress-container'>
+          <span id='magzine-scroll-progress' ref={progressRef} className='magzine-progress-bar'></span>
+        </div>
         <main
           id='wrapper'
           className='relative flex flex-col justify-between w-full h-full mx-auto'>
@@ -75,7 +120,7 @@ const LayoutBase = props => {
             <div
               id='main'
               role='main'
-              className='flex-grow' // 这个类保证 main 区域填满剩余的空白
+              className='flex-grow'
             >
               {children}
             </div>
