@@ -5,9 +5,9 @@ const BLOG = {
   NOTION_PAGE_ID:
     process.env.NOTION_PAGE_ID ||
     '02ab3b8678004aa69e9e415905ef32a5,en:7c1d570661754c8fbc568e00a01fd70e',
-  THEME: process.env.NEXT_PUBLIC_THEME || 'magzine', // 默认使用 Magzine 杂志主题
+  THEME: process.env.NEXT_PUBLIC_THEME || 'qianqian', // 默认使用千浅主题
   // 强制主题（最高优先级）：当设置后将忽略 URL ?theme 和 Notion 中的 THEME
-  FORCE_THEME: process.env.NEXT_PUBLIC_FORCE_THEME || 'magzine',
+  FORCE_THEME: process.env.NEXT_PUBLIC_FORCE_THEME || 'qianqian',
   LANG: process.env.NEXT_PUBLIC_LANG || 'zh-CN', // e.g 'zh-CN','en-US'  see /lib/lang.js for more.
   SINCE: process.env.NEXT_PUBLIC_SINCE || 2021, // e.g if leave this empty, current year will be used.
 

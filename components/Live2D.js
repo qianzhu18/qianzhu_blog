@@ -5,6 +5,11 @@ import { isMobile, loadExternalResource } from '@/lib/utils'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
+const dispatchLive2dEvent = (name, detail = {}) => {
+  if (typeof document === 'undefined') return
+  document.dispatchEvent(new CustomEvent(name, { detail }))
+}
+
 /**
  * 创建数字桌宠控制面板
  */
@@ -270,6 +275,8 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
 
   // 绑定事件
   setupPetControlEvents(petPosition, petHOffset, petVOffset)
+
+  return panel
 }
 
 /**
@@ -280,14 +287,19 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
  */
 function setupPetControlEvents(petPosition, petHOffset, petVOffset) {
   const panel = document.getElementById('pet-control-panel')
+  if (!panel) return
   const content = panel.querySelector('.pet-panel-content')
+  if (!content) return
   const toggleIcon = panel.querySelector('.toggle-icon')
+  const emitPanelState = open => dispatchLive2dEvent('live2d:panel-toggle', { open })
+  const emitVisibility = visible => dispatchLive2dEvent('live2d:visibility-change', { visible })
   
   // 面板展开/收起
   panel.querySelector('.pet-panel-header').onclick = () => {
     const isCollapsed = content.classList.contains('collapsed')
     content.classList.toggle('collapsed')
     toggleIcon.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(-90deg)'
+    emitPanelState(isCollapsed)
   }
   
   // 透明度控制
@@ -342,10 +354,12 @@ function setupPetControlEvents(petPosition, petHOffset, petVOffset) {
     const petWidget = document.getElementById('live2d-widget')
     const hideText = panel.querySelector('.hide-text')
     if (petWidget) {
-      const isHidden = petWidget.style.display === 'none'
-      petWidget.style.display = isHidden ? 'block' : 'none'
-      hideText.textContent = isHidden ? '隐藏桌宠' : '显示桌宠'
-    }
+      const wasHidden = petWidget.style.display === 'none'
+      petWidget.style.display = wasHidden ? 'block' : 'none'
+      const visibleNow = petWidget.style.display !== 'none'
+      hideText.textContent = visibleNow ? '隐藏桌宠' : '显示桌宠'
+      emitVisibility(visibleNow)
+  }
   }
   
   // 预设模式
@@ -487,14 +501,15 @@ export default function Live2D() {
             })
           }
 
-          // 数字桌宠控制面板（可配置开启/关闭）
+          let panelInstance = null
           if (petPanel) {
-            createPetControlPanel(petPosition, petHOffset, petVOffset)
+            panelInstance = createPetControlPanel(petPosition, petHOffset, petVOffset)
           }
 
           // 最小化按钮 - 古风设计（墨色/默认）
           if (minimizeBtn) {
             const btn = document.createElement('button')
+            btn.id = 'live2d-minimize-btn'
             btn.innerText = '—'
             btn.setAttribute('aria-label', 'minimize pet')
             btn.setAttribute('title', '隐藏桌宠')
@@ -544,7 +559,11 @@ export default function Live2D() {
               root.style.display = isHidden ? 'block' : 'none'
               btn.innerText = isHidden ? '—' : '+'
               btn.setAttribute('title', isHidden ? '隐藏桌宠' : '显示桌宠')
-              
+              const visibleNow = root.style.display !== 'none'
+              const hideTextRef = document.querySelector('#pet-hide-toggle .hide-text')
+              if (hideTextRef) hideTextRef.textContent = visibleNow ? '隐藏桌宠' : '显示桌宠'
+              dispatchLive2dEvent('live2d:visibility-change', { visible: visibleNow })
+
               // 添加点击动画
               btn.style.transform = 'translateY(1px) scale(0.95)'
               setTimeout(() => {
@@ -553,6 +572,95 @@ export default function Live2D() {
             }
             document.body.appendChild(btn)
           }
+
+          const setupPetApi = () => {
+            if (typeof window === 'undefined') return
+            const getRoot = () => document.getElementById('live2d-widget')
+            if (!getRoot()) {
+              requestAnimationFrame(setupPetApi)
+              return
+            }
+
+            const getHideText = () => document.querySelector('#pet-hide-toggle .hide-text')
+            const getMinimizeButton = () => document.getElementById('live2d-minimize-btn')
+            const ensureUiState = visible => {
+              const hideText = getHideText()
+              if (hideText) {
+                hideText.textContent = visible ? '隐藏桌宠' : '显示桌宠'
+              }
+              const minBtnRef = getMinimizeButton()
+              if (minBtnRef) {
+                minBtnRef.innerText = visible ? '—' : '+'
+                minBtnRef.setAttribute('title', visible ? '隐藏桌宠' : '显示桌宠')
+              }
+            }
+
+            const petApi = {
+              isReady: () => true,
+              isVisible: () => {
+                const root = getRoot()
+                if (!root) return false
+                return root.style.display !== 'none'
+              },
+              showPet: () => {
+                const root = getRoot()
+                if (!root) return
+                root.style.display = 'block'
+                ensureUiState(true)
+                dispatchLive2dEvent('live2d:visibility-change', { visible: true })
+              },
+              hidePet: () => {
+                const root = getRoot()
+                if (!root) return
+                root.style.display = 'none'
+                ensureUiState(false)
+                dispatchLive2dEvent('live2d:visibility-change', { visible: false })
+              },
+              togglePet: () => {
+                if (petApi.isVisible()) {
+                  petApi.hidePet()
+                } else {
+                  petApi.showPet()
+                }
+              },
+              togglePanel: () => {
+                if (!panelInstance) return
+                const header = document.querySelector('#pet-control-panel .pet-panel-header')
+                header?.click()
+              },
+              isPanelOpen: () => {
+                if (!panelInstance) return false
+                const content = document.querySelector('#pet-control-panel .pet-panel-content')
+                if (!content) return false
+                return !content.classList.contains('collapsed')
+              },
+              playGreeting: () => {
+                const root = getRoot()
+                if (!root) return
+                root.classList.remove('pet-greeting')
+                void root.offsetWidth
+                root.classList.add('pet-greeting')
+                setTimeout(() => root.classList.remove('pet-greeting'), 1200)
+              },
+              __sync: () => {
+                const visible = petApi.isVisible()
+                ensureUiState(visible)
+                dispatchLive2dEvent('live2d:visibility-change', { visible })
+                if (panelInstance) {
+                  dispatchLive2dEvent('live2d:panel-toggle', { open: petApi.isPanelOpen() })
+                }
+              }
+            }
+
+            window.__live2dPetAPI = petApi
+            petApi.__sync()
+            dispatchLive2dEvent('live2d:ready', {
+              visible: petApi.isVisible(),
+              panelOpen: petApi.isPanelOpen()
+            })
+          }
+
+          setupPetApi()
 
           // 点击切主题（可选）
           if (petSwitchTheme) {

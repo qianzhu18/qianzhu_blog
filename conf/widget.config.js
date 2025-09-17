@@ -17,21 +17,21 @@ module.exports = {
   // 悬浮挂件
   WIDGET_PET: true, // 是否显示宠物挂件
   WIDGET_PET_LINK:
-    'https://cdn.jsdelivr.net/npm/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json', // 默认改为可爱女孩，更贴近古风气质；可改为任意模型 jsonPath
+    'https://cdn.jsdelivr.net/npm/live2d-widget-model-izumi@1.0.5/assets/izumi.model.json', // 默认改为可爱女孩，更贴近古风气质；可改为任意模型 jsonPath
   WIDGET_PET_SWITCH_THEME:
     process.env.NEXT_PUBLIC_WIDGET_PET_SWITCH_THEME || false, // 点击宠物挂件切换博客主题
   // 是否显示桌宠控制面板（对齐 dewx.top 建议关闭）
-  WIDGET_PET_PANEL: process.env.NEXT_PUBLIC_WIDGET_PET_PANEL || false,
+  WIDGET_PET_PANEL: process.env.NEXT_PUBLIC_WIDGET_PET_PANEL || true,
   // 水墨风模式：统一黑白灰 + 低饱和
   WIDGET_PET_INK_MODE: process.env.NEXT_PUBLIC_WIDGET_PET_INK_MODE || false,
   // 仅在指定路径前缀显示桌宠（以逗号分隔多个前缀，如：/podcast,/category/播客）空字符串表示全站显示
   WIDGET_PET_PATHS: process.env.NEXT_PUBLIC_WIDGET_PET_PATHS || '',
   // 视觉/行为增强参数
-  WIDGET_PET_WIDTH: process.env.NEXT_PUBLIC_WIDGET_PET_WIDTH || 280,
-  WIDGET_PET_HEIGHT: process.env.NEXT_PUBLIC_WIDGET_PET_HEIGHT || 260,
+  WIDGET_PET_WIDTH: process.env.NEXT_PUBLIC_WIDGET_PET_WIDTH || 320,
+  WIDGET_PET_HEIGHT: process.env.NEXT_PUBLIC_WIDGET_PET_HEIGHT || 360,
   WIDGET_PET_POSITION: process.env.NEXT_PUBLIC_WIDGET_PET_POSITION || 'right', // left|right
-  WIDGET_PET_H_OFFSET: process.env.NEXT_PUBLIC_WIDGET_PET_H_OFFSET || 32,
-  WIDGET_PET_V_OFFSET: process.env.NEXT_PUBLIC_WIDGET_PET_V_OFFSET || 20,
+  WIDGET_PET_H_OFFSET: process.env.NEXT_PUBLIC_WIDGET_PET_H_OFFSET || 28,
+  WIDGET_PET_V_OFFSET: process.env.NEXT_PUBLIC_WIDGET_PET_V_OFFSET || 24,
   WIDGET_PET_DRAGGABLE: process.env.NEXT_PUBLIC_WIDGET_PET_DRAGGABLE || true,
   WIDGET_PET_MOBILE: process.env.NEXT_PUBLIC_WIDGET_PET_MOBILE || false,
   WIDGET_PET_OPACITY: process.env.NEXT_PUBLIC_WIDGET_PET_OPACITY || 0.95,
@@ -39,7 +39,7 @@ module.exports = {
   WIDGET_PET_IDLE_FADE: process.env.NEXT_PUBLIC_WIDGET_PET_IDLE_FADE || true,
   WIDGET_PET_MINIMIZE_BTN: process.env.NEXT_PUBLIC_WIDGET_PET_MINIMIZE_BTN || true,
   // 水墨风默认滤镜（可被 env 覆盖）
-  WIDGET_PET_CSS_FILTER: process.env.NEXT_PUBLIC_WIDGET_PET_CSS_FILTER || 'drop-shadow(0 16px 32px rgba(61, 174, 233, 0.25)) saturate(1.1)',
+  WIDGET_PET_CSS_FILTER: process.env.NEXT_PUBLIC_WIDGET_PET_CSS_FILTER || 'drop-shadow(0 18px 36px rgba(255, 156, 203, 0.45)) saturate(1.18)',
   // 避免覆盖上面的滤镜，这里默认不再设置 filter，如需阴影请在 Notion 中自定义
   WIDGET_PET_CANVAS_STYLE: process.env.NEXT_PUBLIC_WIDGET_PET_CANVAS_STYLE || '',
   // 交互灵敏度（更克制）

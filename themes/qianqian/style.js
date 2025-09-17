@@ -635,6 +635,138 @@ const Style = () => {
           opacity: 1;
         }
 
+        /* 桌宠浮动控制面板 */
+        .pet-floating-dock {
+          position: fixed;
+          right: 24px;
+          bottom: 120px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 10px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.85);
+          box-shadow: 0 18px 40px -18px rgba(74, 144, 226, 0.45);
+          backdrop-filter: blur(18px);
+          border: 1px solid rgba(74, 144, 226, 0.25);
+          z-index: 1200;
+          transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .dark .pet-floating-dock {
+          background: rgba(15, 23, 42, 0.8);
+          border-color: rgba(148, 163, 184, 0.35);
+          box-shadow: 0 12px 32px -16px rgba(0, 0, 0, 0.6);
+        }
+
+        .pet-floating-dock:hover {
+          transform: translateY(-4px);
+        }
+
+        .pet-floating-dock .pet-dock-label {
+          font-size: 12px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: rgba(15, 23, 42, 0.65);
+        }
+
+        .dark .pet-floating-dock .pet-dock-label {
+          color: rgba(226, 232, 240, 0.75);
+        }
+
+        .pet-floating-dock .pet-dock-btn {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          border: none;
+          background: linear-gradient(135deg, rgba(74, 144, 226, 0.18), rgba(254, 150, 0, 0.15));
+          color: #1e293b;
+          font-weight: 600;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+        .pet-floating-dock .pet-dock-btn:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 24px -12px rgba(74, 144, 226, 0.5);
+          background: linear-gradient(135deg, rgba(74, 144, 226, 0.28), rgba(254, 150, 0, 0.28));
+        }
+
+        .pet-floating-dock .pet-dock-btn:disabled {
+          cursor: not-allowed;
+          opacity: 0.55;
+          background: rgba(148, 163, 184, 0.2);
+        }
+
+        .pet-floating-dock .pet-dock-btn.secondary {
+          background: rgba(255, 255, 255, 0.65);
+          border: 1px solid rgba(15, 23, 42, 0.1);
+          font-size: 18px;
+        }
+
+        .dark .pet-floating-dock .pet-dock-btn {
+          color: #e2e8f0;
+          background: linear-gradient(135deg, rgba(148, 163, 184, 0.22), rgba(14, 116, 144, 0.25));
+        }
+
+        .dark .pet-floating-dock .pet-dock-btn.secondary {
+          background: rgba(51, 65, 85, 0.4);
+          border-color: rgba(148, 163, 184, 0.25);
+        }
+
+        @media (max-width: 768px) {
+          .pet-floating-dock {
+            right: 16px;
+            bottom: 96px;
+            transform-origin: bottom right;
+            transform: scale(0.9);
+          }
+        }
+
+        #live2d-widget {
+          padding: 18px 12px 0;
+          border-radius: 32px 32px 12px 12px;
+          border: 1px solid rgba(255, 178, 217, 0.45);
+          background: linear-gradient(180deg, rgba(255, 230, 244, 0.98), rgba(255, 210, 232, 0.9));
+          box-shadow: 0 26px 48px -20px rgba(255, 170, 214, 0.55);
+          overflow: visible;
+        }
+
+        .dark #live2d-widget {
+          background: linear-gradient(180deg, rgba(82, 52, 90, 0.9), rgba(111, 68, 132, 0.85));
+          border-color: rgba(209, 123, 182, 0.55);
+          box-shadow: 0 20px 40px -18px rgba(113, 65, 137, 0.65);
+        }
+
+        #live2d-widget::before {
+          content: '';
+          position: absolute;
+          inset: 8px 10px 12px;
+          background: radial-gradient(circle at 20% 10%, rgba(255, 227, 247, 0.9), transparent 60%),
+            radial-gradient(circle at 80% 15%, rgba(255, 215, 236, 0.7), transparent 55%);
+          border-radius: 26px;
+          pointer-events: none;
+          opacity: 0.8;
+          z-index: 1;
+        }
+
+        #live2d-widget.pet-greeting {
+          animation: pet-greeting-bounce 1.1s ease;
+        }
+
+        @keyframes pet-greeting-bounce {
+          0% { transform: translateY(0) scale(1); }
+          20% { transform: translateY(-8px) scale(1.03); }
+          48% { transform: translateY(0) scale(0.98); }
+          76% { transform: translateY(-4px) scale(1.02); }
+          100% { transform: translateY(0) scale(1); }
+        }
+
         /* cd-top 淡出效果 */
         .cd-fade-out {
           opacity: 0.8;
@@ -662,6 +794,8 @@ const Style = () => {
 
         /* Live2D画布样式 */
         #live2d {
+          position: relative;
+          z-index: 2;
           transition: opacity 0.3s ease;
         }
 
