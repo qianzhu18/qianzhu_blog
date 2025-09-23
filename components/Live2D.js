@@ -89,11 +89,11 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
       top: 20%;
       ${petPosition === 'right' ? 'right: 20px;' : 'left: 20px;'}
       width: 260px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.9));
+      background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(250,247,240,0.92));
       backdrop-filter: saturate(180%) blur(20px);
-      border: 1px solid rgba(254, 150, 0, 0.2);
+      border: 1px solid rgba(47, 92, 86, 0.18);
       border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(254, 150, 0, 0.15);
+      box-shadow: 0 8px 32px rgba(47, 92, 86, 0.18);
       z-index: 9999;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       user-select: none;
@@ -103,7 +103,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
     
     #pet-control-panel:hover {
       opacity: 1;
-      box-shadow: 0 12px 40px rgba(74, 144, 226, 0.2);
+      box-shadow: 0 12px 40px rgba(47, 92, 86, 0.24);
     }
     
     .pet-panel-header {
@@ -111,7 +111,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
       justify-content: space-between;
       align-items: center;
       padding: 12px 16px;
-      border-bottom: 1px solid rgba(254, 150, 0, 0.1);
+      border-bottom: 1px solid rgba(47, 92, 86, 0.12);
       cursor: pointer;
     }
     
@@ -121,7 +121,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
       gap: 8px;
       font-weight: 600;
       font-size: 14px;
-      color: #FE9600;
+      color: #2F5C56;
     }
     
     .pet-icon {
@@ -131,7 +131,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
     .pet-panel-toggle {
       background: none;
       border: none;
-      color: #FE9600;
+      color: #b86a5b;
       cursor: pointer;
       padding: 4px;
       border-radius: 4px;
@@ -139,7 +139,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
     }
     
     .pet-panel-toggle:hover {
-      background: rgba(254, 150, 0, 0.1);
+      background: rgba(47, 92, 86, 0.08);
     }
     
     .toggle-icon {
@@ -167,7 +167,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
       display: block;
       font-size: 12px;
       font-weight: 500;
-      color: #666;
+      color: #4f5f5a;
       margin-bottom: 8px;
     }
     
@@ -182,7 +182,7 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
       -webkit-appearance: none;
       height: 6px;
       border-radius: 3px;
-      background: rgba(254, 150, 0, 0.2);
+      background: rgba(47, 92, 86, 0.2);
       outline: none;
     }
     
@@ -191,14 +191,14 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: #FE9600;
+      background: #2F5C56;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(74, 144, 226, 0.3);
+      box-shadow: 0 2px 6px rgba(47, 92, 86, 0.25);
     }
     
     .pet-slider-value {
       font-size: 11px;
-      color: #FE9600;
+      color: #2F5C56;
       font-weight: 500;
       min-width: 40px;
       text-align: center;
@@ -213,10 +213,10 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
     .pet-btn {
       flex: 1;
       padding: 8px 12px;
-      border: 1px solid rgba(74, 144, 226, 0.3);
+      border: 1px solid rgba(47, 92, 86, 0.22);
       border-radius: 8px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(248,250,252,0.6));
-      color: #FE9600;
+      background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(250,247,240,0.7));
+      color: #2F5C56;
       font-size: 11px;
       font-weight: 500;
       cursor: pointer;
@@ -228,9 +228,9 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
     }
     
     .pet-btn:hover {
-      background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(255,255,255,0.9));
+      background: linear-gradient(135deg, rgba(47, 92, 86, 0.14), rgba(255,255,255,0.94));
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+      box-shadow: 0 4px 12px rgba(47, 92, 86, 0.2);
     }
     
     .pet-preset-buttons {
@@ -241,10 +241,10 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
     
     .pet-preset-btn {
       padding: 6px 8px;
-      border: 1px solid rgba(74, 144, 226, 0.2);
+      border: 1px solid rgba(47, 92, 86, 0.18);
       border-radius: 6px;
-      background: rgba(255,255,255,0.6);
-      color: #FE9600;
+      background: rgba(251,248,241,0.7);
+      color: #2F5C56;
       font-size: 10px;
       font-weight: 500;
       cursor: pointer;
@@ -252,19 +252,19 @@ function createPetControlPanel(petPosition, petHOffset, petVOffset) {
     }
     
     .pet-preset-btn:hover, .pet-preset-btn.active {
-      background: rgba(74, 144, 226, 0.1);
-      border-color: #FE9600;
+      background: rgba(47, 92, 86, 0.12);
+      border-color: #2F5C56;
     }
     
     .pet-info-section {
-      border-top: 1px solid rgba(74, 144, 226, 0.1);
+      border-top: 1px solid rgba(47, 92, 86, 0.12);
       padding-top: 12px;
       margin-top: 16px;
     }
     
     .pet-info-text {
       font-size: 11px;
-      color: #FE9600;
+      color: #5c6d66;
       text-align: center;
       opacity: 0.7;
     }
@@ -521,10 +521,10 @@ export default function Live2D() {
             btn.style.height = '28px'
             btn.style.lineHeight = '28px'
             btn.style.textAlign = 'center'
-            const accent = inkMode ? '#444' : '#4A90E2'
-            const neutralBorder = inkMode ? 'rgba(0,0,0,0.25)' : 'rgba(74, 144, 226, 0.3)'
-            const neutralShadow = inkMode ? 'rgba(0,0,0,0.18)' : 'rgba(74, 144, 226, 0.15)'
-            const neutralShadowHover = inkMode ? 'rgba(0,0,0,0.25)' : 'rgba(74, 144, 226, 0.25)'
+            const accent = inkMode ? '#2c2c2c' : '#2F5C56'
+            const neutralBorder = inkMode ? 'rgba(0,0,0,0.25)' : 'rgba(47, 92, 86, 0.28)'
+            const neutralShadow = inkMode ? 'rgba(0,0,0,0.18)' : 'rgba(47, 92, 86, 0.18)'
+            const neutralShadowHover = inkMode ? 'rgba(0,0,0,0.25)' : 'rgba(47, 92, 86, 0.28)'
             btn.style.border = `1px solid ${neutralBorder}`
             btn.style.borderRadius = '14px' // 更圆润
             btn.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.92), rgba(248,250,252,0.88))'
@@ -541,7 +541,7 @@ export default function Live2D() {
               btn.style.borderColor = accent
               btn.style.background = inkMode
                 ? 'linear-gradient(135deg, rgba(0,0,0,0.04), rgba(255,255,255,0.95))'
-                : 'linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(255,255,255,0.9))'
+                : 'linear-gradient(135deg, rgba(47, 92, 86, 0.12), rgba(255,255,255,0.92))'
               btn.style.transform = 'translateY(-1px) scale(1.05)'
               btn.style.boxShadow = `0 6px 20px ${neutralShadowHover}, inset 0 1px 0 rgba(255,255,255,0.8)`
             }

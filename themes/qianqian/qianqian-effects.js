@@ -211,7 +211,7 @@ const initAncientStyleDecorations = () => {
       
       .line-pattern {
         font-size: 18px;
-        color: var(--qianqian-primary, #4A90E2);
+        color: var(--qianqian-primary, #2F5C56);
         letter-spacing: 8px;
         animation: gentle-pulse 4s ease-in-out infinite;
       }
@@ -245,12 +245,12 @@ export const adjustPetColorsForTheme = () => {
       saturate(1.15) 
       contrast(1.05)
       brightness(1.02)
-      drop-shadow(0 12px 24px rgba(74, 144, 226, 0.18))
-      drop-shadow(0 4px 8px rgba(74, 144, 226, 0.08))
+      drop-shadow(0 12px 24px rgba(47, 92, 86, 0.2))
+      drop-shadow(0 4px 8px rgba(47, 92, 86, 0.1))
     `
     
     // 为整个桌宠容器添加古风氛围
-    petWidget.style.filter = `drop-shadow(0 8px 32px rgba(74, 144, 226, 0.12))`
+    petWidget.style.filter = `drop-shadow(0 8px 32px rgba(47, 92, 86, 0.16))`
     
     // 添加古风装饰光效
     const existingGlow = petWidget.querySelector('.qianqian-pet-glow')
@@ -263,7 +263,7 @@ export const adjustPetColorsForTheme = () => {
         left: -20px;
         right: -20px;
         bottom: -20px;
-        background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(47, 92, 86, 0.15) 0%, transparent 70%);
         border-radius: 50%;
         opacity: 0;
         transition: opacity 0.8s ease;
@@ -302,7 +302,7 @@ export const adjustPetColorsForTheme = () => {
       
       /* 拖拽时的视觉反馈 */
       #live2d-widget:active {
-        filter: drop-shadow(0 12px 40px rgba(74, 144, 226, 0.25)) !important;
+        filter: drop-shadow(0 12px 40px rgba(47, 92, 86, 0.28)) !important;
         transform: scale(1.02) !important;
         transition: all 0.2s ease !important;
       }
@@ -315,7 +315,7 @@ export const adjustPetColorsForTheme = () => {
         left: -2px;
         right: -2px;
         bottom: -2px;
-        background: conic-gradient(from 0deg, transparent, rgba(74, 144, 226, 0.1), transparent, rgba(74, 144, 226, 0.1), transparent);
+        background: conic-gradient(from 0deg, transparent, rgba(47, 92, 86, 0.18), transparent, rgba(184, 106, 91, 0.15), transparent);
         border-radius: 20px;
         opacity: 0;
         transition: opacity 0.5s ease;

@@ -19,10 +19,10 @@ const CONFIG = {
     PROXIO_HERO_BUTTON_2_ICON: '/images/starter/github.svg', // 英雄区按钮2的图标，不需要则留空
 
     // 英雄区配图，如需隐藏，改为空值即可 ''
-    PROXIO_HERO_BANNER_IMAGE: '', // hero区背景，默认是获取Notion背景，如需另外配置图片可以填写在这里
+    PROXIO_HERO_BANNER_IMAGE: '/images/hero-jade.svg', // hero区背景，默认是获取Notion背景，如需另外配置图片可以填写在这里
     // qianqian 风格：提高可读性与质感
     PROXIO_HERO_OVERLAY_ENABLE: true,
-    PROXIO_HERO_OVERLAY_COLOR: 'rgba(7,49,49,0.45)',
+    PROXIO_HERO_OVERLAY_COLOR: 'rgba(33,73,68,0.38)',
     PROXIO_HERO_TEXT_SHADOW: true,
     PROXIO_HERO_BANNER_IFRAME_URL: '', // hero背景区内嵌背景网页 ，可以配置一个网页地址，例如动画网页https://my.spline.design/untitled-b0c6e886227646c34afc82cdc6de4ca2/
 
