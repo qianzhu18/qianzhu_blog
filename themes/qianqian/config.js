@@ -76,9 +76,21 @@ const CONFIG = {
 
     // 生涯内容卡牌 ，title是标题 ，bio是备注，text是详情
     PROXIO_CAREERS: [
-        { title: 'Freelance Architect', bio: '2016-2020', text: 'As a freelance architect, I worked on a range of residential and commercial projects, balancing form and function. I collaborated with clients and contractors to transform concepts into reality, ensuring each design was both aesthetically pleasing and structurally sound.' },
-        { title: 'Product Designer at Spotify', bio: '2020-2022', text: 'At Spotify, I helped shape innovative features for millions of users globally. My focus was on creating seamless music discovery experiences, enhancing user interfaces, and optimizing cross-platform navigation, which led to an improved product flow and increased user satisfaction.' },
-        { title: 'Freelance Product Designer', bio: '2022-Now', text: 'Now I design user-centric products that align with client visions. As a freelance product designer, I collaborate with startups and established companies, crafting solutions that elevate user experiences and increase engagement across both digital and physical interfaces.' }
+        {
+            title: '湖南省大学生创新创业园 · 应用技术部',
+            bio: '2023 暑期',
+            text: '主导初创社群从0到1的运营体系设计，规划成员引入、分层激励与知识库沉淀模块，并探索AI工具在社群运营中的落地场景，完成冷启动验证。'
+        },
+        {
+            title: '跨年级认知社群 主理人',
+            bio: '2023-至今',
+            text: '以第一性原理为框架，搭建打破年级壁垒的认知成长社群，沉淀结构化课程与复盘模板，为成员提供高信噪比的长期陪跑与反馈机制。'
+        },
+        {
+            title: '湖南AGI & Datawhale 校园大使',
+            bio: '2023-2024',
+            text: '连接高校与社区的AI生态网络，组织主题活动、传递官方资源，并将校园需求反馈至团队，推动跨校协作和资源共享。'
+        }
     ],
 
     // 首页用户测评区块
@@ -164,18 +176,18 @@ const CONFIG = {
     // 关于作者区块
     PROXIO_ABOUT_ENABLE: true, // 关于作者区块区块开关
     PROXIO_ABOUT_TITLE: '关于作者',
-    PROXIO_ABOUT_TEXT_1: 'I am an Architect Turned Into a Product Designer',
+    PROXIO_ABOUT_TEXT_1: '我是一个系统构建型的青年 AI 协作者',
     PROXIO_ABOUT_TEXT_2:
-        'With a background in architecture, I now apply my expertise to product design, blending aesthetics, functionality, and innovation. My goal is to create modern, user-focused designs that bring your vision to life.',
+        '19岁的千逐，专注于把认知模型和AI技术转化为可运行的系统。我搭建跨年级认知社群与跨校AI生态，用结构化知识库、自动化工作流和高频反馈机制，帮助同频伙伴快速迭代。擅长将第一性原理、博弈思维与产品感结合，持续打磨可沉淀的长期价值。',
     PROXIO_ABOUT_PHOTO_URL: '/avatar.png',
-    PROXIO_ABOUT_KEY_1: '经验年限',
-    PROXIO_ABOUT_VAL_1: '10年+',
-    PROXIO_ABOUT_KEY_2: '客户',
-    PROXIO_ABOUT_VAL_2: '1000+',
-    PROXIO_ABOUT_KEY_3: '交付项目',
-    PROXIO_ABOUT_VAL_3: '5000+',
-    PROXIO_ABOUT_KEY_4: '累积创作时长（小时）',
-    PROXIO_ABOUT_VAL_4: '10000+',
+    PROXIO_ABOUT_KEY_1: '核心社群',
+    PROXIO_ABOUT_VAL_1: '2个+',
+    PROXIO_ABOUT_KEY_2: '活跃成员',
+    PROXIO_ABOUT_VAL_2: '400+',
+    PROXIO_ABOUT_KEY_3: 'AI流程设计',
+    PROXIO_ABOUT_VAL_3: '10+套',
+    PROXIO_ABOUT_KEY_4: '企业培训日酬',
+    PROXIO_ABOUT_VAL_4: '¥900/天',
 
     PROXIO_ABOUT_BUTTON_URL: '/about',
     PROXIO_ABOUT_BUTTON_TEXT: '关于我',
@@ -183,10 +195,14 @@ const CONFIG = {
     // 横向滚动文字
     PROXIO_BRANDS_ENABLE: true, // 滚动文字
     PROXIO_BRANDS: [
-        'Web Design',
-        'Logo Design',
-        'Mobile App Design',
-        'Product Design'
+        '系统构建',
+        'AI工作流设计',
+        '认知社群运营',
+        '自动化流程孵化',
+        '系统构建',
+        'AI工作流设计',
+        '认知社群运营',
+        '自动化流程孵化'
     ],
 
     PROXIO_FOOTER_SLOGAN: '我们通过技术为品牌和公司创造数字体验。',
