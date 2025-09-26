@@ -12,7 +12,6 @@ import { Career } from './components/Career'
 import { BackToTopButton } from './components/BackToTopButton'
 import { Blog } from './components/Blog'
 import { Brand } from './components/Brand'
-import { FAQ } from './components/FAQ'
 import { Features } from './components/Features'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
@@ -45,7 +44,6 @@ import CursorDot from '@/components/CursorDot'
 import LoadingCover from './components/LoadingCover'
 import Live2D from '@/components/Live2D'
 import Script from 'next/script'
-import FloatingWidgetDock from './components/FloatingWidgetDock'
 
 /**
  * 布局框架
@@ -90,8 +88,6 @@ const LayoutBase = props => {
             <CursorDot />
             {/* 数字桌宠组件 */}
             <Live2D />
-            {/* 桌宠快捷操作浮窗 */}
-            <FloatingWidgetDock />
             {/* 千浅主题特效系统 */}
             <Script 
                 src="/themes/qianqian/qianqian-effects.js" 
@@ -159,9 +155,6 @@ const LayoutIndex = props => {
             {siteConfig('PROXIO_TESTIMONIALS_ENABLE', true, CONFIG) && (
                 <Testimonials />
             )}
-            {/* 常见问题 */}
-            {siteConfig('PROXIO_FAQ_ENABLE', true, CONFIG) && <FAQ />}
-
 
             {/* 行动呼吁 */}
             {siteConfig('PROXIO_CTA_ENABLE', true, CONFIG) && <CTA />}

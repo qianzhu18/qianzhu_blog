@@ -4,7 +4,7 @@
  */
 const CONFIG = {
     PROXIO_WELCOME_COVER_ENABLE: true, //是否显示页面进入的欢迎文字
-    PROXIO_WELCOME_TEXT: '千浅雅境，诗意栖居 · 点击任意位置进入', // 欢迎文字，留空则不启用
+    PROXIO_WELCOME_TEXT: '欢迎来到千逐的个人博客，点击任意位置进入', // 欢迎文字，留空则不启用
 
     // 英雄区块导航
     PROXIO_HERO_ENABLE: true, // 开启英雄区
@@ -43,7 +43,7 @@ const CONFIG = {
     PROXIO_ANNOUNCEMENT_ENABLE: true, //公告文字区块
 
     // 特性区块
-    PROXIO_FEATURE_ENABLE: true, // 特性区块开关
+    PROXIO_FEATURE_ENABLE: false, // 特性区块开关
     PROXIO_FEATURE_TITLE: '为什么选我',
     PROXIO_FEATURE_TEXT_1: '我能让您的项目焕发光彩',
     PROXIO_FEATURE_TEXT_2:
@@ -78,23 +78,23 @@ const CONFIG = {
     PROXIO_CAREERS: [
         {
             title: '湖南省大学生创新创业园 · 应用技术部',
-            bio: '2023 暑期',
+            bio: '2025 暑期',
             text: '主导初创社群从0到1的运营体系设计，规划成员引入、分层激励与知识库沉淀模块，并探索AI工具在社群运营中的落地场景，完成冷启动验证。'
         },
         {
             title: '跨年级认知社群 主理人',
-            bio: '2023-至今',
+            bio: '2024-至今',
             text: '以第一性原理为框架，搭建打破年级壁垒的认知成长社群，沉淀结构化课程与复盘模板，为成员提供高信噪比的长期陪跑与反馈机制。'
         },
         {
             title: '湖南AGI & Datawhale 校园大使',
-            bio: '2023-2024',
+            bio: '2025-至今',
             text: '连接高校与社区的AI生态网络，组织主题活动、传递官方资源，并将校园需求反馈至团队，推动跨校协作和资源共享。'
         }
     ],
 
     // 首页用户测评区块
-    PROXIO_TESTIMONIALS_ENABLE: true, // 测评区块开关
+    PROXIO_TESTIMONIALS_ENABLE: false, // 测评区块开关
     PROXIO_TESTIMONIALS_TITLE: '用户反馈',
     PROXIO_TESTIMONIALS_TEXT_1: '我们的用户怎么说',
     PROXIO_TESTIMONIALS_TEXT_2:
@@ -162,7 +162,7 @@ const CONFIG = {
     ],
 
     //   FAQ 常见问题模块
-    PROXIO_FAQ_ENABLE: true, // 常见问题模块开关
+    PROXIO_FAQ_ENABLE: false, // 常见问题模块开关
     PROXIO_FAQ_TITLE: '常见问题解答',
     PROXIO_FAQ_TEXT_1: '有任何问题吗？请看这里',
     PROXIO_FAQ_TEXT_2: '我们收集了常见的用户疑问',
@@ -179,15 +179,15 @@ const CONFIG = {
     PROXIO_ABOUT_TEXT_1: '我是一个系统构建型的青年 AI 协作者',
     PROXIO_ABOUT_TEXT_2:
         '19岁的千逐，专注于把认知模型和AI技术转化为可运行的系统。我搭建跨年级认知社群与跨校AI生态，用结构化知识库、自动化工作流和高频反馈机制，帮助同频伙伴快速迭代。擅长将第一性原理、博弈思维与产品感结合，持续打磨可沉淀的长期价值。',
-    PROXIO_ABOUT_PHOTO_URL: '/avatar.png',
-    PROXIO_ABOUT_KEY_1: '核心社群',
-    PROXIO_ABOUT_VAL_1: '2个+',
-    PROXIO_ABOUT_KEY_2: '活跃成员',
-    PROXIO_ABOUT_VAL_2: '400+',
-    PROXIO_ABOUT_KEY_3: 'AI流程设计',
-    PROXIO_ABOUT_VAL_3: '10+套',
-    PROXIO_ABOUT_KEY_4: '企业培训日酬',
-    PROXIO_ABOUT_VAL_4: '¥900/天',
+    PROXIO_ABOUT_PHOTO_URL: 'https://youke1.picui.cn/s1/2025/09/26/68d65fa0a938f.jpg',
+    PROXIO_ABOUT_KEY_1: '系统构建力',
+    PROXIO_ABOUT_VAL_1: '跨校AI社群运营',
+    PROXIO_ABOUT_KEY_2: '自动化能力',
+    PROXIO_ABOUT_VAL_2: 'n8n · Agent链路',
+    PROXIO_ABOUT_KEY_3: '知识体系',
+    PROXIO_ABOUT_VAL_3: 'Obsidian第二大脑',
+    PROXIO_ABOUT_KEY_4: '技术栈',
+    PROXIO_ABOUT_VAL_4: '容器 · 网络 · 运维',
 
     PROXIO_ABOUT_BUTTON_URL: '/about',
     PROXIO_ABOUT_BUTTON_TEXT: '关于我',
