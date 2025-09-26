@@ -265,13 +265,13 @@ const CONFIG = {
     // 页面底部的行动呼吁模块
     PROXIO_CTA_ENABLE: true,
     PROXIO_CTA_TITLE: '与我建立联系',
-    PROXIO_CTA_TITLE_2: '让我们立刻启动您的项目',
+    PROXIO_CTA_TITLE_2: '一起共建长期价值项目',
     PROXIO_CTA_DESCRIPTION:
-        '访问NotionNext的操作文档，我们提供了详细的教程，帮助你即刻搭建站点',
+        '如果你在探索系统构建、AI工作流或认知社群设计，欢迎主动联系我，我们可以一起把想法落到真实场景。',
     PROXIO_CTA_BUTTON: true, // 是否显示按钮
     PROXIO_CTA_BUTTON_URL:
-        '/about',
-    PROXIO_CTA_BUTTON_TEXT: '联系我',
+        'https://www.qianzhu.me/',
+    PROXIO_CTA_BUTTON_TEXT: '前往我的主页',
 
     PROXIO_POST_REDIRECT_ENABLE: true, // 默認開啟重定向
     PROXIO_POST_REDIRECT_URL: 'https://blog.tangly1024.com', // 重定向域名
