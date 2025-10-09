@@ -1,11 +1,14 @@
 import { siteConfig } from '@/lib/config'
-import Link from 'next/link'
+import SmartLink from '@/components/SmartLink'
 import CONFIG from '../config'
 
 /**
  * 文字广告Banner
+ * @param {*} props
+ * @returns
  */
 export default function BannerItem() {
+  // 首屏信息栏按钮文字
   const banner = siteConfig('MAGZINE_HOME_BANNER_ENABLE', null, CONFIG)
   const button = siteConfig('MAGZINE_HOME_BUTTON', null, CONFIG)
   const text = siteConfig('MAGZINE_HOME_BUTTON_TEXT', null, CONFIG)
@@ -19,15 +22,16 @@ export default function BannerItem() {
   }
 
   return (
-    <div className='flex flex-col p-5 gap-y-5 items-center justify-between w-full magzine-card magzine-banner magzine-reveal text-slate-100 text-center'>
+    <div className='flex flex-col p-5 gap-y-5 dark items-center justify-between w-full bg-black text-white'>
+      {/* 首屏导航按钮 */}
       <h2 className='text-2xl font-semibold'>{title}</h2>
-      <h3 className='text-sm text-slate-200'>{description}</h3>
+      <h3 className='text-sm'>{description}</h3>
       {button && (
-        <Link href={url} className='magzine-button magzine-button--primary'>
-          {text}
-        </Link>
+        <div className='mt-2 text-center px-6 py-3 font-semibold rounded-3xl text-black bg-[#7BE986] hover:bg-[#62BA6B]'>
+          <SmartLink href={url}>{text}</SmartLink>
+        </div>
       )}
-      <span className='text-xs text-slate-300'>{tips}</span>
+      <span className='text-xs'>{tips}</span>
     </div>
   )
 }

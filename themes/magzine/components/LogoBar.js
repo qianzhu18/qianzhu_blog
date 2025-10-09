@@ -1,13 +1,13 @@
 import LazyImage from '@/components/LazyImage'
 import { siteConfig } from '@/lib/config'
-import Link from 'next/link'
+import SmartLink from '@/components/SmartLink'
 
 export default function LogoBar({ siteInfo, className }) {
   return (
     <div
       id='top-wrapper'
       className={`w-full flex items-center ${className || ''}`}>
-      <Link
+      <SmartLink
         href='/'
         className='inline-flex items-center whitespace-nowrap font-semibold magzine-logo'>
         <LazyImage
@@ -19,7 +19,7 @@ export default function LogoBar({ siteInfo, className }) {
           className='mr-2 hidden md:inline-block'
         />
         <span>{siteConfig('TITLE')}</span>
-      </Link>
+      </SmartLink>
     </div>
   )
 }

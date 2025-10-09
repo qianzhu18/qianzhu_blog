@@ -65,6 +65,17 @@ This project exists thanks to all the people who contribute.
 - **COMMENT**: [Twikoo](https://github.com/imaegoo/twikoo), [Giscus](https://giscus.app/zh-CN), [Gitalk](https://gitalk.github.io), [Cusdis](https://cusdis.com), [Utterances](https://utteranc.es)
 - **ICON**: [Fontawesome](https://fontawesome.com/v6/icons/)
 
+## Custom Notion API Endpoint
+
+If `https://www.notion.so/api/v3` is blocked or flaky, point the client at your own proxy by setting an environment variable:
+
+```bash
+# .env.local
+API_BASE_URL=https://your-subdomain.notion.site/api/v3
+```
+
+`NOTION_API_BASE_URL` is also honored. The easiest proxy is the personalized domain that Notion assigns when you share a page (for example `https://blush-transport-058.notion.site/api/v3`). Add the variable in Vercel → Project → Settings → Environment Variables, enable it for Production/Preview (and Development if needed), then redeploy.
+
 
 ## License
 

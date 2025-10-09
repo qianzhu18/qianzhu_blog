@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import { loadExternalResource } from '@/lib/utils'
-import { siteConfig } from '@/lib/config'
 
 /**
  * 滚动阻尼特效
@@ -11,15 +10,11 @@ const Lenis = () => {
   const lenisRef = useRef(null) // 用于存储 Lenis 实例
 
   useEffect(() => {
-    const enable = siteConfig('LENIS_ENABLE', true)
-    const duration = Number(siteConfig('LENIS_DURATION', 1.35))
-    const smoothTouch = JSON.parse(siteConfig('LENIS_SMOOTH_TOUCH', true))
-    const mouseMultiplier = Number(siteConfig('LENIS_MOUSE_MULTIPLIER', 1))
-    const touchMultiplier = Number(siteConfig('LENIS_TOUCH_MULTIPLIER', 2))
-    if (!enable) return
     // 异步加载
     async function loadLenis() {
-      loadExternalResource('/js/lenis.js', 'js').then(() => {
+      try {
+        await loadExternalResource('/js/lenis.js', 'js')
+
         // console.log('Lenis', window.Lenis)
         if (!window.Lenis) {
           console.error('Lenis not loaded')
@@ -29,24 +24,15 @@ const Lenis = () => {
 
         // 创建 Lenis 实例
         const lenis = new Lenis({
-          duration: duration,
-          easing: (t) => {
-            // 优化的缓动函数，减少拖拽感，提升响应性
-            if (t < 0.5) {
-              return 4 * t * t * t;
-            } else {
-              return 1 - Math.pow(-2 * t + 2, 3) / 2;
-            }
-          },
+          duration: 1.2,
+          easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
           direction: 'vertical', // vertical, horizontal
           gestureDirection: 'vertical', // vertical, horizontal, both
           smooth: true,
-          mouseMultiplier: mouseMultiplier,
-          smoothTouch: smoothTouch,
-          touchMultiplier: touchMultiplier,
-          infinite: false,
-          normalizeWheel: true, // 标准化滚轮事件
-          syncTouch: true, // 同步触摸和滚动
+          mouseMultiplier: 1,
+          smoothTouch: false,
+          touchMultiplier: 2,
+          infinite: false
         })
 
         // 存储实例到 ref
@@ -64,7 +50,9 @@ const Lenis = () => {
         }
 
         requestAnimationFrame(raf)
-      })
+      } catch (error) {
+        console.error('Failed to load Lenis:', error)
+      }
     }
 
     loadLenis()

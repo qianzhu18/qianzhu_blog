@@ -52,7 +52,7 @@ Notion是一个能让效率暴涨的生产力引擎，可以帮你书写文档�
 
 ## 贡献者
 
-感谢所有为 NotionNext 做出贡献的人！
+致敬每一位开发者！
 
 [![Contributors](https://contrib.rocks/image?repo=tangly1024/NotionNext)](https://github.com/tangly1024/NotionNext/graphs/contributors)
 
@@ -63,6 +63,17 @@ Notion是一个能让效率暴涨的生产力引擎，可以帮你书写文档�
 - **渲染**: [React-notion-x](https://github.com/NotionX/react-notion-x)
 - **评论**: [Twikoo](https://github.com/imaegoo/twikoo), [Giscus](https://giscus.app/zh-CN), [Gitalk](https://gitalk.github.io), [Cusdis](https://cusdis.com), [Utterances](https://utteranc.es)
 - **图标**: [Fontawesome](https://fontawesome.com/v6/icons/)
+
+## 自定义 Notion API 地址
+
+如遇 `https://www.notion.so/api/v3` DNS 故障，可通过环境变量覆盖请求入口：
+
+```bash
+# .env.local
+API_BASE_URL=https://your-subdomain.notion.site/api/v3
+```
+
+同时兼容 `NOTION_API_BASE_URL`。建议直接使用 Notion 分配的个性域名（例如 `https://blush-transport-058.notion.site/api/v3`），在 Vercel → Project → Settings → Environment Variables 中添加上述变量并重新部署，即可立即切换到备用 API。
 
 ## 🔗 友情链接
 

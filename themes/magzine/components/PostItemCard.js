@@ -3,7 +3,7 @@ import NotionIcon from '@/components/NotionIcon'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { formatDateFmt } from '@/lib/utils/formatDate'
-import Link from 'next/link'
+import SmartLink from '@/components/SmartLink'
 import CategoryItem from './CategoryItem'
 
 /**
@@ -17,7 +17,7 @@ const PostItemCard = ({ post }) => {
     <div key={post.id} className='mb-6 max-w-screen-3xl magzine-card magzine-reveal p-5'>
       <div className='flex flex-col space-y-3'>
         {siteConfig('MAGZINE_POST_LIST_COVER') && (
-          <Link
+          <SmartLink
             href={post?.href}
             passHref
             className='cursor-pointer hover:underline leading-tight text-slate-100 hover:text-cyan-200'>
@@ -29,13 +29,13 @@ const PostItemCard = ({ post }) => {
                 className='w-full h-40 aspect-video object-cover hover:scale-110 duration-300'
               />
             </div>
-          </Link>
+          </SmartLink>
         )}
         {siteConfig('MAGZINE_POST_LIST_CATEGORY') && (
           <CategoryItem category={post.category} />
         )}
 
-        <Link
+        <SmartLink
           href={post?.href}
           passHref
           className='text-xl cursor-pointer hover:underline leading-tight text-slate-100 hover:text-cyan-200'>
@@ -45,7 +45,7 @@ const PostItemCard = ({ post }) => {
             )}
             {post.title}
           </h2>
-        </Link>
+        </SmartLink>
 
         <div className='text-sm text-slate-400'>
           {formatDateFmt(post.publishDate, 'yyyy-MM')}

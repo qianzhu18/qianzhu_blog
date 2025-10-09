@@ -3,7 +3,7 @@ import NotionIcon from '@/components/NotionIcon'
 import NotionPage from '@/components/NotionPage'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
-import Link from 'next/link'
+import SmartLink from '@/components/SmartLink'
 import CONFIG from '../config'
 import CategoryItem from './CategoryItem'
 import TagItemMini from './TagItemMini'
@@ -23,7 +23,7 @@ const PostItemCardTop = ({ post, showSummary }) => {
       <div className='flex flex-col w-full gap-y-2'>
         {siteConfig('MAGZINE_POST_LIST_COVER', true, CONFIG) &&
           post?.pageCoverThumbnail && (
-            <Link
+            <SmartLink
               href={post?.href || ''}
               passHref
               className='cursor-pointer hover:underline text-4xl leading-tight text-slate-100 hover:text-cyan-200'>
@@ -35,7 +35,7 @@ const PostItemCardTop = ({ post, showSummary }) => {
                   className='w-full h-80 object-cover hover:scale-110 duration-300'
                 />
               </div>
-            </Link>
+            </SmartLink>
           )}
 
         <div className='flex py-2 gap-2 items-center text-slate-300'>
@@ -50,7 +50,7 @@ const PostItemCardTop = ({ post, showSummary }) => {
           </div>
         </div>
 
-        <Link
+        <SmartLink
           href={post?.href || ''}
           passHref
           className='cursor-pointer hover:underline leading-tight text-slate-100 hover:text-cyan-200'>
@@ -60,7 +60,7 @@ const PostItemCardTop = ({ post, showSummary }) => {
             )}
             {post?.title}
           </h2>
-        </Link>
+        </SmartLink>
 
         {(!showPreview || showSummary) && (
           <main className='my-4 text-slate-200 text-lg leading-7'>
@@ -73,13 +73,13 @@ const PostItemCardTop = ({ post, showSummary }) => {
             <NotionPage post={post} />
             <div className='pointer-events-none border-t border-dashed border-slate-600/40 pt-8'>
               <div className='w-full justify-start flex'>
-                <Link
+                <SmartLink
                   href={post?.href}
                   passHref
                   className='hover:bg-opacity-100 hover:scale-105 duration-200 pointer-events-auto transform font-bold text-cyan-200 cursor-pointer'>
                   {locale.COMMON.ARTICLE_DETAIL}
                   <i className='ml-1 fas fa-angle-right' />
-                </Link>
+                </SmartLink>
               </div>
             </div>
           </div>
