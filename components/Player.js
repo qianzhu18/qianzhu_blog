@@ -59,6 +59,9 @@ const Player = () => {
     }
   }, [])
 
+  // 若未启用播放器，直接不渲染任何DOM，避免界面干扰
+  if (!musicPlayerEnable) return null
+
   return (
     <div className={playerVisible ? 'visible' : 'invisible'}>
       <link

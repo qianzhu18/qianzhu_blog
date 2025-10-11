@@ -13,6 +13,15 @@ const Lenis = () => {
     // 异步加载
     async function loadLenis() {
       try {
+        // 桌面端去除滚动阻尼，保证拖动流畅
+        const prefersNoMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        const isDesktopPointer = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+
+        if (prefersNoMotion || isDesktopPointer) {
+          // 不在桌面端或减少动态偏好下启用 Lenis
+          return
+        }
+
         await loadExternalResource('/js/lenis.js', 'js')
 
         // console.log('Lenis', window.Lenis)
@@ -30,7 +39,7 @@ const Lenis = () => {
           gestureDirection: 'vertical', // vertical, horizontal, both
           smooth: true,
           mouseMultiplier: 1,
-          smoothTouch: false,
+          smoothTouch: true,
           touchMultiplier: 2,
           infinite: false
         })
