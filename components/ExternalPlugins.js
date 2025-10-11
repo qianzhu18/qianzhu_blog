@@ -207,7 +207,8 @@ const ExternalPlugin = props => {
       {FIREWORKS && <Fireworks />}
       {SAKURA && <Sakura />}
       {STARRY_SKY && <StarrySky />}
-      {MUSIC_PLAYER && <MusicPlayer />}
+      {/* 桌面端禁用音乐播放器，避免 UI 干扰 */}
+      {MUSIC_PLAYER && !(isBrowser && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) && <MusicPlayer />}
       {NEST && <Nest />}
       {FLUTTERINGRIBBON && <FlutteringRibbon />}
       {COMMENT_TWIKOO_COUNT_ENABLE && <TwikooCommentCounter {...props} />}
