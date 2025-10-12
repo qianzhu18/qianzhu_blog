@@ -13,12 +13,13 @@ const Lenis = () => {
     // 异步加载
     async function loadLenis() {
       try {
-        // 桌面端去除滚动阻尼，保证拖动流畅
+        // 桌面端与移动端均使用原生滚动，避免额外阻尼
         const prefersNoMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
         const isDesktopPointer = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+        const isTouchPointer = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: coarse)').matches
 
-        if (prefersNoMotion || isDesktopPointer) {
-          // 不在桌面端或减少动态偏好下启用 Lenis
+        if (prefersNoMotion || isDesktopPointer || isTouchPointer) {
+          // 所有常见环境下均不启用 Lenis，保留系统原生流畅滚动
           return
         }
 
@@ -39,7 +40,7 @@ const Lenis = () => {
           gestureDirection: 'vertical', // vertical, horizontal, both
           smooth: true,
           mouseMultiplier: 1,
-          smoothTouch: true,
+          smoothTouch: false,
           touchMultiplier: 2,
           infinite: false
         })
