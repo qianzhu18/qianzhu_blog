@@ -3,8 +3,8 @@
  * 古雅今用，科技有温度
  */
 
-// 初始化千浅主题特效
-export const initQianqianEffects = () => {
+// 初始化千浅主题特效（以浏览器脚本形式加载，避免使用ES Module导出）
+const initQianqianEffects = () => {
   console.log('🌸 千浅主题特效初始化...')
   
   // 1. 渐入动效系统
@@ -185,7 +185,7 @@ const initAncientStyleDecorations = () => {
 }
 
 // 动态调整桌宠颜色以匹配主题
-export const adjustPetColorsForTheme = () => {
+const adjustPetColorsForTheme = () => {
   const petCanvas = document.querySelector('#live2dcanvas')
   if (petCanvas) {
     // 为桌宠添加古风滤镜效果
@@ -196,6 +196,12 @@ export const adjustPetColorsForTheme = () => {
       drop-shadow(0 8px 16px rgba(74, 144, 226, 0.15))
     `
   }
+}
+
+// 将方法挂到全局，供页面脚本调用
+if (typeof window !== 'undefined') {
+  window.initQianqianEffects = initQianqianEffects
+  window.adjustPetColorsForTheme = adjustPetColorsForTheme
 }
 
 // 现代化视差效果
