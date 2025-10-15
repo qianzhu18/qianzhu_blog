@@ -12,6 +12,10 @@ const BLOG = {
   THEME: process.env.NEXT_PUBLIC_THEME || 'qianqian', // 默认使用千浅主题
   // 强制主题（最高优先级）：当设置后将忽略 URL ?theme 和 Notion 中的 THEME
   FORCE_THEME: process.env.NEXT_PUBLIC_FORCE_THEME || 'qianqian',
+  // 站点标题与描述（覆盖 Notion 的默认信息）
+  TITLE: process.env.NEXT_PUBLIC_TITLE || '千逐的个人博客',
+  DESCRIPTION:
+    process.env.NEXT_PUBLIC_DESCRIPTION || '一个有趣的灵魂，希望看见更远的世界',
   LANG: process.env.NEXT_PUBLIC_LANG || 'zh-CN', // e.g 'zh-CN','en-US'  see /lib/lang.js for more.
   SINCE: process.env.NEXT_PUBLIC_SINCE || 2021, // e.g if leave this empty, current year will be used.
 

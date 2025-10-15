@@ -157,35 +157,35 @@ const Style = () => {
         text-decoration: underline !important;
     }
     @media (min-width: 540px) {
-        #theme-proxio .container {
+        #theme-proxio .container, #theme-qianqian .container {
             max-width: 540px;
         }
     }
     @media (min-width: 720px) {
-        #theme-proxio .container {
+        #theme-proxio .container, #theme-qianqian .container {
             max-width: 720px;
         }
     }
     
     @media (min-width: 960px) {
-        #theme-proxio .container {
+        #theme-proxio .container, #theme-qianqian .container {
             max-width: 960px;
         }
     }
     @media (min-width: 1140px) {
-        #theme-proxio .container {
+        #theme-proxio .container, #theme-qianqian .container {
             max-width: 1140px;
         }
     }
         
     @media (min-width: 1536px) {
-        #theme-proxio .container {
+        #theme-proxio .container, #theme-qianqian .container {
             max-width: 1140px;
         }
     }
         
 
-    #theme-proxio .container {
+    #theme-proxio .container, #theme-qianqian .container {
         width: 100%;
         margin-right: auto;
         margin-left: auto;

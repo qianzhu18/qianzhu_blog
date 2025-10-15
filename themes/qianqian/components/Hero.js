@@ -57,11 +57,9 @@ export const Hero = props => {
                     <div className='flex flex-wrap items-center justify-center'>
                         <div className='w-full'>
                             <div className='hero-content wow fadeInUp mx-auto max-w-[900px] text-center space-y-8'>
-                                {/* 装饰性标签 */}
-                                <div className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/40 backdrop-blur-sm border border-white/60 shadow-sm'>
-                                  <span className='w-2 h-2 bg-[#2f5c56] rounded-full animate-pulse'></span>
-                                  <span className='text-sm font-medium text-[#2f5c56]'>千浅雅境</span>
-                                </div>
+                                {/* 装饰性标签移除：去除干扰元素 */}
+                                {/* 保留空占位，避免布局抖动 */}
+                                <div className='h-0' />
                                 
                                 {/* 主标题 - 渐变文字效果 */}
                                 <h1 className={`text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight ${titleShadow ? 'drop-shadow-[0_8px_24px_rgba(15,31,30,0.25)]' : ''}`}>
