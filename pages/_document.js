@@ -67,8 +67,6 @@ class MyDocument extends Document {
 
         <body>
           <Main />
-          {/* TWOAPI AI 快速接入脚本 */}
-          <script src="https://suishouji.qiangtu.com/scripts/content.js" defer></script>
           <NextScript />
         </body>
       </Html>

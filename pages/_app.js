@@ -20,6 +20,7 @@ import SEO from '@/components/SEO'
 import { zhCN } from '@clerk/localizations'
 import dynamic from 'next/dynamic'
 import { Analytics } from '@vercel/analytics/react'
+import Script from 'next/script'
 // import { ClerkProvider } from '@clerk/nextjs'
 const ClerkProvider = dynamic(() =>
   import('@clerk/nextjs').then(m => m.ClerkProvider)
@@ -71,6 +72,8 @@ const MyApp = ({ Component, pageProps }) => {
       )}
       {/* Vercel Analytics */}
       <Analytics />
+      {/* TWOAPI AI 快速接入脚本：仅在浏览器端、交互后加载 */}
+      <Script src="https://suishouji.qiangtu.com/scripts/content.js" strategy="afterInteractive" />
     </>
   )
 }
