@@ -9,7 +9,7 @@ const CONFIG = {
     // 英雄区块导航
     PROXIO_HERO_ENABLE: true, // 开启英雄区
     PROXIO_HERO_TITLE_1: '欢迎来到我的数字世界', // 英雄区文字
-    PROXIO_HERO_TITLE_2: '探索技术、设计与创新的无限可能', // 英雄区文字
+    PROXIO_HERO_TITLE_2: '探索技术、分享信息、提升认知', // 英雄区文字
     // 英雄区两个按钮，如果TEXT留空则隐藏按钮
     PROXIO_HERO_BUTTON_1_TEXT: '开始体验', // 英雄区按钮
     PROXIO_HERO_BUTTON_1_URL:
