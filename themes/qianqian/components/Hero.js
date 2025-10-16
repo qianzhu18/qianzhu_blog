@@ -51,64 +51,69 @@ export const Hero = props => {
                   </div>
 
             </div>
-            {/* 文字标题等 - 现代化设计 */}
+            {/* 文字标题等 - 现代化设计，前景卡片化并收窄版心 */}
             <div className='w-full pb-15 dark:text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20'>
-                <div className='container mx-auto px-4'>
-                    <div className='flex flex-wrap items-center justify-center'>
-                        <div className='w-full'>
-                            <div className='hero-content wow fadeInUp mx-auto max-w-[900px] text-center space-y-8'>
-                                {/* 装饰性标签移除：去除干扰元素 */}
-                                {/* 保留空占位，避免布局抖动 */}
-                                <div className='h-0' />
-                                
-                                {/* 主标题 - 渐变文字效果 */}
-                                <h1 className={`text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight ${titleShadow ? 'drop-shadow-[0_8px_24px_rgba(15,31,30,0.25)]' : ''}`}>
-                                  <span className='bg-gradient-to-r from-[#2f5c56] via-[#4e8079] to-[#2f5c56] bg-clip-text text-transparent'>
-                                    {siteConfig('PROXIO_HERO_TITLE_1', null, config)}
-                                  </span>
-                                </h1>
-                                
-                                {/* 次标题 */}
-                                <p className='mx-auto max-w-[700px] text-lg md:text-xl font-medium text-[#2f5c56] leading-relaxed drop-shadow-[0_6px_20px_rgba(15,31,30,0.18)]'>
-                                  {siteConfig('PROXIO_HERO_TITLE_2', null, config)}
-                                </p>
-                                
-                                {/* 现代化按钮组 */}
-                                <div className='flex flex-wrap items-center justify-center gap-4 pt-4'>
-                                    {siteConfig('PROXIO_HERO_BUTTON_1_TEXT', null, config) && (
-                                        <Link
-                                            href={siteConfig('PROXIO_HERO_BUTTON_1_URL', '')}
-                                            className='group relative inline-flex items-center justify-center px-9 py-4 text-base font-semibold text-white rounded-2xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300'
-                                            style={{ background: 'linear-gradient(135deg, #2f5c56 0%, #4c7f78 100%)' }}>
-                                            <span className='relative z-10 tracking-wide'>{siteConfig('PROXIO_HERO_BUTTON_1_TEXT', null, config)}</span>
-                                            <div className='absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300' style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0))' }} />
-                                        </Link>
-                                    )}
-                                    
-                                    {/* 次要按钮 */}
-                                    <Link
-                                        href='/archive'
-                                        className='inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-[#2f5c56] bg-white/70 backdrop-blur-sm border border-white/80 rounded-2xl hover:bg-white transform hover:-translate-y-1 transition-all duration-300 shadow-md'>
-                                        <span className='tracking-wide'>浏览文章</span>
-                                        <svg className='ml-2 w-4 h-4' fill='none' stroke='currentColor' strokeWidth={2} viewBox='0 0 24 24'>
-                                          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
-                                        </svg>
-                                    </Link>
-                                </div>
-                                
-                                {/* 滚动提示 */}
-                                <div className='pt-12 animate-bounce'>
-                                  <div className='flex flex-col items-center gap-2 text-[#2f5c56]/70'>
-                                    <span className='text-sm'>向下滚动</span>
-                                    <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 14l-7 7m0 0l-7-7m7 7V3' />
-                                    </svg>
-                                  </div>
-                                </div>
-                            </div>
+              <div className='container mx-auto px-4'>
+                <div className='flex flex-wrap items-center justify-center'>
+                  <div className='w-full'>
+                    {/* 聚焦背景光晕，突出前景 */}
+                    <div className='pointer-events-none absolute -z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[380px] rounded-[36px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.65)_0%,rgba(255,255,255,0.28)_55%,rgba(255,255,255,0)_80%)]' />
+
+                    <div className='hero-content wow fadeInUp mx-auto max-w-[760px] md:max-w-[820px] text-center'>
+                      {/* 前景卡片化容器，增强与背景的分离度 */}
+                      <div className='mx-auto px-6 md:px-10 py-8 md:py-12 rounded-3xl bg-white/65 dark:bg-[#0f1f1e]/55 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-[0_22px_48px_-16px_rgba(15,31,30,0.35)] space-y-6'>
+                        {/* 装饰性标签占位移除，避免视觉干扰 */}
+                        <div className='h-0' />
+
+                        {/* 主标题 - 渐变文字效果（尺寸略微收敛） */}
+                        <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold leading-tight ${titleShadow ? 'drop-shadow-[0_8px_24px_rgba(15,31,30,0.25)]' : ''}`}>
+                          <span className='bg-gradient-to-r from-[#2f5c56] via-[#4e8079] to-[#2f5c56] bg-clip-text text-transparent'>
+                            {siteConfig('PROXIO_HERO_TITLE_1', null, config)}
+                          </span>
+                        </h1>
+
+                        {/* 次标题（更紧凑） */}
+                        <p className='mx-auto max-w-[640px] text-base md:text-lg font-medium text-[#2f5c56]/90 dark:text-[#9fc6be] leading-relaxed'>
+                          {siteConfig('PROXIO_HERO_TITLE_2', null, config)}
+                        </p>
+
+                        {/* 现代化按钮组（尺寸收敛） */}
+                        <div className='flex flex-wrap items-center justify-center gap-3 pt-2'>
+                          {siteConfig('PROXIO_HERO_BUTTON_1_TEXT', null, config) && (
+                            <Link
+                              href={siteConfig('PROXIO_HERO_BUTTON_1_URL', '')}
+                              className='group relative inline-flex items-center justify-center px-7 py-3 text-sm md:text-base font-semibold text-white rounded-2xl shadow-xl hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-300'
+                              style={{ background: 'linear-gradient(135deg, #2f5c56 0%, #4c7f78 100%)' }}>
+                              <span className='relative z-10 tracking-wide'>{siteConfig('PROXIO_HERO_BUTTON_1_TEXT', null, config)}</span>
+                              <div className='absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300' style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0))' }} />
+                            </Link>
+                          )}
+
+                          {/* 次要按钮 */}
+                          <Link
+                            href='/archive'
+                            className='inline-flex items-center justify-center px-7 py-3 text-sm md:text-base font-semibold text-[#2f5c56] dark:text-[#cfe3df] bg-white/75 dark:bg-white/10 backdrop-blur-sm border border-white/70 dark:border-white/15 rounded-2xl hover:bg-white transform hover:-translate-y-0.5 transition-all duration-300 shadow-md'>
+                            <span className='tracking-wide'>浏览文章</span>
+                            <svg className='ml-2 w-4 h-4' fill='none' stroke='currentColor' strokeWidth={2} viewBox='0 0 24 24'>
+                              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+                            </svg>
+                          </Link>
                         </div>
+                      </div>
+
+                      {/* 滚动提示 */}
+                      <div className='pt-6 animate-bounce'>
+                        <div className='flex flex-col items-center gap-2 text-[#2f5c56]/70 dark:text-[#9fc6be]/70'>
+                          <span className='text-xs'>向下滚动</span>
+                          <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 14l-7 7m0 0l-7-7m7 7V3' />
+                          </svg>
+                        </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
+              </div>
             </div>
             {/* <!-- ====== Hero Section End --> */}
         </>
