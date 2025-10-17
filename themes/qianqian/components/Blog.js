@@ -23,7 +23,7 @@ export const Blog = ({ posts }) => {
   return (
     <>
       {/* <!-- ====== Blog Section Start --> */}
-      <section className='bg-gradient-to-b from-white to-gray-50 pt-20 dark:bg-gradient-to-b dark:from-dark dark:to-gray-900 lg:pt-[120px]'>
+      <section id='latest' className='bg-gradient-to-b from-white to-gray-50 pt-20 dark:bg-gradient-to-b dark:from-dark dark:to-gray-900 lg:pt-[120px]'>
         <div className='container mx-auto'>
           {/* 区块标题文字 */}
           <div className='-mx-4 flex flex-wrap justify-center wow fadeInUp' data-wow-delay='.2s'>
