@@ -47,7 +47,7 @@ export const Hero = props => {
 
                   {/* 底部渐变保留，提升层次感 */}
                   <div className='h-1/3 w-full absolute left-0 bottom-0 z-10'>
-                      <div className='h-full w-full absolute group-hover:opacity-100 transition-all duration-1000 bg-gradient-to-b from-transparent via-white/30 to-[#f8f4ec] dark:to-[#0f1f1e]'/>
+                      <div className='h-full w-full absolute group-hover:opacity-100 transition-all duration-1000 bg-gradient-to-b from-transparent via-white/20 to-[#f8f4ec] dark:to-[#0f1f1e]'/>
                   </div>
 
             </div>
@@ -61,9 +61,9 @@ export const Hero = props => {
 
                     <div className='hero-content wow fadeInUp mx-auto max-w-[640px] md:max-w-[720px] text-center'>
                       {/* 前景卡片化容器，增强与背景的分离度 */}
-                      <div className='mx-auto px-6 md:px-12 py-8 md:py-12 rounded-[28px] bg-white/45 dark:bg-[#0f1f1e]/30 backdrop-blur-3xl backdrop-saturate-150 border border-white/25 dark:border-white/10 shadow-[0_28px_60px_-18px_rgba(15,31,30,0.28)] space-y-6'>
+                      <div className='relative mx-auto px-6 md:px-12 py-8 md:py-12 rounded-[28px] bg-white/25 dark:bg-[#0f1f1e]/20 backdrop-blur-3xl backdrop-saturate-150 border border-white/20 dark:border-white/10 shadow-[0_28px_60px_-18px_rgba(15,31,30,0.26)] space-y-6'>
                         {/* 内部高光与阴影，增强毛玻璃质感 */}
-                        <div className='pointer-events-none absolute inset-0 rounded-[28px] bg-gradient-to-br from-white/20 to-transparent'></div>
+                        <div className='pointer-events-none absolute inset-0 rounded-[28px] bg-gradient-to-br from-white/10 to-transparent'></div>
                         {/* 装饰性标签占位移除，避免视觉干扰 */}
                         <div className='h-0' />
 
