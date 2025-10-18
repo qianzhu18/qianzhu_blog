@@ -68,7 +68,7 @@ export const MenuItem = ({ link }) => {
             className={`submenu transition-all duration-300 lg:absolute lg:left-0 lg:top-full lg:w-[260px] lg:rounded-sm lg:bg-white lg:p-4 lg:dark:bg-dark-2 lg:shadow-lg dark:border-gray-600 
             block opacity-100 visible static w-full bg-transparent p-0 mt-1 ${
               isSubMenuOpen ? 'lg:block lg:opacity-100 lg:visible' : 'lg:hidden lg:opacity-0 lg:invisible'
-            }`}>
+            } lg:group-hover:block lg:group-hover:opacity-100 lg:group-hover:visible`}>
             {link.subMenus.map((sLink, index) => (
               <Link
                 key={index}
