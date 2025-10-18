@@ -59,7 +59,7 @@ export const Hero = props => {
                     {/* 聚焦背景光晕，突出前景 */}
                     <div className='pointer-events-none absolute -z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[380px] rounded-[36px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.65)_0%,rgba(255,255,255,0.28)_55%,rgba(255,255,255,0)_80%)]' />
 
-                    <div className='hero-content wow fadeInUp mx-auto max-w-[760px] md:max-w-[820px] text-center'>
+                    <div className='hero-content wow fadeInUp mx-auto max-w-[640px] md:max-w-[720px] text-center'>
                       {/* 前景卡片化容器，增强与背景的分离度 */}
                       <div className='mx-auto px-6 md:px-10 py-8 md:py-12 rounded-3xl bg-white/40 dark:bg-[#0f1f1e]/35 backdrop-blur-2xl border border-white/20 dark:border-white/5 shadow-[0_22px_48px_-16px_rgba(15,31,30,0.25)] space-y-6'>
                         {/* 装饰性标签占位移除，避免视觉干扰 */}
