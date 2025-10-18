@@ -15,7 +15,7 @@ module.exports = {
   DIFY_CHATBOT_TOKEN: process.env.NEXT_PUBLIC_DIFY_CHATBOT_TOKEN || '',
 
   // 悬浮挂件
-  WIDGET_PET: true, // 是否显示宠物挂件
+  WIDGET_PET: false, // 是否显示宠物挂件（为大陆网络优化默认关闭）
   WIDGET_PET_LINK:
     'https://cdn.jsdelivr.net/npm/live2d-widget-model-haru@1.0.5/02/assets/haru02.model.json', // 默认使用和风配色的 Haru 模型；可改为任意模型 jsonPath
   WIDGET_PET_SWITCH_THEME:

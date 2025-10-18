@@ -86,18 +86,20 @@ const LayoutBase = props => {
             <Lenis />
             {/* 鼠标跟随动画 */}
             <CursorDot />
-            {/* 数字桌宠组件 */}
-            <Live2D />
-            {/* 千浅主题特效系统 */}
-            <Script 
-                src="/themes/qianqian/qianqian-effects.js" 
-                strategy="afterInteractive"
-                onLoad={() => {
-                    if (typeof window !== 'undefined' && window.initQianqianEffects) {
-                        window.initQianqianEffects()
-                    }
-                }}
-            />
+            {/* 数字桌宠组件（为大陆网络优化默认关闭，可在配置中开启） */}
+            {siteConfig('WIDGET_PET', false, CONFIG) && <Live2D />}
+            {/* 千浅主题特效系统（为大陆网络优化默认关闭，可在配置中开启） */}
+            {siteConfig('QIANQIAN_EFFECTS_ENABLE', false, CONFIG) && (
+                <Script 
+                    src="/themes/qianqian/qianqian-effects.js" 
+                    strategy="afterInteractive"
+                    onLoad={() => {
+                        if (typeof window !== 'undefined' && window.initQianqianEffects) {
+                            window.initQianqianEffects()
+                        }
+                    }}
+                />
+            )}
             {/* <MadeWithButton/> */}
         </div>
     )

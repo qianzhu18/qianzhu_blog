@@ -3,6 +3,8 @@
  * 参考 dewx.top 风格 - 现代化杂志布局
  */
 const CONFIG = {
+    // 大陆网络优化：关闭重型特效（可按需开启）
+    QIANQIAN_EFFECTS_ENABLE: false,
     PROXIO_WELCOME_COVER_ENABLE: true, //是否显示页面进入的欢迎文字
     PROXIO_WELCOME_TEXT: '欢迎来到千逐的个人博客，点击任意位置进入', // 欢迎文字，留空则不启用
 

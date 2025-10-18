@@ -57,4 +57,7 @@ module.exports = {
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' // font-awesome 字体图标地址; 可选 /css/all.min.css ， https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css
 
   // END ************网站字体*****************
+  ,
+  // 是否启用 WebFontLoader 远程字体加载（为大陆网络优化，默认关闭以避免跨境请求）
+  WEB_FONT_LOADER_ENABLE: process.env.NEXT_PUBLIC_WEB_FONT_LOADER_ENABLE || false
 }

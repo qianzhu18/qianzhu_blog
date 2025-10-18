@@ -90,6 +90,8 @@ const nextConfig = {
       ? 'standalone'
       : undefined,
   staticPageGenerationTimeout: 120,
+  // 近岸CDN：允许通过环境变量设置静态资源前缀（仅生产）
+  assetPrefix: process.env.NODE_ENV === 'production' ? (process.env.NEXT_PUBLIC_ASSET_PREFIX || undefined) : undefined,
 
   // 性能优化配置
   compress: true,

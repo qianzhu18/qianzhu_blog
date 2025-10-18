@@ -20,25 +20,20 @@ const SEO = props => {
   const router = useRouter()
   const meta = getSEOMeta(props, router, useGlobal()?.locale)
   const webFontUrl = siteConfig('FONT_URL')
+  const WEB_FONT_LOADER_ENABLE = siteConfig('WEB_FONT_LOADER_ENABLE')
 
   useEffect(() => {
-    // 使用WebFontLoader字体加载
+    if (!WEB_FONT_LOADER_ENABLE) return
     loadExternalResource(
       'https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js',
       'js'
-    ).then(url => {
+    ).then(() => {
       const WebFont = window?.WebFont
       if (WebFont) {
-        // console.log('LoadWebFont', webFontUrl)
-        WebFont.load({
-          custom: {
-            // families: ['"LXGW WenKai"'],
-            urls: webFontUrl
-          }
-        })
+        WebFont.load({ custom: { urls: webFontUrl } })
       }
     })
-  }, [])
+  }, [WEB_FONT_LOADER_ENABLE])
 
   // SEO关键词
   const KEYWORDS = siteConfig('KEYWORDS')
