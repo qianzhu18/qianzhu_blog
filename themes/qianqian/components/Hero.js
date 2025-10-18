@@ -61,7 +61,7 @@ export const Hero = props => {
 
                     <div className='hero-content wow fadeInUp mx-auto max-w-[760px] md:max-w-[820px] text-center'>
                       {/* 前景卡片化容器，增强与背景的分离度 */}
-                      <div className='mx-auto px-6 md:px-10 py-8 md:py-12 rounded-3xl bg-white/65 dark:bg-[#0f1f1e]/55 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-[0_22px_48px_-16px_rgba(15,31,30,0.35)] space-y-6'>
+                      <div className='mx-auto px-6 md:px-10 py-8 md:py-12 rounded-3xl bg-white/40 dark:bg-[#0f1f1e]/35 backdrop-blur-2xl border border-white/20 dark:border-white/5 shadow-[0_22px_48px_-16px_rgba(15,31,30,0.25)] space-y-6'>
                         {/* 装饰性标签占位移除，避免视觉干扰 */}
                         <div className='h-0' />
 
@@ -82,10 +82,9 @@ export const Hero = props => {
                           {siteConfig('PROXIO_HERO_BUTTON_1_TEXT', null, config) && (
                             <Link
                               href={siteConfig('PROXIO_HERO_BUTTON_1_URL', '')}
-                              className='group relative inline-flex items-center justify-center px-7 py-3 text-sm md:text-base font-semibold text-white rounded-2xl shadow-xl hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-300'
-                              style={{ background: 'linear-gradient(135deg, #2f5c56 0%, #4c7f78 100%)' }}>
+                              className='group relative inline-flex items-center justify-center px-7 py-3 text-sm md:text-base font-semibold text-[#2f5c56] dark:text-[#cfe3df] bg-white/85 dark:bg-white/10 backdrop-blur-sm border border-white/70 dark:border-white/15 rounded-2xl hover:bg-white transform hover:-translate-y-0.5 transition-all duration-300 shadow-md'>
                               <span className='relative z-10 tracking-wide'>{siteConfig('PROXIO_HERO_BUTTON_1_TEXT', null, config)}</span>
-                              <div className='absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300' style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0))' }} />
+                              <div className='absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300' style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.28), rgba(255,255,255,0))' }} />
                             </Link>
                           )}
 
