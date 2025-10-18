@@ -28,7 +28,8 @@ const BLOG = {
   BIO: process.env.NEXT_PUBLIC_BIO || '一个普通的干饭人🍚', // 作者简介
   LINK: process.env.NEXT_PUBLIC_LINK || 'https://tangly1024.com', // 网站地址
   KEYWORDS: process.env.NEXT_PUBLIC_KEYWORD || 'Notion, 博客', // 网站关键词 英文逗号隔开
-  BLOG_FAVICON: process.env.NEXT_PUBLIC_FAVICON || 'https://youke1.picui.cn/s1/2025/09/23/68d25e7168b4f.jpg', // blog favicon 配置, 支持在线图片
+  // 固定站点图标，避免被环境变量或外部配置意外覆盖
+  BLOG_FAVICON: 'https://youke1.picui.cn/s1/2025/09/23/68d25e7168b4f.jpg', // blog favicon 配置, 支持在线图片
   BEI_AN: process.env.NEXT_PUBLIC_BEI_AN || '', // 备案号 闽ICP备XXXXXX
   BEI_AN_LINK: process.env.NEXT_PUBLIC_BEI_AN_LINK || 'https://beian.miit.gov.cn/', // 备案查询链接，如果用了萌备等备案请在这里填写
   BEI_AN_GONGAN: process.env.NEXT_PUBLIC_BEI_AN_GONGAN || '', // 公安备案号，例如 '浙公网安备3xxxxxxxx8号'

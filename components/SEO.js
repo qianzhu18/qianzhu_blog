@@ -160,7 +160,7 @@ const SEO = props => {
       <meta name='twitter:image' content={image} />
       <meta name='twitter:image:alt' content={title} />
 
-      <link rel='icon' href={BLOG_FAVICON} />
+      {/* 统一仅使用一个 favicon 来源，避免冲突 */}
 
       {COMMENT_WEBMENTION_ENABLE && (
         <>
