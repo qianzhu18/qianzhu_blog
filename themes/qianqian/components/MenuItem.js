@@ -26,7 +26,7 @@ export const MenuItem = ({ link }) => {
           <Link
             href={link?.href}
             target={link?.target}
-            className={`block w-full px-4 py-3 text-base font-medium text-gray-900 dark:text-gray-100 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 lg:mx-8 lg:inline-flex lg:w-auto lg:px-0 lg:py-6 lg:text-sm lg:rounded-none lg:hover:bg-transparent ${
+            className={`block w-full px-4 py-3 text-base font-medium text-gray-900 dark:text-gray-100 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 lg:mx-8 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent ${
               router.route === '/'
                 ? 'lg:text-white lg:group-hover:text-white'
                 : ''
@@ -42,7 +42,7 @@ export const MenuItem = ({ link }) => {
         <li className='submenu-item group relative'>
           <button
             onClick={toggleSubMenu}
-            className={`w-full text-left cursor-pointer flex items-center justify-between px-4 py-3 text-base font-semibold text-gray-900 dark:text-gray-100 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 lg:ml-8 lg:mr-0 lg:inline-flex lg:w-auto lg:px-0 lg:py-6 lg:text-sm lg:rounded-none lg:hover:bg-transparent ${
+            className={`w-full text-left cursor-pointer flex items-center justify-between px-4 py-3 text-base font-semibold text-gray-900 dark:text-gray-100 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 lg:ml-8 lg:mr-0 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent ${
               router.route === '/'
                 ? 'lg:text-white lg:group-hover:text-white'
                 : ''
