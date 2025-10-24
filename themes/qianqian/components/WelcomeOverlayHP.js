@@ -93,6 +93,52 @@ const WelcomeOverlayHP = ({ onFinishLoading }) => {
     <div ref={overlayRef} className='intro-overlay fixed inset-0 z-[9999] overflow-hidden'>
       <Script src='https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js' strategy='afterInteractive' />
 
+      {/* 背景流体画布（HomePage 的 WebGL Fluid） */}
+      {!disableForEnv && (
+        <>
+          <canvas id='background' className='absolute inset-0 w-full h-full'></canvas>
+          <Script id='hp-fluid-config' strategy='afterInteractive'>
+            {`
+              window.$ = sel => document.querySelector(sel);
+              window.config = {
+                SIM_RESOLUTION: 128,
+                DYE_RESOLUTION: 1024,
+                CAPTURE_RESOLUTION: 512,
+                DENSITY_DISSIPATION: 1,
+                VELOCITY_DISSIPATION: 0.2,
+                PRESSURE: 0.8,
+                PRESSURE_ITERATIONS: 20,
+                CURL: 30,
+                SPLAT_RADIUS: 0.25,
+                SPLAT_FORCE: 6000,
+                SHADING: true,
+                COLORFUL: true,
+                COLOR_UPDATE_SPEED: 10,
+                PAUSED: false,
+                BACK_COLOR: { r: 30, g: 31, b: 33 },
+                TRANSPARENT: false,
+                BLOOM: true,
+                BLOOM_ITERATIONS: 8,
+                BLOOM_RESOLUTION: 256,
+                BLOOM_INTENSITY: 0.4,
+                BLOOM_THRESHOLD: 0.8,
+                BLOOM_SOFT_KNEE: 0.7,
+                SUNRAYS: true,
+                SUNRAYS_RESOLUTION: 196,
+                SUNRAYS_WEIGHT: 1.0
+              };
+              // 可见性 API 变量
+              (function(){
+                var hp = ('hidden' in document) ? 'hidden' : (('webkitHidden' in document) ? 'webkitHidden' : (('mozHidden' in document) ? 'mozHidden' : 'hidden'));
+                window.hiddenProperty = hp;
+                window.visibilityChangeEvent = hp.replace(/hidden/i, 'visibilitychange');
+              })();
+            `}
+          </Script>
+          <Script src='https://cdn.jsdelivr.net/gh/SimonAKing/HomePage/dist/js/background.js' strategy='afterInteractive' />
+        </>
+      )}
+
       {/* Intro 内容 */}
       <div className='content content-intro relative h-full w-full'>
         <div className='content-inner absolute inset-0 flex flex-col items-center justify-center select-none'>
@@ -133,4 +179,3 @@ const WelcomeOverlayHP = ({ onFinishLoading }) => {
 }
 
 export default WelcomeOverlayHP
-
