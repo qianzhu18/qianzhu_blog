@@ -1,0 +1,136 @@
+/* eslint-disable @next/next/no-img-element */
+import { siteConfig } from '@/lib/config'
+import Script from 'next/script'
+import { useEffect, useMemo, useRef, useState } from 'react'
+
+/**
+ * HomePage 风格的加载转场覆盖层（简化版）
+ * - 自动播放，无需点击
+ * - SVG 形变 + 遮罩上移，结束后销毁
+ * - 弱网 / 省流 / 减少动态：自动禁用
+ */
+const WelcomeOverlayHP = ({ onFinishLoading }) => {
+  const [show, setShow] = useState(true)
+  const overlayRef = useRef(null)
+  const pathRef = useRef(null)
+
+  const welcomeText = siteConfig('PROXIO_WELCOME_TEXT', '欢迎来到千逐的个人博客，点击任意位置进入')
+
+  // 环境判定：弱网/省流/减少动态则禁用
+  const disableForEnv = useMemo(() => {
+    if (typeof window === 'undefined') return true
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection
+    if (conn) {
+      if (conn.saveData) return true
+      const et = conn.effectiveType || ''
+      if (['slow-2g', '2g'].includes(et)) return true
+      if (typeof conn.downlink === 'number' && conn.downlink < 1) return true
+    }
+    try {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return true
+    } catch (e) {}
+    return false
+  }, [])
+
+  useEffect(() => {
+    if (disableForEnv) {
+      setShow(false)
+      return
+    }
+    let cancelled = false
+    const start = () => {
+      if (cancelled) return
+      const anime = window.anime
+      if (!anime) {
+        // 等待 anime 脚本就绪
+        setTimeout(start, 60)
+        return
+      }
+      const overlay = overlayRef.current
+      const pathEl = pathRef.current
+      if (!overlay || !pathEl) return
+
+      // 设置 transform 原点
+      const shape = overlay.querySelector('svg.shape')
+      if (shape) shape.style.transformOrigin = '50% 0%'
+
+      // Intro 整体上移隐藏
+      anime({
+        targets: overlay.querySelector('.content-intro'),
+        duration: 1100,
+        easing: 'easeInOutSine',
+        translateY: '-200vh'
+      })
+
+      // 遮罩拉伸回弹
+      anime({
+        targets: shape,
+        scaleY: [
+          { value: [0.8, 1.8], duration: 550, easing: 'easeInQuad' },
+          { value: 1, duration: 550, easing: 'easeOutQuad' }
+        ]
+      })
+
+      // 路径形变为目标路径，动画结束后隐藏覆盖层
+      anime({
+        targets: pathEl,
+        duration: 1100,
+        easing: 'easeOutQuad',
+        d: pathEl.getAttribute('data-to'),
+        complete: () => {
+          setShow(false)
+          onFinishLoading && onFinishLoading()
+        }
+      })
+    }
+    start()
+    return () => { cancelled = true }
+  }, [disableForEnv, onFinishLoading])
+
+  if (!show) return null
+
+  return (
+    <div ref={overlayRef} className='intro-overlay fixed inset-0 z-[9999] overflow-hidden'>
+      <Script src='https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js' strategy='afterInteractive' />
+
+      {/* Intro 内容 */}
+      <div className='content content-intro relative h-full w-full'>
+        <div className='content-inner absolute inset-0 flex flex-col items-center justify-center select-none'>
+          <h2 className='content-title text-white/95 text-2xl md:text-3xl mb-3 tracking-wide'>{welcomeText}</h2>
+          <h3 className='content-subtitle text-white/70 text-base md:text-lg'>&nbsp;</h3>
+          <div className='arrow arrow-1'></div>
+          <div className='arrow arrow-2'></div>
+        </div>
+
+        {/* 遮罩形状 */}
+        <div className='shape-wrap pointer-events-none'>
+          <svg className='shape block w-full h-screen' preserveAspectRatio='none' viewBox='0 0 1440 800'>
+            <path
+              ref={pathRef}
+              d='M -44,-50 C -52.71,28.52 15.86,8.186 184,14.69 383.3,22.39 462.5,12.58 638,14 835.5,15.6 987,6.4 1194,13.86 1661,30.68 1652,-36.74 1582,-140.1 1512,-243.5 15.88,-589.5 -44,-50 Z'
+              data-to='M -44,-50 C -137.1,117.4 67.86,445.5 236,452 435.3,459.7 500.5,242.6 676,244 873.5,245.6 957,522.4 1154,594 1593,753.7 1793,226.3 1582,-126 1371,-478.3 219.8,-524.2 -44,-50 Z'
+              fill='#1e1f21'
+            />
+          </svg>
+        </div>
+      </div>
+
+      {/* 遮罩期隐藏自定义光标/置顶按钮，避免干扰 */}
+      <style jsx global>{`
+        .cursor-dot, .cursor-ring { display: none !important; }
+        #cd-top-button { display: none !important; }
+        body { overflow: hidden; }
+      `}</style>
+
+      <style jsx>{`
+        .intro-overlay { background: radial-gradient(1200px 800px at 50% 50%, rgba(255,255,255,0.06), rgba(0,0,0,0.85)); }
+        .arrow { position:absolute; left:50%; width:18px; height:18px; border-right:2px solid rgba(255,255,255,.65); border-bottom:2px solid rgba(255,255,255,.65); transform: translateX(-50%) rotate(45deg); opacity:.8; }
+        .arrow-1 { bottom: 96px; }
+        .arrow-2 { bottom: 76px; }
+      `}</style>
+    </div>
+  )
+}
+
+export default WelcomeOverlayHP
+

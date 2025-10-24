@@ -41,7 +41,7 @@ import { SVG404 } from './components/svg/SVG404'
 import Lenis from '@/components/Lenis'
 import Announcement from './components/Announcement'
 import CursorDot from '@/components/CursorDot'
-import LoadingCover from './components/LoadingCover'
+import LoadingCover from './components/WelcomeOverlayHP'
 import Live2D from '@/components/Live2D'
 import Script from 'next/script'
 
