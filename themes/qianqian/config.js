@@ -181,7 +181,7 @@ const CONFIG = {
     PROXIO_ABOUT_TEXT_1: '我是一个系统构建型的青年 AI 协作者',
     PROXIO_ABOUT_TEXT_2:
         '19岁的千逐，专注于把认知模型和AI技术转化为可运行的系统。我搭建跨年级认知社群与跨校AI生态，用结构化知识库、自动化工作流和高频反馈机制，帮助同频伙伴快速迭代。擅长将第一性原理、博弈思维与产品感结合，持续打磨可沉淀的长期价值。',
-    PROXIO_ABOUT_PHOTO_URL: 'https://youke1.picui.cn/s1/2025/09/26/68d65fa0a938f.jpg',
+    PROXIO_ABOUT_PHOTO_URL: 'https://youke1.picui.cn/s1/2025/10/24/68fb3eeb3bfed.png',
     PROXIO_ABOUT_KEY_1: '系统构建力',
     PROXIO_ABOUT_VAL_1: '跨校AI社群运营',
     PROXIO_ABOUT_KEY_2: '自动化能力',
