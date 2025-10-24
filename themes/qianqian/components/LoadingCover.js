@@ -58,6 +58,11 @@ const LoadingCover = ({ onFinishLoading }) => {
             <div className="welcome-text px-2" id="welcomeText">
                 {welcomeText}
             </div>
+            {/* 覆盖全局：加载画面期间隐藏自定义光标与返回顶部按钮，避免视觉干扰 */}
+            <style jsx global>{`
+                .cursor-dot, .cursor-ring { display: none !important; }
+                #cd-top-button { display: none !important; }
+            `}</style>
             <style jsx>
                 {`
                     body {
