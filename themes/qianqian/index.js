@@ -41,6 +41,7 @@ import { SVG404 } from './components/svg/SVG404'
 import Lenis from '@/components/Lenis'
 import Announcement from './components/Announcement'
 import CursorDot from '@/components/CursorDot'
+import GridBackground from './components/GridBackground'
 import LoadingCover from './components/WelcomeOverlayHP'
 import Live2D from '@/components/Live2D'
 import Script from 'next/script'
@@ -72,6 +73,9 @@ const LayoutBase = props => {
             <div id='main-wrapper' className='grow'>
                 {children}
             </div>
+
+            {/* 背景：HomePage 风格交互网格（固定全屏，不影响交互） */}
+            {siteConfig('PROXIO_GRID_BG_ENABLE', true, CONFIG) && <GridBackground />}
 
             {/* 页脚 */}
             <Footer {...props} />

@@ -35,6 +35,9 @@ const CONFIG = {
     PROXIO_BLOG_COUNT: 6, // 首页博文区块展示前6篇文章（两行 * 3列）
     PROXIO_BLOG_TEXT_1: '我的最新动态',
 
+    // 首页网格交互背景
+    PROXIO_GRID_BG_ENABLE: true,
+
     // 区块默认内容显示文章的summary文本，但也支持用自定义图片或logo德国替换掉占位显示内容
     PROXIO_BLOG_PLACEHOLDER_IMG_URL_1: '', // 填写要替换成的图片，支持图床或直接上传到项目中，示例  /images/feature-1.webp
     PROXIO_BLOG_PLACEHOLDER_IMG_URL_2: '',
