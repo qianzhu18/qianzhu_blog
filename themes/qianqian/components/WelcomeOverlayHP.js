@@ -91,7 +91,7 @@ const WelcomeOverlayHP = ({ onFinishLoading }) => {
 
   return (
     <div ref={overlayRef} className='intro-overlay fixed inset-0 z-[9999] overflow-hidden'>
-      <Script src='https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js' strategy='afterInteractive' />
+      {/* anime.js 已在 pages/_document.js 全局引入 */}
 
       {/* 背景流体画布（HomePage 的 WebGL Fluid） */}
       {!disableForEnv && (

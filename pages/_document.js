@@ -63,6 +63,9 @@ class MyDocument extends Document {
 
           {/* 预先设置深色模式，避免闪烁 */}
           <script dangerouslySetInnerHTML={{ __html: darkModeScript }} />
+
+          {/* 待机页面动画依赖：anime.js（全站可用，首页欢迎遮罩依赖） */}
+          <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" defer />
         </Head>
 
         <body>
