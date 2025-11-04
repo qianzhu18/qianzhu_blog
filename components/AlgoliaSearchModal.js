@@ -45,7 +45,6 @@ export default function AlgoliaSearchModal({ cRef }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [isInputFocused, setIsInputFocused] = useState(false)
-  const pendingQueryRef = useRef('')
 
   const inputRef = useRef(null)
   const router = useRouter()
@@ -134,14 +133,6 @@ export default function AlgoliaSearchModal({ cRef }) {
     if (isModalOpen) {
       setTimeout(() => {
         inputRef.current?.focus()
-        if (pendingQueryRef.current) {
-          const query = pendingQueryRef.current
-          pendingQueryRef.current = ''
-          if (inputRef.current) {
-            inputRef.current.value = query
-          }
-          handleSearch(query, 0)
-        }
       }, 100)
     } else {
       resetSearch()
@@ -153,8 +144,7 @@ export default function AlgoliaSearchModal({ cRef }) {
    **/
   useImperativeHandle(cRef, () => {
     return {
-      openSearch: query => {
-        pendingQueryRef.current = query || ''
+      openSearch: () => {
         setIsModalOpen(true)
       }
     }
