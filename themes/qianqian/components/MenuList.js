@@ -51,6 +51,35 @@ export const MenuList = props => {
     links = customMenu
   }
 
+  const shouldShowSearch =
+    !!siteConfig('ALGOLIA_APP_ID') &&
+    !!siteConfig('ALGOLIA_SEARCH_ONLY_APP_KEY') &&
+    !!siteConfig('ALGOLIA_INDEX')
+  if (shouldShowSearch) {
+    const searchHref = '/search'
+    const hasSearchLink =
+      Array.isArray(links) &&
+      links.some(
+        link =>
+          link?.href === searchHref ||
+          link?.slug === searchHref ||
+          link?.to === searchHref
+      )
+    if (!hasSearchLink) {
+      const searchMenuItem = {
+        id: 'static-algolia-search',
+        icon: 'fas fa-search',
+        title: locale.NAV.SEARCH,
+        name: locale.NAV.SEARCH,
+        href: searchHref,
+        target: '_self',
+        type: 'Menu',
+        show: true
+      }
+      links = Array.isArray(links) ? [...links, searchMenuItem] : [searchMenuItem]
+    }
+  }
+
   if (!links || links.length === 0) {
     return null
   }
