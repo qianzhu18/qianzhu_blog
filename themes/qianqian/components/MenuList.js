@@ -3,7 +3,13 @@ import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { MenuItem } from './MenuItem'
+
+const AlgoliaSearchModal = dynamic(
+  () => import('@/components/AlgoliaSearchModal'),
+  { ssr: false }
+)
 
 /**
  * 响应式 折叠菜单
@@ -17,6 +23,7 @@ export const MenuList = props => {
   const searchInputRef = useRef(null)
   const isComposing = useRef(false)
   const [searchKey, setSearchKey] = useState('')
+  const searchModal = useRef(null)
 
   let links = [
     {
@@ -83,9 +90,18 @@ export const MenuList = props => {
 
   const triggerSearch = () => {
     const keyword = searchInputRef.current?.value?.trim()
-    if (!keyword) {
+
+    if (shouldShowSearch) {
+      searchModal.current?.openSearch(keyword || '')
+      setShowMenu(false)
       return
     }
+
+    if (!keyword) {
+      router.push('/search').then(() => setShowMenu(false))
+      return
+    }
+
     router
       .push(`/search/${encodeURIComponent(keyword)}`)
       .then(() => setShowMenu(false))
@@ -179,6 +195,7 @@ export const MenuList = props => {
           )}
         </ul>
       </nav>
+      {shouldShowSearch && <AlgoliaSearchModal cRef={searchModal} {...props} />}
     </div>
   )
 }
