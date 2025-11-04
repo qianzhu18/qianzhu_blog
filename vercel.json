@@ -1,5 +1,11 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "headers": []
+  "headers": [],
+  "env": {
+    "NEXT_PUBLIC_ALGOLIA_APP_ID": "9VXSWHBL4J",
+    "NEXT_PUBLIC_ALGOLIA_INDEX": "qianzhu_blog",
+    "NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_APP_KEY": "9d303ab917a78fc7b8f4a53d4b74a6d1",
+    "ALGOLIA_ADMIN_APP_KEY": "4db0083a6f55b72c4119ecf8566ad511"
+  }
 }
