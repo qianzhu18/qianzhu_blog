@@ -34,8 +34,12 @@ module.exports = {
   // 若未在环境变量中设置，则默认使用指定的站点ID
   CLARITY_ID: process.env.NEXT_PUBLIC_CLARITY_ID || 'tre4jon6i1', // 只需要复制Clarity脚本中的ID部分，ID是一个十位的英文数字组合
 
-  UMAMI_HOST: process.env.NEXT_PUBLIC_UMAMI_HOST || 'https://cloud.umami.is/script.js', // umami的服务地址
-  UMAMI_ID: process.env.NEXT_PUBLIC_UMAMI_ID || '', // umami的id
+  UMAMI_HOST:
+    process.env.NEXT_PUBLIC_UMAMI_HOST ||
+    'https://umami.qianzhu.online/script.js', // umami的服务地址
+  UMAMI_ID:
+    process.env.NEXT_PUBLIC_UMAMI_ID ||
+    '5779c73e-aac8-45a7-95b2-a2ffe2be1fe2', // umami的id
 
   // <---- 站点统计
 }

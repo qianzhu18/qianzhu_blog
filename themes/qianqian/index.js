@@ -44,6 +44,7 @@ import CursorDot from '@/components/CursorDot'
 import GridBackground from './components/GridBackground'
 import LoadingCover from './components/WelcomeOverlayHP'
 import Live2D from '@/components/Live2D'
+import Pagination from './components/Pagination'
 import Script from 'next/script'
 
 /**
@@ -256,6 +257,10 @@ const LayoutSearch = props => {
     const { keyword } = props
     const router = useRouter()
     const currentSearch = keyword || router?.query?.s
+    const page = Number(props?.page || 1)
+    const POSTS_PER_PAGE = siteConfig('POSTS_PER_PAGE', 12, props?.NOTION_CONFIG)
+    const totalPage =
+        Math.ceil((props?.postCount ?? props?.posts?.length ?? 0) / POSTS_PER_PAGE) || 1
 
     useEffect(() => {
         if (isBrowser) {
@@ -273,7 +278,16 @@ const LayoutSearch = props => {
         <>
             <section className='max-w-7xl mx-auto bg-white pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]'>
                 <SearchInput {...props} />
-                {currentSearch && <Blog {...props} />}
+                {currentSearch && (
+                    <>
+                        <Blog {...props} />
+                        {totalPage > 1 && (
+                            <div className='mt-6'>
+                                <Pagination page={page} totalPage={totalPage} />
+                            </div>
+                        )}
+                    </>
+                )}
             </section>
         </>
     )
@@ -342,8 +356,11 @@ const Layout404 = () => {
  * 博客列表
  */
 const LayoutPostList = props => {
-    const { posts, category, tag } = props
+    const { posts, category, tag, page = 1, postCount } = props
     const slotTitle = category || tag
+    const POSTS_PER_PAGE = siteConfig('POSTS_PER_PAGE', 12, props?.NOTION_CONFIG)
+    const totalPage =
+        Math.ceil((postCount ?? posts?.length ?? 0) / POSTS_PER_PAGE) || 1
 
     return (
         <>
@@ -411,6 +428,11 @@ const LayoutPostList = props => {
                             )
                         })}
                     </div>
+                    {totalPage > 1 && (
+                        <div className='mt-6'>
+                            <Pagination page={page} totalPage={totalPage} />
+                        </div>
+                    )}
                 </div>
             </section>
             {/* <!-- ====== Blog Section End --> */}
