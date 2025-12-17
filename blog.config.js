@@ -13,9 +13,9 @@ const BLOG = {
   // 强制主题（最高优先级）：当设置后将忽略 URL ?theme 和 Notion 中的 THEME
   FORCE_THEME: process.env.NEXT_PUBLIC_FORCE_THEME || 'qianqian',
   // 站点标题与描述（覆盖 Notion 的默认信息）
-  TITLE: process.env.NEXT_PUBLIC_TITLE || '千逐的个人博客',
+  TITLE: process.env.NEXT_PUBLIC_TITLE || '千逐 · 系统构建者 | AI 与认知探索',
   DESCRIPTION:
-    process.env.NEXT_PUBLIC_DESCRIPTION || '一个有趣的灵魂，希望看见更远的世界',
+    process.env.NEXT_PUBLIC_DESCRIPTION || '计算机科学背景的系统构建者，把第一性原理、奥卡姆剃刀与反脆弱实践到社群、知识库和 AI 工作流中，链接同频的创造者。',
   LANG: process.env.NEXT_PUBLIC_LANG || 'zh-CN', // e.g 'zh-CN','en-US'  see /lib/lang.js for more.
   SINCE: process.env.NEXT_PUBLIC_SINCE || 2021, // e.g if leave this empty, current year will be used.
 
@@ -25,9 +25,9 @@ const BLOG = {
   APPEARANCE_DARK_TIME: process.env.NEXT_PUBLIC_APPEARANCE_DARK_TIME || [18, 6], // 夜间模式起至时间，false时关闭根据时间自动切换夜间模式
 
   AUTHOR: process.env.NEXT_PUBLIC_AUTHOR || '千逐', // 您的昵称 例如 tangly1024
-  BIO: process.env.NEXT_PUBLIC_BIO || '一个普通的干饭人🍚', // 作者简介
-  LINK: process.env.NEXT_PUBLIC_LINK || 'https://tangly1024.com', // 网站地址
-  KEYWORDS: process.env.NEXT_PUBLIC_KEYWORD || 'Notion, 博客', // 网站关键词 英文逗号隔开
+  BIO: process.env.NEXT_PUBLIC_BIO || '系统构建者｜AI 与认知探索者', // 作者简介
+  LINK: process.env.NEXT_PUBLIC_LINK || 'https://www.qianzhu.me/', // 网站地址
+  KEYWORDS: process.env.NEXT_PUBLIC_KEYWORD || '系统构建, AI, 认知, 自动化, 社群, 知识管理', // 网站关键词 英文逗号隔开
   // 固定站点图标，避免被环境变量或外部配置意外覆盖
   BLOG_FAVICON: 'https://imagehost.qianzhu.online/api/rfile/千逐.jpg', // blog favicon 配置, 支持在线图片
   BEI_AN: process.env.NEXT_PUBLIC_BEI_AN || '', // 备案号 闽ICP备XXXXXX
@@ -75,7 +75,7 @@ const BLOG = {
   // 欢迎语打字效果,Hexo,Matery主题支持, 英文逗号隔开多个欢迎语。
   GREETING_WORDS:
     process.env.NEXT_PUBLIC_GREETING_WORDS ||
-    'Hi，我是一个程序员, Hi，我是一个打工人,Hi，我是一个干饭人,欢迎来到我的博客🎉',
+    '你好，我是千逐｜系统构建者, 专注 AI 与认知的长期主义实践者, 欢迎一起共建',
 
   // uuid重定向至 slug
   UUID_REDIRECT: process.env.UUID_REDIRECT || false

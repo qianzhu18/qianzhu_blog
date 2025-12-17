@@ -6,19 +6,19 @@ const CONFIG = {
     // 大陆网络优化：关闭重型特效（可按需开启）
     QIANQIAN_EFFECTS_ENABLE: false,
     PROXIO_WELCOME_COVER_ENABLE: true, //是否显示页面进入的欢迎文字
-    PROXIO_WELCOME_TEXT: '欢迎来到千逐的个人博客，点击任意位置进入', // 欢迎文字，留空则不启用
+    PROXIO_WELCOME_TEXT: '进入千逐的数字世界：计算机科学｜系统构建者｜AI 与认知探索者', // 欢迎文字，留空则不启用
 
     // 英雄区块导航
     PROXIO_HERO_ENABLE: true, // 开启英雄区
-    PROXIO_HERO_TITLE_1: '欢迎来到我的数字世界', // 英雄区文字
-    PROXIO_HERO_TITLE_2: '探索技术、分享信息、提升认知', // 英雄区文字
+    PROXIO_HERO_TITLE_1: '千逐 · 系统构建者 / AI 与认知探索', // 英雄区文字
+    PROXIO_HERO_TITLE_2: '把第一性原理与奥卡姆剃刀落到可运行的系统，链接同频的创造者', // 英雄区文字
     // 英雄区两个按钮，如果TEXT留空则隐藏按钮
-    PROXIO_HERO_BUTTON_1_TEXT: '开始体验', // 英雄区按钮
+    PROXIO_HERO_BUTTON_1_TEXT: '认识千逐', // 英雄区按钮
     PROXIO_HERO_BUTTON_1_URL:
-        '#latest', // 英雄区按钮，跳转到首页“我的最新动态”区块
-    PROXIO_HERO_BUTTON_2_TEXT: '在Github上关注', // 英雄区按钮
-    PROXIO_HERO_BUTTON_2_URL: 'https://github.com/tangly1024/NotionNext', // 英雄区按钮
-    PROXIO_HERO_BUTTON_2_ICON: '/images/starter/github.svg', // 英雄区按钮2的图标，不需要则留空
+        '#team', // 英雄区按钮，跳转到首页“关于我”区块
+    PROXIO_HERO_BUTTON_2_TEXT: '查看履历', // 英雄区按钮
+    PROXIO_HERO_BUTTON_2_URL: '#about', // 英雄区按钮
+    PROXIO_HERO_BUTTON_2_ICON: '', // 英雄区按钮2的图标，不需要则留空
 
     // 英雄区配图，如需隐藏，改为空值即可 ''
     PROXIO_HERO_BANNER_IMAGE: '/images/hero-jade.svg', // hero区背景，默认是获取Notion背景，如需另外配置图片可以填写在这里
@@ -75,26 +75,31 @@ const CONFIG = {
 
     // 首页生涯区块
     PROXIO_CAREER_ENABLE: true, // 区块开关
-    PROXIO_CAREER_TITLE: '生涯',
+    PROXIO_CAREER_TITLE: '系统构建与履历',
     PROXIO_CAREER_TEXT:
-        '以下是我的职业生涯',
+        '把社群、知识库与 AI 工作流落到真实场景的实践记录',
 
     // 生涯内容卡牌 ，title是标题 ，bio是备注，text是详情
     PROXIO_CAREERS: [
         {
-            title: '湖南省大学生创新创业园 · 应用技术部',
-            bio: '2025 暑期',
-            text: '主导初创社群从0到1的运营体系设计，规划成员引入、分层激励与知识库沉淀模块，并探索AI工具在社群运营中的落地场景，完成冷启动验证。'
-        },
-        {
-            title: '跨年级认知社群 主理人',
+            title: '跨年级认知社群',
             bio: '2024-至今',
-            text: '以第一性原理为框架，搭建打破年级壁垒的认知成长社群，沉淀结构化课程与复盘模板，为成员提供高信噪比的长期陪跑与反馈机制。'
+            text: '以本校为据点筛选同频伙伴，打破信息壁垒，沉淀高信噪比的成长模板与活动，建立成员间的深度链接。'
         },
         {
-            title: '湖南AGI & Datawhale 校园大使',
-            bio: '2025-至今',
-            text: '连接高校与社区的AI生态网络，组织主题活动、传递官方资源，并将校园需求反馈至团队，推动跨校协作和资源共享。'
+            title: '跨校 AI 生态',
+            bio: '2024-至今',
+            text: '作为核心构建者，运营 200+ 成员的 AI 主题社群，搭建跨校资源网络，侧重思想碰撞与长期链接而非一次性活动。'
+        },
+        {
+            title: '湖南省大学生创新创业园 · 应用技术部 & 社群核心构建者',
+            bio: '大一暑假',
+            text: '主导初创社群从 0 到 1 的运营体系设计，规划成员引入、分层激励与知识库沉淀，探索 AI 工具在社群运营中的落地。'
+        },
+        {
+            title: '湖南 AGI & Datawhale 校园大使',
+            bio: '大一学年',
+            text: '连接官方与校园，建立并维护核心学习者社群，组织资源传达与本地化活动，反馈校园需求以优化策略。'
         }
     ],
 
@@ -181,18 +186,18 @@ const CONFIG = {
     // 关于作者区块
     PROXIO_ABOUT_ENABLE: true, // 关于作者区块区块开关
     PROXIO_ABOUT_TITLE: '关于作者',
-    PROXIO_ABOUT_TEXT_1: '我是一个系统构建型的青年 AI 协作者',
+    PROXIO_ABOUT_TEXT_1: '计算机科学 | 系统构建者 | AI 与认知探索者',
     PROXIO_ABOUT_TEXT_2:
-        '19岁的千逐，专注于把认知模型和AI技术转化为可运行的系统。我搭建跨年级认知社群与跨校AI生态，用结构化知识库、自动化工作流和高频反馈机制，帮助同频伙伴快速迭代。擅长将第一性原理、博弈思维与产品感结合，持续打磨可沉淀的长期价值。',
+        '你好，我是千逐，专注把复杂认知过程转化为可运行的系统。以第一性原理与奥卡姆剃刀为方法论，践行反脆弱，近期关注 AI 的“涌现”现象，从整体论视角理解自下而上的智能。实践中，我搭建跨年级认知社群与跨校 AI 生态，用结构化知识库、自动化工作流与高信噪比链接，陪伴同频伙伴长期迭代。',
     PROXIO_ABOUT_PHOTO_URL: 'https://youke1.picui.cn/s1/2025/10/24/68fb3eeb3bfed.png',
-    PROXIO_ABOUT_KEY_1: '系统构建力',
-    PROXIO_ABOUT_VAL_1: '跨校AI社群运营',
-    PROXIO_ABOUT_KEY_2: '自动化能力',
-    PROXIO_ABOUT_VAL_2: 'n8n · Agent链路',
-    PROXIO_ABOUT_KEY_3: '知识体系',
-    PROXIO_ABOUT_VAL_3: 'Obsidian第二大脑',
-    PROXIO_ABOUT_KEY_4: '技术栈',
-    PROXIO_ABOUT_VAL_4: '容器 · 网络 · 运维',
+    PROXIO_ABOUT_KEY_1: '系统构建',
+    PROXIO_ABOUT_VAL_1: '跨年级社群｜跨校 AI 生态',
+    PROXIO_ABOUT_KEY_2: '知识与生产力',
+    PROXIO_ABOUT_VAL_2: 'Obsidian 第二大脑｜Apple 生态工作流',
+    PROXIO_ABOUT_KEY_3: '自动化与 AI',
+    PROXIO_ABOUT_VAL_3: 'n8n · Agent 链路 · 爬虫/脚本',
+    PROXIO_ABOUT_KEY_4: '技术基石',
+    PROXIO_ABOUT_VAL_4: '容器 · 网络协议 · 运维基础',
 
     PROXIO_ABOUT_BUTTON_URL: '/about',
     PROXIO_ABOUT_BUTTON_TEXT: '关于我',
@@ -201,16 +206,16 @@ const CONFIG = {
     PROXIO_BRANDS_ENABLE: true, // 滚动文字
     PROXIO_BRANDS: [
         '系统构建',
-        'AI工作流设计',
-        '认知社群运营',
-        '自动化流程孵化',
-        '系统构建',
-        'AI工作流设计',
-        '认知社群运营',
-        '自动化流程孵化'
+        '跨年级认知社群',
+        '跨校 AI 生态',
+        'Obsidian 第二大脑',
+        '自动化工作流',
+        'n8n · Agent 链路',
+        '容器与网络基础',
+        'AI 与认知探索'
     ],
 
-    PROXIO_FOOTER_SLOGAN: '我们通过技术为品牌和公司创造数字体验。',
+    PROXIO_FOOTER_SLOGAN: '用结构化思维与 AI 工具，把认知落为可迭代的系统。',
 
     // 页脚三列菜单组
     // 页脚菜单
@@ -239,14 +244,14 @@ const CONFIG = {
 
     // 页面底部的行动呼吁模块
     PROXIO_CTA_ENABLE: true,
-    PROXIO_CTA_TITLE: '与我建立联系',
-    PROXIO_CTA_TITLE_2: '一起共建长期价值项目',
+    PROXIO_CTA_TITLE: '与我链接',
+    PROXIO_CTA_TITLE_2: '共建反脆弱的系统与社群',
     PROXIO_CTA_DESCRIPTION:
-        '如果你在探索系统构建、AI工作流或认知社群设计，欢迎主动联系我，我们可以一起把想法落到真实场景。',
+        '如果你关注系统构建、认知科学或 AI 工作流，欢迎联系我。我在寻找同频的长期合作者，一起把想法落到真实场景。',
     PROXIO_CTA_BUTTON: true, // 是否显示按钮
     PROXIO_CTA_BUTTON_URL:
-        'https://www.qianzhu.me/',
-    PROXIO_CTA_BUTTON_TEXT: '前往我的主页',
+        'mailto:qianzhuxue@gmail.com',
+    PROXIO_CTA_BUTTON_TEXT: '发邮件给我',
 
     PROXIO_POST_REDIRECT_ENABLE: true, // 默認開啟重定向
     PROXIO_POST_REDIRECT_URL: 'https://blog.tangly1024.com', // 重定向域名
