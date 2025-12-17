@@ -82,14 +82,24 @@ const CONFIG = {
     // 生涯内容卡牌 ，title是标题 ，bio是备注，text是详情
     PROXIO_CAREERS: [
         {
+            title: '洋来社 · 拱火文化',
+            bio: '2024-至今',
+            text: '在“拱火”氛围里链接创造者，聚焦认知升级与项目共创，用高频碰撞和行动复盘推动伙伴快速迭代。'
+        },
+        {
+            title: '长理分浪',
+            bio: '2024-至今',
+            text: '校内 AI / 技术社区的共建者，策划分享与工作坊，把知识库、自动化工具与实践结合，营造热烈开放的学习场。'
+        },
+        {
             title: '跨年级认知社群',
             bio: '2024-至今',
-            text: '以本校为据点筛选同频伙伴，打破信息壁垒，沉淀高信噪比的成长模板与活动，建立成员间的深度链接。'
+            text: '筛选同频伙伴，打破信息壁垒，沉淀高信噪比的成长模板与活动，让不同年级的同学建立真实、长期的链接。'
         },
         {
             title: '跨校 AI 生态',
             bio: '2024-至今',
-            text: '作为核心构建者，运营 200+ 成员的 AI 主题社群，搭建跨校资源网络，侧重思想碰撞与长期链接而非一次性活动。'
+            text: '作为核心构建者运营 200+ 成员的 AI 主题社群，搭建跨校资源网络，侧重思想碰撞与长期链接而非一次性活动。'
         },
         {
             title: '湖南省大学生创新创业园 · 应用技术部 & 社群核心构建者',
@@ -97,9 +107,9 @@ const CONFIG = {
             text: '主导初创社群从 0 到 1 的运营体系设计，规划成员引入、分层激励与知识库沉淀，探索 AI 工具在社群运营中的落地。'
         },
         {
-            title: '湖南 AGI & Datawhale 校园大使',
+            title: '观猹 · 校园大使',
             bio: '大一学年',
-            text: '连接官方与校园，建立并维护核心学习者社群，组织资源传达与本地化活动，反馈校园需求以优化策略。'
+            text: '连接官方与校园，维护核心学习者社群，策划资源传达与本地化活动，并将校园需求反馈以优化策略。'
         }
     ],
 
@@ -188,8 +198,8 @@ const CONFIG = {
     PROXIO_ABOUT_TITLE: '关于作者',
     PROXIO_ABOUT_TEXT_1: '计算机科学 | 系统构建者 | AI 与认知探索者',
     PROXIO_ABOUT_TEXT_2:
-        '你好，我是千逐，专注把复杂认知过程转化为可运行的系统。以第一性原理与奥卡姆剃刀为方法论，践行反脆弱，近期关注 AI 的“涌现”现象，从整体论视角理解自下而上的智能。实践中，我搭建跨年级认知社群与跨校 AI 生态，用结构化知识库、自动化工作流与高信噪比链接，陪伴同频伙伴长期迭代。',
-    PROXIO_ABOUT_PHOTO_URL: 'https://youke1.picui.cn/s1/2025/10/24/68fb3eeb3bfed.png',
+        '你好，我是千逐，热衷把复杂认知过程转化成可运行的系统。以第一性原理、奥卡姆剃刀和反脆弱为准绳，近期关注 AI 的“涌现”与整体论。在社群与项目里，我喜欢“拱火”，搭建跨年级认知社群、跨校 AI 生态，用结构化知识库、自动化工作流和高信噪比链接，寻找同频的长期合作者。',
+    PROXIO_ABOUT_PHOTO_URL: 'https://imagehost.qianzhu.online/api/rfile/千逐（卡通版）.jpg',
     PROXIO_ABOUT_KEY_1: '系统构建',
     PROXIO_ABOUT_VAL_1: '跨年级社群｜跨校 AI 生态',
     PROXIO_ABOUT_KEY_2: '知识与生产力',
@@ -199,7 +209,7 @@ const CONFIG = {
     PROXIO_ABOUT_KEY_4: '技术基石',
     PROXIO_ABOUT_VAL_4: '容器 · 网络协议 · 运维基础',
 
-    PROXIO_ABOUT_BUTTON_URL: '/about',
+    PROXIO_ABOUT_BUTTON_URL: 'https://www.qianzhu.me/',
     PROXIO_ABOUT_BUTTON_TEXT: '关于我',
 
     // 横向滚动文字
@@ -247,7 +257,7 @@ const CONFIG = {
     PROXIO_CTA_TITLE: '与我链接',
     PROXIO_CTA_TITLE_2: '共建反脆弱的系统与社群',
     PROXIO_CTA_DESCRIPTION:
-        '如果你关注系统构建、认知科学或 AI 工作流，欢迎联系我。我在寻找同频的长期合作者，一起把想法落到真实场景。',
+        '如果你也热爱系统构建、认知科学或 AI 工作流，欢迎来“拱火”。带上想法、问题或好奇心找我，一起把热烈的创意落到真实场景，做长期的合作者。',
     PROXIO_CTA_BUTTON: true, // 是否显示按钮
     PROXIO_CTA_BUTTON_URL:
         'mailto:qianzhuxue@gmail.com',
