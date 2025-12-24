@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-import LazyImage from '@/components/LazyImage'
 import { siteConfig } from '@/lib/config'
 import CONFIG from '../config'
 import Link from 'next/link'
@@ -28,10 +26,13 @@ export const Hero = props => {
                 className='h-screen relative overflow-hidden bg-gradient-to-br from-[#f8f4ec] via-[#e4ede7] to-[#dbe7e1]'>
                 {/* 横幅图片 */}
                 {!bannerIframe && bannerImage && (
-                    <LazyImage
-                        priority
+                    <img
                         className='w-full object-cover absolute h-screen left-0 top-0 pointer-events-none'
-                        src={bannerImage} />
+                        src={bannerImage}
+                        alt='Hero background'
+                        loading='eager'
+                        decoding='async'
+                    />
                 )}
                 <iframe src={bannerIframe} className='w-full absolute h-screen left-0 top-0 pointer-events-none' />
                   {/* 现代化渐变遮罩 */}
