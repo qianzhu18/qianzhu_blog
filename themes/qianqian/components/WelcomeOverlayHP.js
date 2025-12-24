@@ -10,6 +10,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
  * - 弱网 / 省流 / 减少动态：自动禁用
  */
 const WelcomeOverlayHP = ({ onFinishLoading }) => {
+  const [mounted, setMounted] = useState(false)
+  const [disableForEnv, setDisableForEnv] = useState(true)
   const [show, setShow] = useState(true)
   const overlayRef = useRef(null)
   const pathRef = useRef(null)
@@ -17,24 +19,32 @@ const WelcomeOverlayHP = ({ onFinishLoading }) => {
   const welcomeText = siteConfig('PROXIO_WELCOME_TEXT', '欢迎来到千逐的个人博客，点击任意位置进入')
 
   // 环境判定：弱网/省流/减少动态则禁用
-  const disableForEnv = useMemo(() => {
-    if (typeof window === 'undefined') return true
-    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection
-    if (conn) {
-      if (conn.saveData) return true
-      const et = conn.effectiveType || ''
-      if (['slow-2g', '2g'].includes(et)) return true
-      if (typeof conn.downlink === 'number' && conn.downlink < 1) return true
+  // 仅在客户端计算环境，避免 SSR / CSR 初次渲染不一致
+  useEffect(() => {
+    const computeDisable = () => {
+      const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection
+      if (conn) {
+        if (conn.saveData) return true
+        const et = conn.effectiveType || ''
+        if (['slow-2g', '2g'].includes(et)) return true
+        if (typeof conn.downlink === 'number' && conn.downlink < 1) return true
+      }
+      try {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return true
+      } catch (e) {}
+      return false
     }
-    try {
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return true
-    } catch (e) {}
-    return false
+    const disabled = computeDisable()
+    setDisableForEnv(disabled)
+    if (disabled) {
+      setShow(false)
+    }
+    setMounted(true)
   }, [])
 
   useEffect(() => {
-    if (disableForEnv) {
-      setShow(false)
+    if (!mounted || disableForEnv) {
+      if (disableForEnv) setShow(false)
       return
     }
     let cancelled = false
@@ -85,9 +95,9 @@ const WelcomeOverlayHP = ({ onFinishLoading }) => {
     }
     start()
     return () => { cancelled = true }
-  }, [disableForEnv, onFinishLoading])
+  }, [disableForEnv, mounted, onFinishLoading])
 
-  if (!show) return null
+  if (!mounted || !show) return null
 
   return (
     <div ref={overlayRef} className='intro-overlay fixed inset-0 z-[9999] overflow-hidden'>
