@@ -19,13 +19,20 @@ const Index = props => {
   const [isLoading, setIsLoading] = useState(true)
   const theme = siteConfig('THEME', BLOG.THEME, props.NOTION_CONFIG)
 
+  const handleSplashFinish = () => {
+    setIsLoading(false)
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'auto' })
+    }
+  }
+
   return (
     <>
       <div className='animate-in'>
         <DynamicLayout theme={theme} layoutName='LayoutIndex' {...props} />
       </div>
 
-      {isLoading && <SplashScreenWanguan onFinish={() => setIsLoading(false)} />}
+      {isLoading && <SplashScreenWanguan onFinish={handleSplashFinish} />}
     </>
   )
 }
