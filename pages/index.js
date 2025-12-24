@@ -19,14 +19,14 @@ const Index = props => {
   const [isLoading, setIsLoading] = useState(true)
   const theme = siteConfig('THEME', BLOG.THEME, props.NOTION_CONFIG)
 
-  if (isLoading) {
-    return <SplashScreenWanguan onFinish={() => setIsLoading(false)} />
-  }
-
   return (
-    <div className='animate-in'>
-      <DynamicLayout theme={theme} layoutName='LayoutIndex' {...props} />
-    </div>
+    <>
+      <div className='animate-in'>
+        <DynamicLayout theme={theme} layoutName='LayoutIndex' {...props} />
+      </div>
+
+      {isLoading && <SplashScreenWanguan onFinish={() => setIsLoading(false)} />}
+    </>
   )
 }
 
