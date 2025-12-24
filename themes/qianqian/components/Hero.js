@@ -57,7 +57,10 @@ export const Hero = props => {
 
             </div>
             {/* 文字标题等 - 现代化设计，前景卡片化并收窄版心 */}
-            <div className='w-full pb-15 dark:text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20'>
+            <div
+              className='w-full pb-15 dark:text-white relative z-20'
+              style={{ paddingTop: '120px' }}
+            >
               <div className='container mx-auto px-4'>
                 <div className='flex flex-wrap items-center justify-center'>
                   <div className='w-full'>
