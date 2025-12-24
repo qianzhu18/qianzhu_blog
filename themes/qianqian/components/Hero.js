@@ -10,8 +10,12 @@ import Link from 'next/link'
 export const Hero = props => {
     const config = props?.NOTION_CONFIG || CONFIG
     const pageCover = props?.siteInfo?.pageCover
-    const bannerImage = siteConfig('PROXIO_HERO_BANNER_IMAGE', null, config) || pageCover
-    const bannerIframe = siteConfig('PROXIO_HERO_BANNER_IFRAME_URL',null,config)
+    const bannerImage = siteConfig('PROXIO_HERO_BANNER_IMAGE', CONFIG.PROXIO_HERO_BANNER_IMAGE, config) || pageCover
+    const bannerIframe = siteConfig('PROXIO_HERO_BANNER_IFRAME_URL', '', config)
+    const title1 = siteConfig('PROXIO_HERO_TITLE_1', CONFIG.PROXIO_HERO_TITLE_1, config)
+    const title2 = siteConfig('PROXIO_HERO_TITLE_2', CONFIG.PROXIO_HERO_TITLE_2, config)
+    const button1Text = siteConfig('PROXIO_HERO_BUTTON_1_TEXT', CONFIG.PROXIO_HERO_BUTTON_1_TEXT, config)
+    const button1Url = siteConfig('PROXIO_HERO_BUTTON_1_URL', CONFIG.PROXIO_HERO_BUTTON_1_URL, config)
       // 可配置遮罩与文字样式，提升可读性且不改变功能逻辑
       const overlayEnable = siteConfig('PROXIO_HERO_OVERLAY_ENABLE', true, config)
       const overlayColor = siteConfig('PROXIO_HERO_OVERLAY_COLOR', 'rgba(0,0,0,0.45)', config)
@@ -68,24 +72,28 @@ export const Hero = props => {
                         <div className='h-0' />
 
                         {/* 主标题 - 渐变文字效果（尺寸略微收敛） */}
-                        <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold leading-tight ${titleShadow ? 'drop-shadow-[0_8px_24px_rgba(15,31,30,0.25)]' : ''}`}>
-                          <span className='bg-gradient-to-r from-[#2f5c56] via-[#4e8079] to-[#2f5c56] bg-clip-text text-transparent'>
-                            {siteConfig('PROXIO_HERO_TITLE_1', null, config)}
-                          </span>
-                        </h1>
+                        {title1 && (
+                          <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold leading-tight ${titleShadow ? 'drop-shadow-[0_8px_24px_rgba(15,31,30,0.25)]' : ''}`}>
+                            <span className='bg-gradient-to-r from-[#2f5c56] via-[#4e8079] to-[#2f5c56] bg-clip-text text-transparent'>
+                              {title1}
+                            </span>
+                          </h1>
+                        )}
 
                         {/* 次标题（更紧凑） */}
-                        <p className='mx-auto max-w-[640px] text-base md:text-lg font-medium text-[#2f5c56]/90 dark:text-[#c7e0da] leading-relaxed'>
-                          {siteConfig('PROXIO_HERO_TITLE_2', null, config)}
-                        </p>
+                        {title2 && (
+                          <p className='mx-auto max-w-[640px] text-base md:text-lg font-medium text-[#2f5c56]/90 dark:text-[#c7e0da] leading-relaxed'>
+                            {title2}
+                          </p>
+                        )}
 
                         {/* 现代化按钮组（尺寸收敛） */}
                         <div className='flex flex-wrap items-center justify-center gap-4 pt-2'>
-                          {siteConfig('PROXIO_HERO_BUTTON_1_TEXT', null, config) && (
+                          {button1Text && (
                             <Link
-                              href={siteConfig('PROXIO_HERO_BUTTON_1_URL', '')}
+                              href={button1Url || ''}
                               className='group relative inline-flex items-center justify-center px-7 py-3 text-sm md:text-base font-semibold text-[#2f5c56] dark:text-[#cfe3df] bg-white/85 dark:bg-white/10 backdrop-blur-sm border border-black/5 dark:border-white/15 rounded-2xl hover:bg-white transform hover:-translate-y-0.5 transition-all duration-300 shadow-lg'>
-                              <span className='relative z-10 tracking-wide'>{siteConfig('PROXIO_HERO_BUTTON_1_TEXT', null, config)}</span>
+                              <span className='relative z-10 tracking-wide'>{button1Text}</span>
                               <div className='absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300' style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.32), rgba(255,255,255,0))' }} />
                             </Link>
                           )}
