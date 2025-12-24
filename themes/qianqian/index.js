@@ -39,7 +39,6 @@ import { SignInForm } from './components/SignInForm'
 import { SignUpForm } from './components/SignUpForm'
 import { SVG404 } from './components/svg/SVG404'
 import Lenis from '@/components/Lenis'
-import Announcement from './components/Announcement'
 import CursorDot from '@/components/CursorDot'
 import GridBackground from './components/GridBackground'
 import LoadingCover from './components/WelcomeOverlayHP'
@@ -136,14 +135,6 @@ const LayoutIndex = props => {
                     </div>
                 </>
             )}
-
-            {/* 公告 */}
-            {siteConfig('PROXIO_ANNOUNCEMENT_ENABLE', true, CONFIG) && <Announcement
-                post={props?.notice}
-                className={
-                    'announncement text-center py-16'
-                } />
-                }
 
             {/* 团队介绍 */}
             {siteConfig('PROXIO_ABOUT_ENABLE', true, CONFIG) && <Team />}
