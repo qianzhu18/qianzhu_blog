@@ -7,6 +7,8 @@ import { generateSitemapXml } from '@/lib/sitemap.xml'
 import { DynamicLayout } from '@/themes/theme'
 import { generateRedirectJson } from '@/lib/redirect'
 import { checkDataFromAlgolia } from '@/lib/plugins/algolia'
+import SplashScreenWanguan from '@/components/SplashScreenWanguan'
+import { useState } from 'react'
 
 /**
  * 首页布局
@@ -14,8 +16,18 @@ import { checkDataFromAlgolia } from '@/lib/plugins/algolia'
  * @returns
  */
 const Index = props => {
+  const [isLoading, setIsLoading] = useState(true)
   const theme = siteConfig('THEME', BLOG.THEME, props.NOTION_CONFIG)
-  return <DynamicLayout theme={theme} layoutName='LayoutIndex' {...props} />
+
+  if (isLoading) {
+    return <SplashScreenWanguan onFinish={() => setIsLoading(false)} />
+  }
+
+  return (
+    <div className='animate-in'>
+      <DynamicLayout theme={theme} layoutName='LayoutIndex' {...props} />
+    </div>
+  )
 }
 
 /**
