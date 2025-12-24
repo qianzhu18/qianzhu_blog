@@ -22,7 +22,12 @@ const Index = props => {
   const handleSplashFinish = () => {
     setIsLoading(false)
     if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'auto' })
+      const fastNav = document.getElementById('fast-nav')
+      if (fastNav) {
+        fastNav.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        window.scrollTo({ top: 0, behavior: 'auto' })
+      }
     }
   }
 

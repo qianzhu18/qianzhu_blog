@@ -46,82 +46,47 @@ export const Hero = props => {
             </div>
 
             {/* 💻 桌面端背景 + 卡片 */}
-            <div className='hidden md:block'>
-                <div
-                    id='home'
-                    className='h-screen relative overflow-hidden bg-gradient-to-br from-[#f8f4ec] via-[#e4ede7] to-[#dbe7e1]'>
-                    {!bannerIframe && bannerImage && (
-                        <img
-                            className='w-full object-cover absolute h-screen left-0 top-0 pointer-events-none'
-                            src={bannerImage}
-                            alt='Hero background'
-                            loading='eager'
-                            decoding='async'
-                        />
-                    )}
-                    <iframe src={bannerIframe} className='w-full absolute h-screen left-0 top-0 pointer-events-none' />
-                    {overlayEnable && (
-                        <div className='absolute inset-0 z-10 pointer-events-none'>
-                            <div className='absolute inset-0' style={{ background: overlayColor }} />
-                            <div className='absolute inset-0 bg-gradient-to-t from-[#0f1f1e]/35 via-transparent to-transparent' />
+            <div className='hidden md:block max-w-7xl mx-auto px-6 pb-12' style={{ paddingTop: '120px' }}>
+                <div className='mx-auto px-12 py-16 rounded-[28px] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.3)] relative overflow-hidden group'>
+                    <img
+                        src='https://imagehost.qianzhu.online/api/rfile/千逐个人封面.png'
+                        alt='千逐桌面端封面'
+                        className='absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-[10s] ease-in-out group-hover:scale-105'
+                    />
+                    <div className='absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent z-10' />
+                    <div className='absolute inset-0 bg-black/20 z-10' />
+
+                    <div className='relative z-20 flex flex-col items-start justify-center h-full max-w-3xl space-y-6'>
+                        <div className='inline-flex items-center px-3 py-1 rounded-full border border-white/30 bg-white/10 backdrop-blur-md text-white/90 text-xs font-medium tracking-wider uppercase'>
+                            <span className='w-1.5 h-1.5 rounded-full bg-[#4e8079] mr-2 animate-pulse'></span>
+                            System Builder & Explorer
                         </div>
-                    )}
 
-                    <div className='absolute inset-0 z-5 pointer-events-none'>
-                        <div className='absolute top-1/4 left-1/4 w-64 h-64 bg-[#b6d7cc]/25 rounded-full blur-3xl animate-pulse' />
-                        <div className='absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#d9eadf]/30 rounded-full blur-[140px] animate-pulse' style={{ animationDelay: '1.2s' }} />
-                        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-[#cfded7]/20 rounded-full blur-[140px] animate-pulse' style={{ animationDelay: '2s' }} />
-                    </div>
+                        <h1 className='text-5xl lg:text-6xl font-bold leading-tight text-white drop-shadow-lg tracking-tight'>
+                            千逐
+                            <span className='text-3xl lg:text-4xl font-normal opacity-90 mt-2 block'>
+                                系统构建者 / AI 与认知探索
+                            </span>
+                        </h1>
 
-                    <div className='h-1/3 w-full absolute left-0 bottom-0 z-10'>
-                        <div className='h-full w-full absolute group-hover:opacity-100 transition-all duration-1000 bg-gradient-to-b from-transparent via-white/30 to-[#f8f4ec] dark:to-[#0f1f1e]' />
-                    </div>
-                </div>
+                        <p className='text-lg lg:text-xl text-gray-100 font-light max-w-xl leading-relaxed border-l-4 border-[#2f5c56] pl-4'>
+                            把第一性原理与奥卡姆剃刀落到可运行的系统，链接同频的创造者
+                        </p>
 
-                <div className='w-full pb-15 dark:text-white relative z-20' style={{ paddingTop: '120px' }}>
-                    <div className='container mx-auto px-6'>
-                        <div className='flex flex-wrap items-center justify-center'>
-                            <div className='w-full'>
-                                <div className='pointer-events-none absolute -z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[380px] rounded-[36px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.65)_0%,rgba(255,255,255,0.28)_55%,rgba(255,255,255,0)_80%)]' />
-
-                                <div
-                                    className='hero-content wow fadeInUp mx-auto max-w-[720px] text-left'
-                                    style={{ visibility: 'visible' }}
-                                >
-                                    <div className='mx-auto px-12 py-12 rounded-[28px] bg-white/45 dark:bg-[#0f1f1e]/30 backdrop-blur-3xl backdrop-saturate-150 border border-white/25 dark:border-white/10 shadow-[0_28px_60px_-18px_rgba(15,31,30,0.28)] space-y-6 relative overflow-hidden'>
-                                        <div className='pointer-events-none absolute inset-0 rounded-[28px] bg-gradient-to-br from-white/20 to-transparent'></div>
-
-                                        {title1 && (
-                                            <h1 className={`text-5xl font-bold leading-tight ${titleShadow ? 'drop-shadow-sm' : ''}`}>
-                                                <span className='bg-gradient-to-r from-[#2f5c56] via-[#4e8079] to-[#2f5c56] bg-clip-text text-transparent'>
-                                                    {title1}
-                                                </span>
-                                            </h1>
-                                        )}
-
-                                        {title2 && (
-                                            <p className='max-w-[640px] text-lg font-medium text-[#2f5c56]/90 dark:text-[#c7e0da] leading-relaxed'>
-                                                {title2}
-                                            </p>
-                                        )}
-
-                                        <div className='flex flex-wrap gap-4 pt-4'>
-                                            {button1Text && (
-                                                <Link
-                                                    href={button1Url || ''}
-                                                    className='px-8 py-3 text-base font-semibold text-[#2f5c56] bg-white/80 backdrop-blur-sm rounded-xl hover:bg-white transition-all shadow-lg hover:-translate-y-1'>
-                                                    认识千逐
-                                                </Link>
-                                            )}
-                                            <Link
-                                                href='/archive'
-                                                className='px-8 py-3 text-base font-semibold text-[#2f5c56] bg-white/60 backdrop-blur-sm rounded-xl hover:bg-white transition-all shadow-lg hover:-translate-y-1 flex items-center'>
-                                                体验终端 <span className='ml-2 text-xs opacity-60'>⌘K</span>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className='flex flex-wrap gap-4 pt-6'>
+                            <button
+                                onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                                className='px-8 py-3.5 text-base font-semibold text-[#1a2f2c] bg-white rounded-xl hover:bg-gray-100 transition-all shadow-lg hover:shadow-white/20 hover:-translate-y-0.5'
+                            >
+                                回到封面
+                            </button>
+                            <button
+                                onClick={() => { window.scrollTo({ top: document.getElementById('fast-nav')?.offsetTop || 0, behavior: 'smooth' }); }}
+                                className='px-8 py-3.5 text-base font-semibold text-white bg-white/10 backdrop-blur-md border border-white/20 rounded-xl hover:bg-white/20 transition-all shadow-lg flex items-center group/btn'
+                            >
+                                浏览内容
+                                <span className='ml-2 text-xs opacity-60 bg-white/20 px-1.5 py-0.5 rounded group-hover/btn:bg-white/30 transition-colors'>↓</span>
+                            </button>
                         </div>
                     </div>
                 </div>
