@@ -98,6 +98,7 @@ export async function getStaticProps(req) {
   // 修复可能的序列化问题：过滤掉 undefined
   props.categoryOptions = props?.categoryOptions?.filter(Boolean) || []
   props.tagOptions = props?.tagOptions?.filter(Boolean) || []
+  props.customMenu = props?.customMenu?.filter(Boolean) || []
 
   delete props.allPages
 
