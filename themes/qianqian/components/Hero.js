@@ -18,6 +18,12 @@ export const Hero = props => {
       const overlayEnable = siteConfig('PROXIO_HERO_OVERLAY_ENABLE', true, config)
       const overlayColor = siteConfig('PROXIO_HERO_OVERLAY_COLOR', 'rgba(0,0,0,0.45)', config)
       const titleShadow = siteConfig('PROXIO_HERO_TEXT_SHADOW', true, config)
+
+    const scrollToLanding = () => {
+        if (typeof window === 'undefined') return
+        const target = document.getElementById('landing-content')
+        if (target) target.scrollIntoView({ behavior: 'smooth' })
+    }
     return (
         <>
             {/* 📱 移动端全屏封面 */}
@@ -34,7 +40,7 @@ export const Hero = props => {
                         系统构建者 <br /> AI 与认知探索
                     </p>
                     <button
-                        onClick={() => document.getElementById('fast-nav')?.scrollIntoView({ behavior: 'smooth' })}
+                        onClick={scrollToLanding}
                         className='flex items-center space-x-2 text-sm text-gray-300 animate-bounce'
                     >
                         <span>向下探索</span>
@@ -68,14 +74,14 @@ export const Hero = props => {
                     </p>
 
                     <div className='flex flex-wrap gap-6'>
-                        <button
-                            onClick={() => setActiveSection('about')}
+                        <Link
+                            href='/#about'
                             className='px-8 py-3.5 text-base font-semibold text-[#1a2f2c] bg-white rounded-xl hover:bg-gray-200 transition-all shadow-lg hover:shadow-white/20 hover:-translate-y-0.5'
                         >
                             关于我
-                        </button>
+                        </Link>
                         <button
-                            onClick={() => document.getElementById('landing-content')?.scrollIntoView({ behavior: 'smooth' })}
+                            onClick={scrollToLanding}
                             className='px-8 py-3.5 text-base font-semibold text-white bg-white/10 backdrop-blur-md border border-white/20 rounded-xl hover:bg-white/20 transition-all shadow-lg flex items-center group/btn'
                         >
                             向下探索
