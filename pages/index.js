@@ -22,9 +22,11 @@ const Index = props => {
   const handleSplashFinish = () => {
     setIsLoading(false)
     if (typeof window !== 'undefined') {
-      const about = document.getElementById('team')
-      if (about) {
-        about.scrollIntoView({ behavior: 'smooth' })
+      const fastNav = document.getElementById('fast-nav')
+      if (fastNav) {
+        fastNav.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        window.scrollTo({ top: 0, behavior: 'auto' })
       }
     }
   }
