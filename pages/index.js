@@ -95,6 +95,10 @@ export async function getStaticProps(req) {
 
   // 生成全文索引 - 仅在 yarn build 时执行 && process.env.npm_lifecycle_event === 'build'
 
+  // 修复可能的序列化问题：过滤掉 undefined
+  props.categoryOptions = props?.categoryOptions?.filter(Boolean) || []
+  props.tagOptions = props?.tagOptions?.filter(Boolean) || []
+
   delete props.allPages
 
   return {
