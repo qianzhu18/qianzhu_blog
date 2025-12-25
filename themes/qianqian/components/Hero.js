@@ -43,7 +43,7 @@ export const Hero = props => {
                     </p>
                     <button
                         onClick={scrollToLanding}
-                        className='flex items-center space-x-2 text-sm text-gray-300 animate-bounce'
+                        className='flex items-center space-x-2 text-sm text-gray-300 animate-bounce cursor-pointer'
                     >
                         <span>向下探索</span>
                         <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
