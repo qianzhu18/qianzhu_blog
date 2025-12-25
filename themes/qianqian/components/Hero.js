@@ -19,11 +19,13 @@ export const Hero = props => {
       const overlayColor = siteConfig('PROXIO_HERO_OVERLAY_COLOR', 'rgba(0,0,0,0.45)', config)
       const titleShadow = siteConfig('PROXIO_HERO_TEXT_SHADOW', true, config)
 
-    const scrollToLanding = () => {
+    const scrollToId = id => {
         if (typeof window === 'undefined') return
-        const target = document.getElementById('landing-content')
+        const target = document.getElementById(id)
         if (target) target.scrollIntoView({ behavior: 'smooth' })
     }
+    const scrollToLanding = () => scrollToId('latest')
+    const scrollToAbout = () => scrollToId('team')
     return (
         <>
             {/* 📱 移动端全屏封面 */}
@@ -69,17 +71,13 @@ export const Hero = props => {
                         </span>
                     </h1>
 
-                    <p className='text-xl text-gray-100 font-light max-w-2xl leading-relaxed border-l-4 border-[#2f5c56] pl-6 mb-10 backdrop-blur-sm bg-black/10 py-2 rounded-r-lg'>
-                        把第一性原理与奥卡姆剃刀落到可运行的系统，链接同频的创造者
-                    </p>
-
                     <div className='flex flex-wrap gap-6'>
-                        <Link
-                            href='/#about'
+                        <button
+                            onClick={scrollToAbout}
                             className='px-8 py-3.5 text-base font-semibold text-[#1a2f2c] bg-white rounded-xl hover:bg-gray-200 transition-all shadow-lg hover:shadow-white/20 hover:-translate-y-0.5'
                         >
                             关于我
-                        </Link>
+                        </button>
                         <button
                             onClick={scrollToLanding}
                             className='px-8 py-3.5 text-base font-semibold text-white bg-white/10 backdrop-blur-md border border-white/20 rounded-xl hover:bg-white/20 transition-all shadow-lg flex items-center group/btn'
