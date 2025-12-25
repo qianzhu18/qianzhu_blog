@@ -46,48 +46,41 @@ export const Hero = props => {
             </div>
 
             {/* 💻 桌面端背景 + 卡片 */}
-            <div className='hidden md:block max-w-7xl mx-auto px-6 pb-12' style={{ paddingTop: '120px' }}>
-                <div className='mx-auto px-12 py-16 rounded-[28px] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.3)] relative overflow-hidden group'>
-                    <img
-                        src='https://imagehost.qianzhu.online/api/rfile/千逐个人封面.png'
-                        alt='千逐桌面端封面'
-                        className='absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-[10s] ease-in-out group-hover:scale-105'
-                    />
-                    <div className='absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent z-10' />
-                    <div className='absolute inset-0 bg-black/20 z-10' />
+            <div className='hidden md:block relative w-full h-screen overflow-hidden group'>
+                <img
+                    src='https://imagehost.qianzhu.online/api/rfile/千逐个人封面.png'
+                    alt='千逐桌面端封面'
+                    className='absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-[20s] ease-in-out group-hover:scale-105'
+                />
+                <div className='absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent z-10' />
+                <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10' />
 
-                    <div className='relative z-20 flex flex-col items-start justify-center h-full max-w-3xl space-y-6'>
-                        <div className='inline-flex items-center px-3 py-1 rounded-full border border-white/30 bg-white/10 backdrop-blur-md text-white/90 text-xs font-medium tracking-wider uppercase'>
-                            <span className='w-1.5 h-1.5 rounded-full bg-[#4e8079] mr-2 animate-pulse'></span>
-                            System Builder & Explorer
-                        </div>
+                <div className='absolute bottom-0 left-0 w-full h-full flex flex-col justify-end pb-32 px-16 z-20 max-w-4xl space-y-6'>
+                    <h1 className='text-6xl lg:text-7xl font-bold leading-tight text-white drop-shadow-2xl tracking-tight mb-6'>
+                        千逐
+                        <span className='block text-3xl lg:text-4xl font-normal opacity-90 mt-4 tracking-normal'>
+                            系统构建者 / AI 与认知探索
+                        </span>
+                    </h1>
 
-                        <h1 className='text-5xl lg:text-6xl font-bold leading-tight text-white drop-shadow-lg tracking-tight'>
-                            千逐
-                            <span className='text-3xl lg:text-4xl font-normal opacity-90 mt-2 block'>
-                                系统构建者 / AI 与认知探索
-                            </span>
-                        </h1>
+                    <p className='text-xl text-gray-100 font-light max-w-2xl leading-relaxed border-l-4 border-[#2f5c56] pl-6 mb-10 backdrop-blur-sm bg-black/10 py-2 rounded-r-lg'>
+                        把第一性原理与奥卡姆剃刀落到可运行的系统，链接同频的创造者
+                    </p>
 
-                        <p className='text-lg lg:text-xl text-gray-100 font-light max-w-xl leading-relaxed border-l-4 border-[#2f5c56] pl-4'>
-                            把第一性原理与奥卡姆剃刀落到可运行的系统，链接同频的创造者
-                        </p>
-
-                        <div className='flex flex-wrap gap-4 pt-6'>
-                            <button
-                                onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                                className='px-8 py-3.5 text-base font-semibold text-[#1a2f2c] bg-white rounded-xl hover:bg-gray-100 transition-all shadow-lg hover:shadow-white/20 hover:-translate-y-0.5'
-                            >
-                                回到封面
-                            </button>
-                            <button
-                                onClick={() => { window.scrollTo({ top: document.getElementById('fast-nav')?.offsetTop || 0, behavior: 'smooth' }); }}
-                                className='px-8 py-3.5 text-base font-semibold text-white bg-white/10 backdrop-blur-md border border-white/20 rounded-xl hover:bg-white/20 transition-all shadow-lg flex items-center group/btn'
-                            >
-                                浏览内容
-                                <span className='ml-2 text-xs opacity-60 bg-white/20 px-1.5 py-0.5 rounded group-hover/btn:bg-white/30 transition-colors'>↓</span>
-                            </button>
-                        </div>
+                    <div className='flex flex-wrap gap-6'>
+                        <button
+                            onClick={() => setActiveSection('about')}
+                            className='px-8 py-3.5 text-base font-semibold text-[#1a2f2c] bg-white rounded-xl hover:bg-gray-200 transition-all shadow-lg hover:shadow-white/20 hover:-translate-y-0.5'
+                        >
+                            关于我
+                        </button>
+                        <button
+                            onClick={() => document.getElementById('landing-content')?.scrollIntoView({ behavior: 'smooth' })}
+                            className='px-8 py-3.5 text-base font-semibold text-white bg-white/10 backdrop-blur-md border border-white/20 rounded-xl hover:bg-white/20 transition-all shadow-lg flex items-center group/btn'
+                        >
+                            向下探索
+                            <span className='ml-2 text-xs opacity-60 bg-white/20 px-1.5 py-0.5 rounded group-hover/btn:bg-white/30 transition-colors'>↓</span>
+                        </button>
                     </div>
                 </div>
             </div>
