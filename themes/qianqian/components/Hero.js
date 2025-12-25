@@ -22,7 +22,7 @@ export const Hero = props => {
     const scrollToId = id => {
         if (typeof window === 'undefined') return
         const target = document.getElementById(id)
-        if (target) target.scrollIntoView({ behavior: 'smooth' })
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
     const scrollToLanding = () => scrollToId('latest')
     const scrollToAbout = () => scrollToId('team')

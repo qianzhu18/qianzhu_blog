@@ -8,7 +8,7 @@ import { DynamicLayout } from '@/themes/theme'
 import { generateRedirectJson } from '@/lib/redirect'
 import { checkDataFromAlgolia } from '@/lib/plugins/algolia'
 import SplashScreenWanguan from '@/components/SplashScreenWanguan'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 /**
  * 首页布局
@@ -19,15 +19,30 @@ const Index = props => {
   const [isLoading, setIsLoading] = useState(true)
   const theme = siteConfig('THEME', BLOG.THEME, props.NOTION_CONFIG)
 
+  useEffect(() => {
+    if (typeof window === 'undefined' || !isLoading) return
+    if (window.history && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual'
+    }
+
+    const lockToTeam = () => {
+      const team = document.getElementById('team')
+      if (team) {
+        team.scrollIntoView({ behavior: 'auto', block: 'center' })
+      }
+    }
+
+    lockToTeam()
+    const intervalId = setInterval(lockToTeam, 50)
+    return () => clearInterval(intervalId)
+  }, [isLoading])
+
   const handleSplashFinish = () => {
     setIsLoading(false)
     if (typeof window !== 'undefined') {
-      const fastNav = document.getElementById('fast-nav')
-      if (fastNav) {
-        fastNav.scrollIntoView({ behavior: 'smooth' })
-      } else {
-        window.scrollTo({ top: 0, behavior: 'auto' })
-      }
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 1500)
     }
   }
 
