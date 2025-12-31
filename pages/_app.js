@@ -73,7 +73,10 @@ const MyApp = ({ Component, pageProps }) => {
       {/* Vercel Analytics */}
       <Analytics />
       {/* TWOAPI AI 快速接入脚本：仅在浏览器端、交互后加载 */}
-      <Script src="https://suishouji.qiangtu.com/scripts/content.js" strategy="afterInteractive" />
+      <Script
+        src='https://suishouji.qiangtu.com/scripts/content.js'
+        strategy='lazyOnload'
+      />
     </>
   )
 }

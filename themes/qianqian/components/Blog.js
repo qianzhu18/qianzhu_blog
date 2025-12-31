@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import LazyImage from '@/components/LazyImage'
 import { siteConfig } from '@/lib/config'
 import Link from 'next/link'
+import Image from 'next/image'
 
 /**
  * 博文列表
@@ -63,10 +63,13 @@ export const Blog = ({ posts }) => {
                     <div className='relative h-56 overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-700 dark:via-gray-600 dark:to-gray-800'>
                       {item.pageCoverThumbnail ? (
                         <Link href={item?.href} className='block h-full'>
-                          <LazyImage
+                          <Image
                             src={item.pageCoverThumbnail}
                             alt={item.title}
+                            fill
+                            sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
                             className='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 transform-gpu'
+                            priority={index === 0}
                           />
                         </Link>
                       ) : (

@@ -141,8 +141,6 @@ export default function LazyImage({
     onError: handleImageError,
     className: `${className || ''} lazy-image-placeholder`,
     style,
-    width: width || 'auto',
-    height: height || 'auto',
     onClick,
     // 性能优化属性
     loading: priority ? 'eager' : 'lazy',
@@ -154,6 +152,8 @@ export default function LazyImage({
 
   if (id) imgProps.id = id
   if (title) imgProps.title = title
+  if (width !== undefined && width !== null) imgProps.width = width
+  if (height !== undefined && height !== null) imgProps.height = height
 
   if (!src) {
     return null

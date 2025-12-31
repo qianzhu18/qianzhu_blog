@@ -1,6 +1,7 @@
 import { siteConfig } from '@/lib/config'
 import CONFIG from '../config'
 import Link from 'next/link'
+import Image from 'next/image'
 
 /**
  * 英雄大图区块 - 现代化设计
@@ -30,9 +31,13 @@ export const Hero = props => {
         <>
             {/* 📱 移动端全屏封面 */}
             <div className='block md:hidden relative w-full h-screen overflow-hidden'>
-                <img
+                <Image
                     src='https://imagehost.qianzhu.online/api/rfile/千逐竖屏封面.png'
                     alt='千逐移动端封面'
+                    fill
+                    priority
+                    sizes='100vw'
+                    quality={70}
                     className='absolute inset-0 w-full h-full object-cover z-0'
                 />
                 <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10' />
@@ -55,9 +60,13 @@ export const Hero = props => {
 
             {/* 💻 桌面端背景 + 卡片 */}
             <div className='hidden md:block relative w-full h-screen overflow-hidden group'>
-                <img
+                <Image
                     src='https://imagehost.qianzhu.online/api/rfile/千逐个人封面.png'
                     alt='千逐桌面端封面'
+                    fill
+                    sizes='(min-width: 768px) 100vw, 0vw'
+                    quality={70}
+                    loading='lazy'
                     className='absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-[20s] ease-in-out group-hover:scale-105'
                 />
                 <div className='absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent z-10' />

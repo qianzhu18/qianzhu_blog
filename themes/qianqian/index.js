@@ -2,8 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 'use client'
-import Loading from '@/components/Loading'
-import NotionPage from '@/components/NotionPage'
+import dynamic from 'next/dynamic'
 import { siteConfig } from '@/lib/config'
 import { isBrowser } from '@/lib/utils'
 import { useRouter } from 'next/router'
@@ -22,29 +21,53 @@ import { Testimonials } from './components/Testimonials'
 import CONFIG from './config'
 import { Style } from './style'
 // import { MadeWithButton } from './components/MadeWithButton'
-import Comment from '@/components/Comment'
 import replaceSearchResult from '@/components/Mark'
-import ShareBar from '@/components/ShareBar'
-import DashboardBody from '@/components/ui/dashboard/DashboardBody'
-import DashboardHeader from '@/components/ui/dashboard/DashboardHeader'
 import { useGlobal } from '@/lib/global'
 import { loadWowJS } from '@/lib/plugins/wow'
-import { SignIn, SignUp } from '@clerk/nextjs'
 import Link from 'next/link'
 import { ArticleLock } from './components/ArticleLock'
 import { Banner } from './components/Banner'
 import { CTA } from './components/CTA'
 import SearchInput from './components/SearchInput'
-import { SignInForm } from './components/SignInForm'
-import { SignUpForm } from './components/SignUpForm'
 import { SVG404 } from './components/svg/SVG404'
-import Lenis from '@/components/Lenis'
-import CursorDot from '@/components/CursorDot'
-import GridBackground from './components/GridBackground'
-import LoadingCover from './components/WelcomeOverlayHP'
-import Live2D from '@/components/Live2D'
 import Pagination from './components/Pagination'
 import Script from 'next/script'
+
+const Loading = dynamic(() => import('@/components/Loading'))
+const NotionPage = dynamic(() => import('@/components/NotionPage'), { ssr: true })
+const Comment = dynamic(() => import('@/components/Comment'))
+const ShareBar = dynamic(() => import('@/components/ShareBar'))
+const DashboardBody = dynamic(
+    () => import('@/components/ui/dashboard/DashboardBody'),
+    { ssr: false }
+)
+const DashboardHeader = dynamic(
+    () => import('@/components/ui/dashboard/DashboardHeader'),
+    { ssr: false }
+)
+const SignIn = dynamic(
+    () => import('@clerk/nextjs').then(m => m.SignIn),
+    { ssr: false }
+)
+const SignUp = dynamic(
+    () => import('@clerk/nextjs').then(m => m.SignUp),
+    { ssr: false }
+)
+const SignInForm = dynamic(() =>
+    import('./components/SignInForm').then(m => m.SignInForm)
+)
+const SignUpForm = dynamic(() =>
+    import('./components/SignUpForm').then(m => m.SignUpForm)
+)
+const Lenis = dynamic(() => import('@/components/Lenis'), { ssr: false })
+const CursorDot = dynamic(() => import('@/components/CursorDot'), { ssr: false })
+const GridBackground = dynamic(() => import('./components/GridBackground'), {
+    ssr: false
+})
+const LoadingCover = dynamic(() => import('./components/WelcomeOverlayHP'), {
+    ssr: false
+})
+const Live2D = dynamic(() => import('@/components/Live2D'), { ssr: false })
 
 /**
  * 布局框架

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { siteConfig } from '@/lib/config'
-import LazyImage from '@/components/LazyImage'
 import Link from 'next/link'
+import Image from 'next/image'
 /**
  * 作者团队
  * @returns 
@@ -20,7 +20,18 @@ export const Team = () => {
                     <div className='flex flex-col md:flex-row -mx-4 justify-between'>
                         {/* 左边肖像图 */}
                         <div className='mx-6 mb-6 max-w-96 border-gray-200 dark:border-[#333333] dark:bg-dark-1 border rounded-2xl overflow-hidden'>
-                            <LazyImage alt={AUTHOR} src={PROXIO_ABOUT_PHOTO_URL} className='object-cover h-full' />
+                            {PROXIO_ABOUT_PHOTO_URL && (
+                                <Image
+                                    alt={AUTHOR}
+                                    src={PROXIO_ABOUT_PHOTO_URL}
+                                    className='object-cover h-full'
+                                    width={384}
+                                    height={384}
+                                    sizes='(max-width: 768px) 80vw, 384px'
+                                    quality={70}
+                                    loading='lazy'
+                                />
+                            )}
                         </div>
                         {/* 右侧文字说明 */}
                         <div className='flex flex-col px-4 space-y-4 mx-auto justify-between max-w-[485px]'>

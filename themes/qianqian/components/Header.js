@@ -1,12 +1,9 @@
 /* eslint-disable no-unreachable */
-import DashboardButton from '@/components/ui/dashboard/DashboardButton'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
-import throttle from 'lodash.throttle'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DarkModeButton } from './DarkModeButton'
 import { Logo } from './Logo'
 import { MenuList } from './MenuList'

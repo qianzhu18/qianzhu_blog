@@ -8,6 +8,7 @@ import { GlobalStyle } from './GlobalStyle'
 import { initGoogleAdsense } from './GoogleAdsense'
 
 import Head from 'next/head'
+import Script from 'next/script'
 import ExternalScript from './ExternalScript'
 import WebWhiz from './Webwhiz'
 import { useGlobal } from '@/lib/global'
@@ -258,8 +259,9 @@ const ExternalPlugin = props => {
 
       {CLARITY_ID && (
         <>
-          <script
-            async
+          <Script
+            id='clarity-script'
+            strategy='lazyOnload'
             dangerouslySetInnerHTML={{
               __html: `
                 (function(c, l, a, r, i, t, y) {
