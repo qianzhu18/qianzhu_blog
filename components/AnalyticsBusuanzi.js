@@ -1,10 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 /**
  * 不蒜子统计 访客和阅读量
  * @returns
  */
 export default function AnalyticsBusuanzi() {
+  const [stats, setStats] = useState({ pv: null, uv: null })
   useEffect(() => {
     if (typeof window === 'undefined') {
       return
@@ -21,49 +22,31 @@ export default function AnalyticsBusuanzi() {
         if (cancelled) {
           return
         }
-        const pvNodes = document.getElementsByClassName(
-          'busuanzi_value_site_pv'
-        )
-        const uvNodes = document.getElementsByClassName(
-          'busuanzi_value_site_uv'
-        )
-        const pvContainers = document.getElementsByClassName(
-          'busuanzi_container_site_pv'
-        )
-        const uvContainers = document.getElementsByClassName(
-          'busuanzi_container_site_uv'
-        )
-
-        for (const node of pvNodes) {
-          node.textContent = String(data.site_pv ?? '')
-        }
-        for (const node of uvNodes) {
-          node.textContent = String(data.site_uv ?? '')
-        }
-        for (const node of pvContainers) {
-          node.style.display = 'inline'
-        }
-        for (const node of uvContainers) {
-          node.style.display = 'inline'
-        }
+        setStats({
+          pv: data.site_pv ?? 0,
+          uv: data.site_uv ?? 0
+        })
       } catch (error) {
         // Keep Busuanzi fallback when aggregate fetch fails.
       }
     }
     load()
+    const intervalId = setInterval(load, 60 * 1000)
     return () => {
       cancelled = true
+      clearInterval(intervalId)
     }
   }, [])
+  const showStats = stats.pv !== null && stats.uv !== null
   return (
     <div className='flex gap-x-1'>
-      <span className='hidden busuanzi_container_site_pv whitespace-nowrap'>
+      <span className={`${showStats ? '' : 'hidden'} whitespace-nowrap`}>
         <i className='fas fa-eye' />
-        <span className='px-1 busuanzi_value_site_pv'> </span>
+        <span className='px-1'>{stats.pv ?? ''}</span>
       </span>
-      <span className='hidden busuanzi_container_site_uv whitespace-nowrap'>
+      <span className={`${showStats ? '' : 'hidden'} whitespace-nowrap`}>
         <i className='fas fa-users' />
-        <span className='px-1 busuanzi_value_site_uv'> </span>
+        <span className='px-1'>{stats.uv ?? ''}</span>
       </span>
     </div>
   )
