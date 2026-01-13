@@ -37,6 +37,7 @@ const ExternalPlugin = props => {
     null,
     NOTION_CONFIG
   )
+  const THEME = siteConfig('THEME', null, NOTION_CONFIG)
   const ADSENSE_GOOGLE_ID = siteConfig('ADSENSE_GOOGLE_ID', null, NOTION_CONFIG)
   const FACEBOOK_APP_ID = siteConfig('FACEBOOK_APP_ID', null, NOTION_CONFIG)
   const FACEBOOK_PAGE_ID = siteConfig('FACEBOOK_PAGE_ID', null, NOTION_CONFIG)
@@ -203,7 +204,7 @@ const ExternalPlugin = props => {
       {ANALYTICS_ACKEE_TRACKER && <Ackee />}
       {ANALYTICS_GOOGLE_ID && <Gtag />}
       {ANALYTICS_VERCEL && <Analytics />}
-      {ANALYTICS_BUSUANZI_ENABLE && <Busuanzi />}
+      {ANALYTICS_BUSUANZI_ENABLE && THEME !== 'qianqian' && <Busuanzi />}
       {FACEBOOK_APP_ID && FACEBOOK_PAGE_ID && <Messenger />}
       {FIREWORKS && <Fireworks />}
       {SAKURA && <Sakura />}
