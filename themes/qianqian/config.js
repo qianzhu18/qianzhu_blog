@@ -230,7 +230,7 @@ const CONFIG = {
 
     // 页脚显示开关
     PROXIO_FOOTER_POWEREDBY_ENABLE: false, // 是否显示 Powered by NotionNext
-    PROXIO_FOOTER_BUSUANZI_ENABLE: false,  // 是否显示站点 PV/UV（Busuanzi）
+    PROXIO_FOOTER_BUSUANZI_ENABLE: true, // 是否显示站点 PV/UV（Busuanzi）
 
     // 404页面的提示语
     PROXIO_404_TITLE: '我们似乎找不到您要找的页面。',
