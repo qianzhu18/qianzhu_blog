@@ -17,6 +17,7 @@ import SocialButton from './SocialButton'
 export const Footer = ({ title }) => {
   const { siteInfo } = useGlobal()
   const PROXIO_FOOTER_LINKS = siteConfig('PROXIO_FOOTER_LINKS', [], CONFIG)
+  const showBusuanzi = CONFIG.PROXIO_FOOTER_BUSUANZI_ENABLE
 
   return (
     <footer
@@ -78,7 +79,7 @@ export const Footer = ({ title }) => {
 
           <div className='flex justify-between items-center gap-x-2'>
             <div className='flex items-center gap-x-4'>
-              {siteConfig('PROXIO_FOOTER_BUSUANZI_ENABLE', false, CONFIG) && <AnalyticsBusuanzi />}
+              {showBusuanzi && <AnalyticsBusuanzi />}
               <SocialButton />
             </div>
           </div>
