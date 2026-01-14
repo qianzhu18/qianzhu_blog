@@ -1,5 +1,11 @@
-const BUSUANZI_URL =
+import BLOG from '@/blog.config'
+
+const DEFAULT_BUSUANZI_URL =
   'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=BusuanziCallback'
+const configuredUrl = BLOG?.BUSUANZI_JS || DEFAULT_BUSUANZI_URL
+const BUSUANZI_URL = configuredUrl.includes('jsonpCallback')
+  ? configuredUrl
+  : DEFAULT_BUSUANZI_URL
 const DOMAINS = [
   'https://qianzhu.online/',
   'https://qianzhu.me/',

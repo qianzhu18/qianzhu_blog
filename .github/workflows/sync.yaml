@@ -32,6 +32,18 @@ jobs:
           # Set test_mode true to run tests instead of the true action!!
           test_mode: false
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync Algolia Index
+        run: npm run build # NotionNext 通常在构建阶段执行 algolia.js
+
       - name: Sync check
         if: failure()
         run: |

@@ -1,3 +1,4 @@
+import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { useRouter } from 'next/router'
 import { useImperativeHandle, useRef, useState } from 'react'
@@ -9,7 +10,7 @@ let lock = false
  * @param {*} param0
  * @returns
  */
-const SearchInput = ({ currentTag, keyword, cRef }) => {
+const SearchInput = ({ currentTag, keyword, cRef, searchModalRef }) => {
   const { locale } = useGlobal()
   const router = useRouter()
   const searchInputRef = useRef(null)
@@ -22,6 +23,14 @@ const SearchInput = ({ currentTag, keyword, cRef }) => {
   })
   const handleSearch = () => {
     const key = searchInputRef.current.value
+    if (
+      !key &&
+      siteConfig('ALGOLIA_APP_ID') &&
+      searchModalRef?.current?.openSearch
+    ) {
+      searchModalRef.current.openSearch()
+      return
+    }
     if (key && key !== '') {
       router.push({ pathname: '/search/' + key }).then(r => {})
     } else {
@@ -65,12 +74,13 @@ const SearchInput = ({ currentTag, keyword, cRef }) => {
     <section className='flex w-full bg-gray-100'>
       <input
         ref={searchInputRef}
-        type='text'
+        type='search'
         placeholder={
           currentTag
             ? `${locale.SEARCH.TAGS} #${currentTag}`
             : `${locale.SEARCH.ARTICLES}`
         }
+        aria-label={locale.SEARCH.ARTICLES}
         className={
           'outline-none w-full text-sm pl-4 transition focus:shadow-lg font-light leading-10 text-black bg-gray-100 dark:bg-gray-900 dark:text-white'
         }

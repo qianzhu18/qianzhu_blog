@@ -7,7 +7,7 @@ import { useState } from 'react'
  * @param {*} param0
  * @returns
  */
-export const MenuItem = ({ link }) => {
+export const MenuItem = ({ link, depth = 0 }) => {
   const hasSubMenu = link?.subMenus?.length > 0
   const router = useRouter()
 
@@ -18,6 +18,14 @@ export const MenuItem = ({ link }) => {
     setIsSubMenuOpen(prev => !prev) // 切换子菜单状态
   }
 
+  const label = link?.name || link?.title || link?.label
+  const isRoot = depth === 0
+  const baseItemClass = isRoot
+    ? 'flex items-center gap-2 min-h-[44px] w-full rounded-lg px-4 py-3 text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent'
+    : 'flex items-center gap-2 min-h-[44px] w-full rounded-lg px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-black/5 dark:hover:bg-white/5'
+  const activeClass = isRoot && router.route === '/' ? 'lg:text-white lg:group-hover:text-white' : ''
+  const submenuPositionClass = depth > 0 ? 'lg:left-full lg:top-0 lg:ml-2' : 'lg:left-0 lg:top-full'
+
   return (
     <>
       {/* 普通 MenuItem */}
@@ -26,13 +34,9 @@ export const MenuItem = ({ link }) => {
           <Link
             href={link?.href}
             target={link?.target}
-            className={`block w-full px-4 py-3 text-base font-medium text-gray-900 dark:text-gray-100 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 lg:mx-8 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent ${
-              router.route === '/'
-                ? 'lg:text-white lg:group-hover:text-white'
-                : ''
-            } lg:group-hover:opacity-70`}>
-            {link?.icon && <i className={link.icon + ' mr-2 my-auto'} />}
-            {link?.name}
+            className={`${baseItemClass} ${activeClass} ${isRoot ? 'lg:mx-8 lg:group-hover:opacity-70' : ''} faa-tada animated-hover`}>
+            {link?.icon && <i className={link.icon + ' my-auto'} />}
+            <span className='whitespace-nowrap'>{label}</span>
           </Link>
         </li>
       )}
@@ -42,14 +46,10 @@ export const MenuItem = ({ link }) => {
         <li className='submenu-item group relative'>
           <button
             onClick={toggleSubMenu}
-            className={`w-full text-left cursor-pointer flex items-center justify-between px-4 py-3 text-base font-semibold text-gray-900 dark:text-gray-100 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 lg:ml-8 lg:mr-0 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent ${
-              router.route === '/'
-                ? 'lg:text-white lg:group-hover:text-white'
-                : ''
-            } lg:group-hover:opacity-70 xl:ml-10`}>
-            <span>
-              {link?.icon && <i className={link.icon + ' mr-2 my-auto'} />}
-              {link?.name}
+            className={`w-full text-left cursor-pointer flex items-center justify-between min-h-[44px] px-4 py-3 text-base font-semibold text-gray-900 dark:text-gray-100 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 ${isRoot ? 'lg:ml-8 lg:mr-0 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent lg:group-hover:opacity-70 xl:ml-10' : ''} ${activeClass} faa-tada animated-hover`}>
+            <span className='flex items-center gap-2'>
+              {link?.icon && <i className={link.icon + ' my-auto'} />}
+              <span className='whitespace-nowrap'>{label}</span>
             </span>
 
             <svg
@@ -65,23 +65,12 @@ export const MenuItem = ({ link }) => {
 
           {/* 子菜单：移动端默认展开；桌面端点击展开 */}
           <div
-            className={`submenu transition-all duration-300 lg:absolute lg:left-0 lg:top-full lg:w-[260px] lg:rounded-sm lg:bg-white lg:p-4 lg:dark:bg-dark-2 lg:shadow-lg dark:border-gray-600 
-            block opacity-100 visible static w-full bg-transparent p-0 mt-1 ${
-              isSubMenuOpen ? 'lg:block lg:opacity-100 lg:visible' : 'lg:hidden lg:opacity-0 lg:invisible'
-            } lg:group-hover:block lg:group-hover:opacity-100 lg:group-hover:visible`}>
-            {link.subMenus.map((sLink, index) => (
-              <Link
-                key={index}
-                href={sLink.href}
-                target={link?.target}
-                className='block w-full pl-10 pr-4 py-3 text-base text-gray-700 dark:text-gray-300 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 lg:text-sm lg:rounded-none'>
-                {/* 子菜单 SubMenuItem */}
-                <span className='text-md whitespace-nowrap'>
-                  {link?.icon && <i className={sLink.icon + ' mr-2 my-auto'} />}
-                  {sLink.title}
-                </span>
-              </Link>
-            ))}
+            className={`menus_item_child submenu transition-all duration-300 lg:absolute ${submenuPositionClass} lg:w-[280px] lg:rounded-xl lg:bg-white lg:p-4 lg:dark:bg-dark-2 lg:shadow-lg dark:border-gray-600 static w-full bg-transparent p-0 mt-1 ${isSubMenuOpen ? 'is-open' : ''}`}>
+            <ul className='space-y-1'>
+              {link.subMenus.map((sLink, index) => (
+                <MenuItem key={index} link={sLink} depth={depth + 1} />
+              ))}
+            </ul>
           </div>
         </li>
       )}

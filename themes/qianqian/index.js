@@ -6,7 +6,14 @@ import dynamic from 'next/dynamic'
 import { siteConfig } from '@/lib/config'
 import { isBrowser } from '@/lib/utils'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import {
+    Children,
+    cloneElement,
+    isValidElement,
+    useEffect,
+    useRef,
+    useState
+} from 'react'
 import { Career } from './components/Career'
 import { BackToTopButton } from './components/BackToTopButton'
 import { Blog } from './components/Blog'
@@ -28,6 +35,8 @@ import Link from 'next/link'
 import { ArticleLock } from './components/ArticleLock'
 import { Banner } from './components/Banner'
 import { CTA } from './components/CTA'
+import Aside from './components/Aside'
+import FloatingWidgetDock from './components/FloatingWidgetDock'
 import SearchInput from './components/SearchInput'
 import { SVG404 } from './components/svg/SVG404'
 import Pagination from './components/Pagination'
@@ -59,8 +68,11 @@ const SignInForm = dynamic(() =>
 const SignUpForm = dynamic(() =>
     import('./components/SignUpForm').then(m => m.SignUpForm)
 )
+const AlgoliaSearchModal = dynamic(
+    () => import('@/components/AlgoliaSearchModal'),
+    { ssr: false }
+)
 const Lenis = dynamic(() => import('@/components/Lenis'), { ssr: false })
-const CursorDot = dynamic(() => import('@/components/CursorDot'), { ssr: false })
 const GridBackground = dynamic(() => import('./components/GridBackground'), {
     ssr: false
 })
@@ -79,6 +91,23 @@ const Live2D = dynamic(() => import('@/components/Live2D'), { ssr: false })
  */
 const LayoutBase = props => {
     const { children } = props
+    const [showAside, setShowAside] = useState(() => {
+        if (typeof window === 'undefined') return true
+        const saved = window.localStorage.getItem('qianqian-show-aside')
+        if (saved === null) return true
+        return saved === 'true'
+    })
+    const searchModal = useRef(null)
+
+    const layoutChildren = Children.map(children, child => {
+        if (!isValidElement(child)) return child
+        return cloneElement(child, { showAside, searchModalRef: searchModal })
+    })
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return
+        window.localStorage.setItem('qianqian-show-aside', String(showAside))
+    }, [showAside])
 
     // 加载wow动画
     useEffect(() => {
@@ -91,10 +120,12 @@ const LayoutBase = props => {
             className={`${siteConfig('FONT_STYLE')} min-h-screen flex flex-col dark:bg-dark scroll-smooth`}>
             <Style />
             {/* 页头 */}
-            <Header {...props} />
+            <Header {...props} searchModalRef={searchModal} />
+
+            <AlgoliaSearchModal cRef={searchModal} {...props} />
 
             <div id='main-wrapper' className='grow'>
-                {children}
+                {layoutChildren}
             </div>
 
             {/* 背景：HomePage 风格交互网格（固定全屏，不影响交互） */}
@@ -105,14 +136,16 @@ const LayoutBase = props => {
 
             {/* 悬浮按钮 */}
             <BackToTopButton />
+            <FloatingWidgetDock
+                showAside={showAside}
+                onToggleAside={() => setShowAside(prev => !prev)}
+            />
 
             {/* 趣味组件 - 返回顶部按钮 */}
             <a id="cd-top-button" className="cd-top faa-float animated cd-is-visible cd-fade-out" style={{ top: '-172px', position: 'fixed', right: '20px', zIndex: 1000, cursor: 'pointer', visibility: 'hidden', opacity: '0' }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}></a>
 
             {/* 鼠标阻尼动画 */}
             <Lenis />
-            {/* 鼠标跟随动画 */}
-            <CursorDot />
             {/* 数字桌宠组件（为大陆网络优化默认关闭，可在配置中开启） */}
             {siteConfig('WIDGET_PET', false, CONFIG) && <Live2D />}
             {/* 千浅主题特效系统（为大陆网络优化默认关闭，可在配置中开启） */}
@@ -191,7 +224,8 @@ const LayoutIndex = props => {
  * @returns
  */
 const LayoutSlug = props => {
-    const { post, lock, validPassword } = props
+    const { post, lock, validPassword, showAside, siteInfo } = props
+    const showAsidePanel = Boolean(showAside)
 
     // 如果 是 /article/[slug] 的文章路径则視情況进行重定向到另一个域名
     const router = useRouter()
@@ -216,8 +250,10 @@ const LayoutSlug = props => {
         <>
             <Banner title={post?.title} description={post?.summary} />
             <div className='container grow'>
-                <div className='flex flex-wrap justify-center -mx-4'>
-                    <div id='container-inner' className='w-full p-4'>
+                <div className={`flex flex-wrap -mx-4 ${showAsidePanel ? 'xl:flex-nowrap xl:items-start' : 'justify-center'}`}>
+                    <div
+                        id='container-inner'
+                        className={`w-full p-4 ${showAsidePanel ? 'xl:w-2/3' : 'max-w-screen-md mx-auto'}`}>
                         {lock && <ArticleLock validPassword={validPassword} />}
 
                         {!lock && post && (
@@ -228,6 +264,13 @@ const LayoutSlug = props => {
                             </div>
                         )}
                     </div>
+                    {showAsidePanel && (
+                        <aside className='hidden xl:block w-full xl:w-1/3 p-4'>
+                            <div className='sticky top-24'>
+                                <Aside post={post} siteInfo={siteInfo} />
+                            </div>
+                        </aside>
+                    )}
                 </div>
             </div>
         </>
@@ -240,19 +283,29 @@ const LayoutSlug = props => {
  * @returns
  */
 const LayoutDashboard = props => {
-    const { post } = props
+    const { post, showAside, siteInfo } = props
+    const showAsidePanel = Boolean(showAside)
 
     return (
         <>
             <div className='container grow'>
-                <div className='flex flex-wrap justify-center -mx-4'>
-                    <div id='container-inner' className='w-full p-4'>
+                <div className={`flex flex-wrap -mx-4 ${showAsidePanel ? 'xl:flex-nowrap xl:items-start' : 'justify-center'}`}>
+                    <div
+                        id='container-inner'
+                        className={`w-full p-4 ${showAsidePanel ? 'xl:w-2/3' : 'max-w-screen-md mx-auto'}`}>
                         {post && (
                             <div id='article-wrapper' className='mx-auto'>
                                 <NotionPage {...props} />
                             </div>
                         )}
                     </div>
+                    {showAsidePanel && (
+                        <aside className='hidden xl:block w-full xl:w-1/3 p-4'>
+                            <div className='sticky top-24'>
+                                <Aside post={post} siteInfo={siteInfo} />
+                            </div>
+                        </aside>
+                    )}
                 </div>
             </div>
             {/* 仪表盘 */}

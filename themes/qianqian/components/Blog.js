@@ -57,21 +57,24 @@ export const Blog = ({ posts }) => {
                 coverImg = PROXIO_BLOG_PLACEHOLDER_IMG_URL_4
               }
               return (
-                <article key={index} className='group wow fadeInUp hover:scale-[1.03] transition-all duration-500' data-wow-delay={`${0.1 + index * 0.1}s`}>
-                  <div className='relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100/50 dark:border-gray-700/50 backdrop-blur-sm transform-gpu'>
+                <Link
+                  key={index}
+                  href={item?.href}
+                  aria-label={item?.title || '查看文章'}
+                  className='group block wow fadeInUp hover:scale-[1.03] transition-all duration-500'
+                  data-wow-delay={`${0.1 + index * 0.1}s`}>
+                  <article className='relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100/50 dark:border-gray-700/50 backdrop-blur-sm transform-gpu'>
                     {/* 文章封面 */}
                     <div className='relative h-56 overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-700 dark:via-gray-600 dark:to-gray-800'>
                       {item.pageCoverThumbnail ? (
-                        <Link href={item?.href} className='block h-full'>
-                          <Image
-                            src={item.pageCoverThumbnail}
-                            alt={item.title}
-                            fill
-                            sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
-                            className='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 transform-gpu'
-                            priority={index === 0}
-                          />
-                        </Link>
+                        <Image
+                          src={item.pageCoverThumbnail}
+                          alt={item.title}
+                          fill
+                          sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
+                          className='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 transform-gpu'
+                          priority={index === 0}
+                        />
                       ) : (
                         <div className='w-full h-full bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 flex items-center justify-center relative overflow-hidden'>
                           <div className='text-white text-6xl font-bold opacity-30 select-none animate-pulse'>
@@ -90,14 +93,14 @@ export const Blog = ({ posts }) => {
                       
                       {/* 悬浮阅读按钮 */}
                       <div className='absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0'>
-                        <Link href={item?.href} className='px-6 py-3 bg-white/95 backdrop-blur-sm text-gray-800 rounded-full font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg border border-white/20'>
+                        <span className='px-6 py-3 bg-white/95 backdrop-blur-sm text-gray-800 rounded-full font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg border border-white/20'>
                           <span className='flex items-center gap-2'>
                             <span className='text-sm font-medium'>阅读文章</span>
                             <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
                             </svg>
                           </span>
-                        </Link>
+                        </span>
                       </div>
                       
                       {/* 右上角标签 */}
@@ -126,11 +129,9 @@ export const Blog = ({ posts }) => {
                       
                       {/* 文章标题 */}
                       <h3 className='space-y-2'>
-                        <Link
-                          href={item?.href}
-                          className='block text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 line-clamp-2'>
+                        <span className='block text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 line-clamp-2'>
                           {item.title}
-                        </Link>
+                        </span>
                       </h3>
                       
                       {/* 文章摘要 */}
@@ -149,19 +150,16 @@ export const Blog = ({ posts }) => {
                           </span>
                         </div>
                         
-                        <Link 
-                          href={item?.href}
-                          className='inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium text-sm transition-all duration-200 group-hover:translate-x-1 group-hover:scale-105'
-                        >
+                        <span className='inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium text-sm transition-all duration-200 group-hover:translate-x-1 group-hover:scale-105'>
                           <span className='font-medium'>详情</span>
                           <svg className='w-4 h-4 transform transition-transform duration-200 group-hover:translate-x-0.5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
                           </svg>
-                        </Link>
+                        </span>
                       </div>
                     </div>
-                  </div>
-                </article>
+                  </article>
+                </Link>
               )
             })}
           </div>

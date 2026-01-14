@@ -65,9 +65,7 @@ const Style = () => {
         color: var(--dewx-text) !important;
     }
 
-    /* 隐藏默认光标，启用自定义光标 */
     html {
-        cursor: none !important;
         scroll-behavior: smooth !important;
         overflow-x: hidden !important;
     }
@@ -155,6 +153,187 @@ const Style = () => {
     a:hover {
         color: var(--dewx-primary-dark) !important;
         text-decoration: underline !important;
+    }
+
+    /* 多级悬浮菜单 */
+    .menus_item_child {
+        display: none;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(8px);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        z-index: 60;
+    }
+
+    .menus_item_child.is-open {
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+
+    .submenu-item:hover > .menus_item_child {
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+
+    /* 右侧浮动 Dock */
+    .qianqian-floating-dock {
+        position: fixed;
+        right: 24px;
+        top: 45%;
+        transform: translateY(-50%);
+        z-index: 60;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 12px;
+    }
+
+    .qianqian-floating-dock .dock-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        color: var(--dewx-text);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 30px rgba(47, 92, 86, 0.15);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+    }
+
+    .qianqian-floating-dock .dock-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 32px rgba(47, 92, 86, 0.25);
+    }
+
+    .qianqian-floating-dock .dock-panel {
+        position: absolute;
+        right: 64px;
+        top: 0;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(8px);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        padding: 12px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 140px;
+    }
+
+    .qianqian-floating-dock .dock-panel.is-open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(0);
+    }
+
+    .qianqian-floating-dock .dock-panel-btn {
+        border-radius: 12px;
+        padding: 8px 12px;
+        font-size: 0.875rem;
+        background: rgba(47, 92, 86, 0.08);
+        color: var(--dewx-text);
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .qianqian-floating-dock .dock-panel-icon {
+        width: 20px;
+        height: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .qianqian-floating-dock .dock-icon-rotate {
+        animation: dock-spin 0.6s ease;
+    }
+
+    @keyframes dock-spin {
+        0% { transform: rotate(-90deg); }
+        100% { transform: rotate(0deg); }
+    }
+
+    .qianqian-floating-dock .dock-btn-progress .dock-progress {
+        position: absolute;
+        inset: 6px;
+        width: 36px;
+        height: 36px;
+        transform: rotate(-90deg);
+    }
+
+    .qianqian-floating-dock .dock-progress-track {
+        fill: none;
+        stroke: rgba(47, 92, 86, 0.15);
+        stroke-width: 2;
+    }
+
+    .qianqian-floating-dock .dock-progress-indicator {
+        fill: none;
+        stroke: #4259ef;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 0.2s ease;
+    }
+
+    .qianqian-floating-dock .dock-panel-btn:hover {
+        background: rgba(47, 92, 86, 0.16);
+    }
+
+    .dark .qianqian-floating-dock .dock-btn {
+        background: rgba(17, 24, 39, 0.7);
+        border-color: rgba(255, 255, 255, 0.12);
+        color: #e5e7eb;
+    }
+
+    .dark .qianqian-floating-dock .dock-panel {
+        background: rgba(15, 23, 42, 0.75);
+        border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .dark .qianqian-floating-dock .dock-panel-btn {
+        background: rgba(148, 163, 184, 0.18);
+        color: #e2e8f0;
+    }
+
+    .dark .qianqian-floating-dock .dock-progress-track {
+        stroke: rgba(148, 163, 184, 0.3);
+    }
+
+    .dark .qianqian-floating-dock .dock-progress-indicator {
+        stroke: #fbbf24;
+    }
+
+    @media (max-width: 768px) {
+        .qianqian-floating-dock {
+            top: auto;
+            bottom: 24px;
+            right: 16px;
+            transform: none;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .qianqian-floating-dock .dock-panel {
+            right: 0;
+            bottom: 60px;
+            top: auto;
+        }
     }
     @media (min-width: 540px) {
         #theme-proxio .container, #theme-qianqian .container {

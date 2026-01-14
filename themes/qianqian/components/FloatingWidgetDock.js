@@ -1,137 +1,125 @@
-import { siteConfig } from '@/lib/config'
-import { isBrowser } from '@/lib/utils'
+import { useGlobal } from '@/lib/global'
 import { useEffect, useMemo, useState } from 'react'
 
 /**
- * 千浅主题浮动控制面板
- * 主要用于承载桌宠相关的快捷操作
+ * 千浅主题右侧浮动 Dock
  */
-export const FloatingWidgetDock = () => {
-  const petEnabled = useMemo(() => {
-    try {
-      return JSON.parse(siteConfig('WIDGET_PET', true))
-    } catch (error) {
-      return false
-    }
-  }, [])
-
-  const panelEnabled = useMemo(() => {
-    try {
-      return JSON.parse(siteConfig('WIDGET_PET_PANEL', true))
-    } catch (error) {
-      return false
-    }
-  }, [])
-
-  const [petReady, setPetReady] = useState(false)
-  const [petVisible, setPetVisible] = useState(true)
+export const FloatingWidgetDock = ({ showAside = true, onToggleAside }) => {
+  const { toggleDarkMode, isDarkMode, lang, changeLang } = useGlobal()
   const [panelOpen, setPanelOpen] = useState(false)
+  const langKey = (lang || '').toLowerCase()
+  const [scrollProgress, setScrollProgress] = useState(0)
 
-  // 订阅自定义事件，保持 dock 状态与 Live2D 同步
+  const handleToggleLang = () => {
+    const isTraditional = langKey.includes('zh-tw') || langKey.includes('zh-hk')
+    changeLang(isTraditional ? 'zh-CN' : 'zh-TW')
+  }
+
+  const handleScrollTop = () => {
+    if (typeof window === 'undefined') return
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   useEffect(() => {
-    if (!isBrowser || !petEnabled) {
-      return () => {}
+    if (typeof window === 'undefined') return () => {}
+    const updateProgress = () => {
+      const scrollTop = window.pageYOffset || 0
+      const scrollHeight =
+        document.documentElement.scrollHeight - window.innerHeight
+      const percent =
+        scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0
+      setScrollProgress(Math.min(100, Math.max(0, percent)))
     }
-
-    const api = window.__live2dPetAPI
-    if (api?.isReady?.()) {
-      setPetReady(true)
-      setPetVisible(api.isVisible())
-      setPanelOpen(api.isPanelOpen())
-    }
-
-    const handleReady = event => {
-      setPetReady(true)
-      setPetVisible(event?.detail?.visible ?? true)
-      setPanelOpen(event?.detail?.panelOpen ?? false)
-    }
-
-    const handleVisibility = event => {
-      setPetVisible(event?.detail?.visible ?? true)
-    }
-
-    const handlePanelToggle = event => {
-      setPanelOpen(event?.detail?.open ?? false)
-    }
-
-    document.addEventListener('live2d:ready', handleReady)
-    document.addEventListener('live2d:visibility-change', handleVisibility)
-    document.addEventListener('live2d:panel-toggle', handlePanelToggle)
-
+    updateProgress()
+    window.addEventListener('scroll', updateProgress, { passive: true })
+    window.addEventListener('resize', updateProgress)
     return () => {
-      document.removeEventListener('live2d:ready', handleReady)
-      document.removeEventListener('live2d:visibility-change', handleVisibility)
-      document.removeEventListener('live2d:panel-toggle', handlePanelToggle)
+      window.removeEventListener('scroll', updateProgress)
+      window.removeEventListener('resize', updateProgress)
     }
-  }, [petEnabled])
+  }, [])
 
-  if (!petEnabled) {
-    return null
-  }
-
-  const triggerPet = () => {
-    const api = window.__live2dPetAPI
-    if (!api) return
-    if (!petReady) return
-    api.togglePet()
-  }
-
-  const triggerPanel = () => {
-    const api = window.__live2dPetAPI
-    if (!api || !panelEnabled) return
-    if (!petReady) return
-    api.togglePanel()
-  }
-
-  const triggerGreeting = () => {
-    const api = window.__live2dPetAPI
-    if (!api) return
-    api.playGreeting?.()
-  }
-
-  const scrollToContent = () => {
-    if (!isBrowser) return
-    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
-  }
+  const progressStyle = useMemo(() => {
+    const radius = 16
+    const circumference = 2 * Math.PI * radius
+    const offset = circumference - (scrollProgress / 100) * circumference
+    return { circumference, offset }
+  }, [scrollProgress])
 
   return (
-    <div className='pet-floating-dock'>
-      <span className='pet-dock-label'>桌宠</span>
-      <button
-        type='button'
-        className='pet-dock-btn'
-        onClick={triggerPet}
-        disabled={!petReady}
-        title={petVisible ? '让桌宠休息一下' : '唤醒桌宠'}>
-        {petVisible ? '休息' : '唤醒'}
-      </button>
-
-      {panelEnabled && (
+    <div className='qianqian-floating-dock'>
+      <div className={`dock-panel ${panelOpen ? 'is-open' : ''}`}>
         <button
           type='button'
-          className='pet-dock-btn'
-          onClick={triggerPanel}
-          disabled={!petReady}
-          title={panelOpen ? '收起控制面板' : '展开控制面板'}>
-          {panelOpen ? '收起' : '控制'}
+          onClick={toggleDarkMode}
+          className='dock-panel-btn'
+          aria-label='切换深色模式'>
+          <span className='dock-panel-icon'>
+            <i
+              className={`fa-solid ${isDarkMode ? 'fa-moon' : 'fa-sun'} ${
+                isDarkMode ? 'dock-icon-rotate' : ''
+              }`}
+            />
+          </span>
+          <span>{isDarkMode ? '浅色模式' : '深色模式'}</span>
         </button>
-      )}
+        <button
+          type='button'
+          onClick={handleToggleLang}
+          className='dock-panel-btn'
+          aria-label='切换简繁'>
+          {langKey.includes('zh') ? '简繁切换' : '中文切换'}
+        </button>
+      </div>
 
       <button
         type='button'
-        className='pet-dock-btn'
-        onClick={triggerGreeting}
-        disabled={!petReady}
-        title='触发一次问候动画'>
-        问候
+        className='dock-btn'
+        onClick={() => setPanelOpen(prev => !prev)}
+        aria-expanded={panelOpen}
+        aria-label='设置'>
+        <i className='fa-solid fa-gear faa-tada animated-hover' />
       </button>
 
       <button
         type='button'
-        className='pet-dock-btn secondary'
-        onClick={scrollToContent}
-        title='快速滚动到主要内容'>
-        ↓
+        className='dock-btn md:hidden'
+        onClick={toggleDarkMode}
+        aria-label='切换深色模式'>
+        <i className={`fa-solid ${isDarkMode ? 'fa-sun' : 'fa-moon'}`} />
+      </button>
+
+      <button
+        type='button'
+        className='dock-btn hidden md:inline-flex'
+        onClick={onToggleAside}
+        disabled={!onToggleAside}
+        aria-label='切换布局'>
+        {showAside ? '单栏' : '双栏'}
+      </button>
+
+      <button
+        type='button'
+        className='dock-btn dock-btn-progress'
+        onClick={handleScrollTop}
+        aria-label='回到顶部'>
+        <svg className='dock-progress' viewBox='0 0 36 36'>
+          <circle
+            className='dock-progress-track'
+            cx='18'
+            cy='18'
+            r='16'
+          />
+          <circle
+            className='dock-progress-indicator'
+            cx='18'
+            cy='18'
+            r='16'
+            strokeDasharray={progressStyle.circumference}
+            strokeDashoffset={progressStyle.offset}
+          />
+        </svg>
+        <i className='fa-solid fa-arrow-up' />
       </button>
     </div>
   )
