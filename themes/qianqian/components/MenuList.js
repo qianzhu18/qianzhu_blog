@@ -16,6 +16,20 @@ export const MenuList = props => {
   const [showMenu, setShowMenu] = useState(false) // 控制菜单展开/收起状态
   const router = useRouter()
 
+  useEffect(() => {
+    setShowMenu(false)
+  }, [router])
+
+  // 锁定滚动，提升移动端抽屉体验
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = showMenu ? 'hidden' : ''
+    }
+    return () => {
+      if (typeof document !== 'undefined') document.body.style.overflow = ''
+    }
+  }, [showMenu])
+
   let links = [
     {
       icon: 'fas fa-archive',
@@ -59,20 +73,6 @@ export const MenuList = props => {
   const toggleMenu = () => {
     setShowMenu(!showMenu) // 切换菜单状态
   }
-
-  useEffect(() => {
-    setShowMenu(false)
-  }, [router])
-
-  // 锁定滚动，提升移动端抽屉体验
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      document.body.style.overflow = showMenu ? 'hidden' : ''
-    }
-    return () => {
-      if (typeof document !== 'undefined') document.body.style.overflow = ''
-    }
-  }, [showMenu])
 
   return (
     <div>

@@ -1,5 +1,6 @@
 import LazyImage from '@/components/LazyImage'
 import { siteConfig } from '@/lib/config'
+import { useGlobal } from '@/lib/global'
 import Link from 'next/link'
 import SocialButton from './SocialButton'
 
@@ -14,7 +15,10 @@ const normalizeTags = tags => {
 }
 
 export const Aside = ({ post, siteInfo }) => {
-  const tags = normalizeTags(post?.tags)
+  const { tagOptions } = useGlobal()
+  const tags = normalizeTags(
+    tagOptions && tagOptions.length > 0 ? tagOptions : post?.tags
+  )
   const author = siteConfig('AUTHOR')
   const bio = siteConfig('BIO')
   const avatar = siteConfig('AVATAR') || siteInfo?.icon
@@ -44,11 +48,12 @@ export const Aside = ({ post, siteInfo }) => {
         </div>
       </section>
 
-      <section className='rounded-2xl border border-white/40 bg-white/80 p-4 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/30'>
-        <div className='text-sm font-semibold text-gray-900 dark:text-white'>
-          文章标签
+      <section className='rounded-3xl border border-gray-100 bg-gray-50 p-5 dark:border-gray-800 dark:bg-zinc-900/50'>
+        <div className='mb-4 flex items-center text-sm font-bold text-gray-900 dark:text-white'>
+          <i className='anzhiyufont anzhiyu-icon-tags mr-2 text-indigo-500' />
+          话题探索
         </div>
-        <div className='mt-3 flex flex-wrap gap-2'>
+        <div className='flex flex-wrap gap-2'>
           {tags.length === 0 && (
             <span className='text-xs text-gray-500 dark:text-gray-400'>
               暂无标签
@@ -58,9 +63,11 @@ export const Aside = ({ post, siteInfo }) => {
             <Link
               key={tag.name}
               href={`/tag/${encodeURIComponent(tag.name)}`}
-              className='inline-flex items-center rounded-full border border-gray-200/70 bg-white/70 px-2.5 py-1 text-xs text-gray-600 transition hover:-translate-y-0.5 hover:border-indigo-200 hover:text-indigo-600 dark:border-white/10 dark:bg-gray-900/40 dark:text-gray-300 dark:hover:border-yellow-500/50 dark:hover:text-yellow-200'>
-              <i className='fas fa-tag mr-1 text-[10px]' />
-              {tag.name}
+              className='rounded-xl bg-white px-3 py-1.5 text-xs text-gray-600 shadow-sm transition-all hover:bg-indigo-500 hover:text-white dark:bg-zinc-800 dark:text-gray-300 dark:hover:bg-indigo-500'>
+              #{tag.name}
+              {tag.count ? (
+                <span className='ml-1 opacity-50'>{tag.count}</span>
+              ) : null}
             </Link>
           ))}
         </div>

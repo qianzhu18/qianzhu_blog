@@ -15,7 +15,6 @@ import {
     useState
 } from 'react'
 import { Career } from './components/Career'
-import { BackToTopButton } from './components/BackToTopButton'
 import { Blog } from './components/Blog'
 import { Brand } from './components/Brand'
 import { Features } from './components/Features'
@@ -135,14 +134,10 @@ const LayoutBase = props => {
             <Footer {...props} />
 
             {/* 悬浮按钮 */}
-            <BackToTopButton />
             <FloatingWidgetDock
                 showAside={showAside}
                 onToggleAside={() => setShowAside(prev => !prev)}
             />
-
-            {/* 趣味组件 - 返回顶部按钮 */}
-            <a id="cd-top-button" className="cd-top faa-float animated cd-is-visible cd-fade-out" style={{ top: '-172px', position: 'fixed', right: '20px', zIndex: 1000, cursor: 'pointer', visibility: 'hidden', opacity: '0' }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}></a>
 
             {/* 鼠标阻尼动画 */}
             <Lenis />

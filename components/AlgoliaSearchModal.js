@@ -11,7 +11,6 @@ import {
   Hits,
   InstantSearch,
   Pagination,
-  SearchBox,
   Snippet,
   useInstantSearch,
   useSearchBox,
@@ -96,68 +95,46 @@ export default function AlgoliaSearchModal({ cRef }) {
     return algoliasearch(appId, searchKey)
   }, [appId, searchKey])
 
+  useEffect(() => {
+    if (!searchClient || !indexName) return
+    searchClient.initIndex(indexName)
+  }, [searchClient, indexName])
+
   if (!appId || !searchKey || !indexName || !searchClient) {
     return <></>
   }
 
   return (
     <div
-      id='search-wrapper'
+      id='search-modal'
+      onClick={() => setIsModalOpen(false)}
       className={`${
-        isModalOpen ? 'opacity-100' : 'invisible opacity-0 pointer-events-none'
-      } fixed left-0 top-0 z-30 flex h-screen w-screen items-start justify-center pt-0 sm:pt-[8vh]`}>
-      {/* 模态框 */}
+        isModalOpen
+          ? 'opacity-100 animate-fade-in'
+          : 'pointer-events-none opacity-0'
+      } fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-black/20 p-4 pt-[10vh] backdrop-blur-lg transition-opacity duration-200`}>
       <div
+        onClick={event => event.stopPropagation()}
         className={`${
-          isModalOpen ? 'opacity-100' : 'invisible opacity-0 translate-y-6'
-        } relative z-50 flex h-full max-h-[85vh] w-full max-w-3xl flex-col rounded-2xl border border-white/50 bg-white/80 p-6 shadow-2xl backdrop-blur-xl transition-all duration-300 dark:border-white/10 dark:bg-slate-900/80 animate-fade-in`}>
+          isModalOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+        } w-full max-w-2xl overflow-hidden rounded-[24px] border border-white/20 bg-white/80 shadow-[0_20px_60px_rgba(0,0,0,0.3)] transition-all duration-200 dark:border-white/10 dark:bg-zinc-900/90`}>
         <InstantSearch searchClient={searchClient} indexName={indexName}>
           <Configure hitsPerPage={8} />
           <ResetOnClose isOpen={isModalOpen} />
 
-          <div className='flex items-center justify-between'>
-            <div className='text-2xl font-semibold text-slate-900 dark:text-white'>
-              搜索
-            </div>
-            <button
-              type='button'
-              className='rounded-full p-2 text-slate-500 transition hover:bg-black/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10'
-              onClick={() => setIsModalOpen(false)}
-              aria-label='关闭搜索'>
-              <i className='fa-solid fa-xmark' />
-            </button>
-          </div>
+          <SearchBoxWithLoading isOpen={isModalOpen} />
 
-          <SearchBox
-            placeholder='在这里输入搜索关键词...'
-            autoFocus={isModalOpen}
-            searchAsYouType
-            inputProps={{ id: 'algolia-search-input' }}
-            classNames={{
-              root: 'ais-SearchBox-root',
-              form: 'ais-SearchBox-form',
-              input: 'ais-SearchBox-input',
-              submit: 'ais-SearchBox-submit',
-              reset: 'ais-SearchBox-reset',
-              submitIcon: 'ais-SearchBox-submitIcon',
-              resetIcon: 'ais-SearchBox-resetIcon',
-              loadingIndicator: 'ais-SearchBox-loadingIndicator'
-            }}
-          />
-
-          {/* 标签组 */}
-          <div className='mb-4'>
+          <div className='space-y-3 px-4 pt-4'>
             <TagGroups />
+            <QuickSearchTags keywords={recommendedKeywords} />
+            <NoResults />
           </div>
 
-          <QuickSearchTags keywords={recommendedKeywords} />
-          <NoResults />
-
-          <div className='flex-1 overflow-auto pr-1'>
-            <Hits hitComponent={SearchHit} />
+          <div className='max-h-[60vh] overflow-y-auto px-4 pb-4 pt-1 space-y-3'>
+            <Hits hitComponent={SearchHit} className='space-y-3' />
           </div>
 
-          <div className='mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400'>
+          <div className='flex flex-wrap items-center justify-between gap-2 border-t border-white/20 px-4 py-3 text-xs text-slate-500 dark:border-white/10 dark:text-slate-400'>
             <StatsLine />
             <div className='flex items-center gap-2'>
               <Pagination
@@ -173,12 +150,32 @@ export default function AlgoliaSearchModal({ cRef }) {
           </div>
         </InstantSearch>
       </div>
+    </div>
+  )
+}
 
-      {/* 遮罩 */}
-      <div
-        onClick={() => setIsModalOpen(false)}
-        className='fixed left-0 top-0 z-30 flex h-full w-full items-center justify-center bg-black/20 backdrop-blur-sm'
+function SearchBoxWithLoading({ isOpen }) {
+  const { status } = useInstantSearch()
+  const { query, refine } = useSearchBox()
+  const isLoading =
+    Boolean(query) && (status === 'loading' || status === 'stalled')
+
+  return (
+    <div className='relative flex items-center border-b border-white/40 p-4 dark:border-zinc-800/80'>
+      <i className='anzhiyufont anzhiyu-icon-magnifying-glass ml-2 text-gray-400' />
+      <input
+        id='algolia-search-input'
+        value={query || ''}
+        onChange={event => refine(event.target.value)}
+        autoFocus={isOpen}
+        className='w-full bg-transparent px-4 py-2 text-lg text-slate-900 outline-none placeholder:text-slate-400 dark:text-white'
+        placeholder='寻找灵感...'
       />
+      {isLoading && (
+        <div className='absolute right-6 animate-spin text-indigo-500'>
+          <i className='anzhiyufont anzhiyu-icon-spinner text-xl' />
+        </div>
+      )}
     </div>
   )
 }
@@ -188,15 +185,15 @@ function SearchHit({ hit }) {
   const href = `${basePath}/${hit.slug || hit.objectID}`
 
   return (
-    <article className='group rounded-xl border border-white/60 bg-white/70 p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-200 hover:bg-white dark:border-white/10 dark:bg-slate-900/60 dark:hover:border-yellow-500/40'>
+    <article className='group cursor-pointer rounded-2xl bg-white/60 p-4 transition-all hover:scale-[1.01] hover:bg-indigo-500 hover:text-white dark:bg-zinc-900/60 dark:hover:bg-indigo-500'>
       <SmartLink href={href} className='block space-y-2'>
-        <h3 className='text-base font-semibold text-slate-900 dark:text-white'>
+        <h3 className='text-lg font-bold text-slate-900 transition-colors group-hover:text-white dark:text-white'>
           <Highlight attribute='title' hit={hit} />
         </h3>
-        <p className='text-sm text-slate-600 dark:text-slate-300 line-clamp-2'>
+        <p className='text-sm text-slate-600 transition-colors line-clamp-2 group-hover:text-white/90 dark:text-slate-300'>
           <Snippet attribute='content' hit={hit} />
         </p>
-        <div className='flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400'>
+        <div className='flex flex-wrap items-center gap-2 text-xs text-slate-500 transition-colors group-hover:text-white/80 dark:text-slate-400'>
           {hit.category && (
             <span className='rounded-full bg-indigo-50 px-2 py-0.5 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-200'>
               {hit.category}

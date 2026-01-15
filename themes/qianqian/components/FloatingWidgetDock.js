@@ -1,5 +1,5 @@
 import { useGlobal } from '@/lib/global'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 /**
  * 千浅主题右侧浮动 Dock
@@ -8,16 +8,34 @@ export const FloatingWidgetDock = ({ showAside = true, onToggleAside }) => {
   const { toggleDarkMode, isDarkMode, lang, changeLang } = useGlobal()
   const [panelOpen, setPanelOpen] = useState(false)
   const langKey = (lang || '').toLowerCase()
+  const isEnglish = langKey.startsWith('en')
+  const [toastMessage, setToastMessage] = useState('')
+  const toastTimerRef = useRef(null)
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [mounted, setMounted] = useState(false)
 
   const handleToggleLang = () => {
-    const isTraditional = langKey.includes('zh-tw') || langKey.includes('zh-hk')
-    changeLang(isTraditional ? 'zh-CN' : 'zh-TW')
+    changeLang(isEnglish ? 'zh-CN' : 'en-US')
   }
 
   const handleScrollTop = () => {
     if (typeof window === 'undefined') return
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const showToast = message => {
+    setToastMessage(message)
+    if (toastTimerRef.current) {
+      clearTimeout(toastTimerRef.current)
+    }
+    toastTimerRef.current = setTimeout(() => {
+      setToastMessage('')
+    }, 2000)
+  }
+
+  const handleAiClick = () => {
+    setPanelOpen(prev => !prev)
+    showToast('AI 知识库正在接入中...')
   }
 
   useEffect(() => {
@@ -39,6 +57,18 @@ export const FloatingWidgetDock = ({ showAside = true, onToggleAside }) => {
     }
   }, [])
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) {
+        clearTimeout(toastTimerRef.current)
+      }
+    }
+  }, [])
+
   const progressStyle = useMemo(() => {
     const radius = 16
     const circumference = 2 * Math.PI * radius
@@ -48,6 +78,11 @@ export const FloatingWidgetDock = ({ showAside = true, onToggleAside }) => {
 
   return (
     <div className='qianqian-floating-dock'>
+      {toastMessage && (
+        <div className='absolute right-16 top-1/2 -translate-y-1/2 rounded-xl bg-slate-900/90 px-3 py-2 text-xs text-white shadow-lg backdrop-blur dark:bg-slate-800/90'>
+          {toastMessage}
+        </div>
+      )}
       <div className={`dock-panel ${panelOpen ? 'is-open' : ''}`}>
         <button
           type='button'
@@ -67,18 +102,18 @@ export const FloatingWidgetDock = ({ showAside = true, onToggleAside }) => {
           type='button'
           onClick={handleToggleLang}
           className='dock-panel-btn'
-          aria-label='切换简繁'>
-          {langKey.includes('zh') ? '简繁切换' : '中文切换'}
+          aria-label='切换语言'>
+          {isEnglish ? '简' : 'EN'}
         </button>
       </div>
 
       <button
         type='button'
         className='dock-btn'
-        onClick={() => setPanelOpen(prev => !prev)}
+        onClick={handleAiClick}
         aria-expanded={panelOpen}
-        aria-label='设置'>
-        <i className='fa-solid fa-gear faa-tada animated-hover' />
+        aria-label='AI 助手'>
+        <i className='anzhiyufont anzhiyu-icon-robot-astray' />
       </button>
 
       <button
@@ -95,7 +130,7 @@ export const FloatingWidgetDock = ({ showAside = true, onToggleAside }) => {
         onClick={onToggleAside}
         disabled={!onToggleAside}
         aria-label='切换布局'>
-        {showAside ? '单栏' : '双栏'}
+        {mounted ? (showAside ? '单栏' : '双栏') : '单栏'}
       </button>
 
       <button

@@ -68,6 +68,11 @@ export const Header = props => {
         router.push('/search')
     }
 
+    const handleSearchPreload = () => {
+        if (!siteConfig('ALGOLIA_APP_ID')) return
+        void import('@/components/AlgoliaSearchModal')
+    }
+
     return (
         <>
             {/* <!-- ====== Navbar Section Start --> */}
@@ -84,6 +89,8 @@ export const Header = props => {
                             <button
                                 type='button'
                                 onClick={handleSearch}
+                                onMouseEnter={handleSearchPreload}
+                                onFocus={handleSearchPreload}
                                 className='hidden lg:flex items-center justify-center w-10 h-10 rounded-full text-gray-700 dark:text-gray-200 hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-200'
                                 aria-label='搜索'>
                                 <i className='fa-solid fa-magnifying-glass faa-tada animated-hover' />
