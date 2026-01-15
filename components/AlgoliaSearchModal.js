@@ -114,33 +114,38 @@ export default function AlgoliaSearchModal({ cRef }) {
     <div className='fixed inset-0 z-[100] flex items-start justify-center bg-black/40 p-4 pt-[15vh] backdrop-blur-xl animate-fade-in'>
       <div className='absolute inset-0' onClick={() => setIsOpen(false)}></div>
 
-      <div className='relative w-full max-w-2xl overflow-hidden rounded-[28px] border border-white/20 bg-white/90 shadow-2xl dark:bg-zinc-900/90'>
-        <div className='flex items-center border-b p-5 dark:border-zinc-800'>
+      <div className='relative w-full max-w-2xl overflow-hidden rounded-[32px] border border-white/20 bg-white/80 shadow-2xl backdrop-blur-3xl dark:bg-zinc-900/80'>
+        <div className='relative flex items-center border-b p-5 dark:border-zinc-800'>
           <i className='anzhiyufont anzhiyu-icon-magnifying-glass text-xl text-gray-400' />
           <input
             ref={inputRef}
             onChange={event => handleSearch(event.target.value)}
             className='w-full bg-transparent px-4 text-lg outline-none dark:text-white'
-            placeholder='输入关键词，即刻寻找...'
+            placeholder='寻找深度见解与灵感...'
           />
-
-          {loading ? (
-            <div className='flex items-center gap-2 rounded-full bg-indigo-500/10 px-3 py-1 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-200'>
-              <span className='relative flex h-2.5 w-2.5'>
-                <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-60'></span>
-                <span className='relative inline-flex h-2.5 w-2.5 rounded-full bg-indigo-500'></span>
-              </span>
-              <span className='text-xs font-medium'>搜索中</span>
-            </div>
-          ) : (
-            <kbd className='hidden rounded bg-gray-100 p-1 text-xs dark:bg-zinc-800 sm:block'>
-              ESC
-            </kbd>
-          )}
+          <kbd className='hidden rounded bg-gray-100 p-1 text-xs dark:bg-zinc-800 sm:block'>
+            ESC
+          </kbd>
         </div>
 
+        {loading && (
+          <div className='absolute bottom-0 left-0 h-[2px] w-full animate-pulse bg-indigo-500 transition-all duration-500'></div>
+        )}
+
         <div className='max-h-[50vh] overflow-y-auto space-y-2 p-4'>
-          {searchResults.length > 0 ? (
+          {loading ? (
+            <div className='space-y-4'>
+              <div className='text-xs text-indigo-500'>正在穿梭知识库...</div>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <div
+                  key={index}
+                  className='rounded-2xl bg-zinc-100/70 p-4 shadow-sm animate-pulse dark:bg-zinc-800/60'>
+                  <div className='h-4 w-1/3 rounded bg-zinc-300/70 dark:bg-zinc-700/60'></div>
+                  <div className='mt-3 h-3 w-2/3 rounded bg-zinc-300/60 dark:bg-zinc-700/50'></div>
+                </div>
+              ))}
+            </div>
+          ) : searchResults.length > 0 ? (
             searchResults.map(hit => {
               const slug = hit.slug || hit.objectID
               const href = `${normalizedBase}/${slug}`.replace(/\/{2,}/g, '/')
@@ -149,9 +154,9 @@ export default function AlgoliaSearchModal({ cRef }) {
                   key={hit.objectID || slug}
                   href={href}
                   onClick={() => setIsOpen(false)}>
-                  <div className='group rounded-2xl p-4 transition-all hover:bg-indigo-600 hover:text-white'>
+                  <div className='rounded-2xl p-4 transition-all transform hover:scale-[1.01] hover:bg-indigo-50 dark:hover:bg-indigo-900/30'>
                     <div className='mb-1 font-bold'>{hit.title}</div>
-                    <div className='line-clamp-1 text-sm opacity-60 group-hover:text-indigo-100'>
+                    <div className='line-clamp-1 text-sm text-gray-500 dark:text-gray-400'>
                       {hit.summary || hit.content || ''}
                     </div>
                   </div>

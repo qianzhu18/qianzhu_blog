@@ -1,11 +1,8 @@
 /* eslint-disable no-unreachable */
 import { siteConfig } from '@/lib/config'
-import { useGlobal } from '@/lib/global'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
 import { DarkModeButton } from './DarkModeButton'
-import { Logo } from './Logo'
 import { MenuList } from './MenuList'
 import CONFIG from '../config'
 
@@ -14,51 +11,7 @@ import CONFIG from '../config'
  */
 export const Header = props => {
     const router = useRouter()
-    const { isDarkMode } = useGlobal()
     const { searchModalRef } = props
-    const [buttonTextColor, setColor] = useState(
-        router.route === '/' ? 'text-white' : ''
-    )
-
-    useEffect(() => {
-        if (isDarkMode || router.route === '/') {
-            setColor('text-white')
-        } else {
-            setColor('')
-        }
-        // ======= Sticky
-        // window.addEventListener('scroll', navBarScollListener)
-        // return () => {
-        //     window.removeEventListener('scroll', navBarScollListener)
-        // }
-    }, [isDarkMode])
-
-    // 滚动监听
-    const throttleMs = 200
-    // const navBarScollListener = useCallback(
-    //     throttle(() => {
-    //         // eslint-disable-next-line camelcase
-    //         const ud_header = document.querySelector('.ud-header')
-    //         const scrollY = window.scrollY
-    //         // 控制台输出当前滚动位置和 sticky 值
-    //         if (scrollY > 0) {
-    //             ud_header?.classList?.add('sticky')
-    //         } else {
-    //             ud_header?.classList?.remove('sticky')
-    //         }
-    //     }, throttleMs)
-    // )
-
-    const headerStyle = useMemo(
-        () => ({
-            backdropFilter: 'blur(20px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-            background: isDarkMode
-                ? 'rgba(17, 24, 39, 0.7)'
-                : 'rgba(255, 255, 255, 0.7)'
-        }),
-        [isDarkMode]
-    )
 
     const handleSearch = () => {
         const hasAlgolia = Boolean(
@@ -87,12 +40,17 @@ export const Header = props => {
         <>
             {/* <!-- ====== Navbar Section Start --> */}
             <div
-                className='ud-header fixed left-0 top-0 z-40 flex w-full items-center border-b border-gray-200/20 dark:border-gray-700/20 transition-all duration-300'
-                style={headerStyle}>
+                className='ud-header sticky top-0 z-[50] flex w-full items-center border-b border-zinc-100 bg-white/70 backdrop-blur-xl transition-all duration-300 dark:border-zinc-800 dark:bg-black/70'>
                 <div className='container'>
                     <div className='relative -mx-4 flex items-center justify-between py-3'>
                         {/* Logo */}
-                        <Logo {...props} />
+                        <div className='w-60 max-w-full px-4'>
+                            <Link
+                                href='/'
+                                className='text-2xl font-black tracking-tighter text-zinc-800 dark:text-white whitespace-nowrap'>
+                                千逐
+                            </Link>
+                        </div>
                         {/* 右侧菜单 */}
                         <div className='flex items-center gap-4 justify-end pr-16 lg:pr-0'>
                             <MenuList {...props} />
@@ -111,8 +69,6 @@ export const Header = props => {
                     </div>
                 </div>
             </div>
-            {/* 顶部导航占位空间 */}
-            <div className='h-16'></div>
             {/* <!-- ====== Navbar Section End --> */}
         </>
     )
