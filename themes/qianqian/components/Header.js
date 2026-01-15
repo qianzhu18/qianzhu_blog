@@ -61,7 +61,12 @@ export const Header = props => {
     )
 
     const handleSearch = () => {
-        if (siteConfig('ALGOLIA_APP_ID')) {
+        const hasAlgolia = Boolean(
+            siteConfig('ALGOLIA_APP_ID') &&
+                siteConfig('ALGOLIA_SEARCH_ONLY_APP_KEY') &&
+                siteConfig('ALGOLIA_INDEX')
+        )
+        if (hasAlgolia) {
             searchModalRef?.current?.openSearch?.()
             return
         }
@@ -69,7 +74,12 @@ export const Header = props => {
     }
 
     const handleSearchPreload = () => {
-        if (!siteConfig('ALGOLIA_APP_ID')) return
+        const hasAlgolia = Boolean(
+            siteConfig('ALGOLIA_APP_ID') &&
+                siteConfig('ALGOLIA_SEARCH_ONLY_APP_KEY') &&
+                siteConfig('ALGOLIA_INDEX')
+        )
+        if (!hasAlgolia) return
         void import('@/components/AlgoliaSearchModal')
     }
 

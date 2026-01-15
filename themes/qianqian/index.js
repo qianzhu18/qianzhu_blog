@@ -11,8 +11,7 @@ import {
     cloneElement,
     isValidElement,
     useEffect,
-    useRef,
-    useState
+    useRef
 } from 'react'
 import { Career } from './components/Career'
 import { Blog } from './components/Blog'
@@ -28,13 +27,13 @@ import CONFIG from './config'
 import { Style } from './style'
 // import { MadeWithButton } from './components/MadeWithButton'
 import replaceSearchResult from '@/components/Mark'
+import AlgoliaSearchModal from '@/components/AlgoliaSearchModal'
 import { useGlobal } from '@/lib/global'
 import { loadWowJS } from '@/lib/plugins/wow'
 import Link from 'next/link'
 import { ArticleLock } from './components/ArticleLock'
 import { Banner } from './components/Banner'
 import { CTA } from './components/CTA'
-import Aside from './components/Aside'
 import FloatingWidgetDock from './components/FloatingWidgetDock'
 import SearchInput from './components/SearchInput'
 import { SVG404 } from './components/svg/SVG404'
@@ -67,10 +66,6 @@ const SignInForm = dynamic(() =>
 const SignUpForm = dynamic(() =>
     import('./components/SignUpForm').then(m => m.SignUpForm)
 )
-const AlgoliaSearchModal = dynamic(
-    () => import('@/components/AlgoliaSearchModal'),
-    { ssr: false }
-)
 const Lenis = dynamic(() => import('@/components/Lenis'), { ssr: false })
 const GridBackground = dynamic(() => import('./components/GridBackground'), {
     ssr: false
@@ -90,23 +85,12 @@ const Live2D = dynamic(() => import('@/components/Live2D'), { ssr: false })
  */
 const LayoutBase = props => {
     const { children } = props
-    const [showAside, setShowAside] = useState(() => {
-        if (typeof window === 'undefined') return true
-        const saved = window.localStorage.getItem('qianqian-show-aside')
-        if (saved === null) return true
-        return saved === 'true'
-    })
     const searchModal = useRef(null)
 
     const layoutChildren = Children.map(children, child => {
         if (!isValidElement(child)) return child
-        return cloneElement(child, { showAside, searchModalRef: searchModal })
+        return cloneElement(child, { searchModalRef: searchModal })
     })
-
-    useEffect(() => {
-        if (typeof window === 'undefined') return
-        window.localStorage.setItem('qianqian-show-aside', String(showAside))
-    }, [showAside])
 
     // 加载wow动画
     useEffect(() => {
@@ -134,10 +118,7 @@ const LayoutBase = props => {
             <Footer {...props} />
 
             {/* 悬浮按钮 */}
-            <FloatingWidgetDock
-                showAside={showAside}
-                onToggleAside={() => setShowAside(prev => !prev)}
-            />
+            <FloatingWidgetDock />
 
             {/* 鼠标阻尼动画 */}
             <Lenis />
@@ -219,8 +200,7 @@ const LayoutIndex = props => {
  * @returns
  */
 const LayoutSlug = props => {
-    const { post, lock, validPassword, showAside, siteInfo } = props
-    const showAsidePanel = Boolean(showAside)
+    const { post, lock, validPassword } = props
 
     // 如果 是 /article/[slug] 的文章路径则視情況进行重定向到另一个域名
     const router = useRouter()
@@ -244,11 +224,9 @@ const LayoutSlug = props => {
     return (
         <>
             <Banner title={post?.title} description={post?.summary} />
-            <div className='container grow'>
-                <div className={`flex flex-wrap -mx-4 ${showAsidePanel ? 'xl:flex-nowrap xl:items-start' : 'justify-center'}`}>
-                    <div
-                        id='container-inner'
-                        className={`w-full p-4 ${showAsidePanel ? 'xl:w-2/3' : 'max-w-screen-md mx-auto'}`}>
+            <div className='container mx-auto grow'>
+                <div className='flex justify-center'>
+                    <div id='container-inner' className='w-full max-w-4xl p-4'>
                         {lock && <ArticleLock validPassword={validPassword} />}
 
                         {!lock && post && (
@@ -259,13 +237,6 @@ const LayoutSlug = props => {
                             </div>
                         )}
                     </div>
-                    {showAsidePanel && (
-                        <aside className='hidden xl:block w-full xl:w-1/3 p-4'>
-                            <div className='sticky top-24'>
-                                <Aside post={post} siteInfo={siteInfo} />
-                            </div>
-                        </aside>
-                    )}
                 </div>
             </div>
         </>
@@ -278,29 +249,19 @@ const LayoutSlug = props => {
  * @returns
  */
 const LayoutDashboard = props => {
-    const { post, showAside, siteInfo } = props
-    const showAsidePanel = Boolean(showAside)
+    const { post } = props
 
     return (
         <>
-            <div className='container grow'>
-                <div className={`flex flex-wrap -mx-4 ${showAsidePanel ? 'xl:flex-nowrap xl:items-start' : 'justify-center'}`}>
-                    <div
-                        id='container-inner'
-                        className={`w-full p-4 ${showAsidePanel ? 'xl:w-2/3' : 'max-w-screen-md mx-auto'}`}>
+            <div className='container mx-auto grow'>
+                <div className='flex justify-center'>
+                    <div id='container-inner' className='w-full max-w-4xl p-4'>
                         {post && (
                             <div id='article-wrapper' className='mx-auto'>
                                 <NotionPage {...props} />
                             </div>
                         )}
                     </div>
-                    {showAsidePanel && (
-                        <aside className='hidden xl:block w-full xl:w-1/3 p-4'>
-                            <div className='sticky top-24'>
-                                <Aside post={post} siteInfo={siteInfo} />
-                            </div>
-                        </aside>
-                    )}
                 </div>
             </div>
             {/* 仪表盘 */}
