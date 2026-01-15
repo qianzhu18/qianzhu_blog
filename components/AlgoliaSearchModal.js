@@ -10,8 +10,10 @@ import { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react
 export default function AlgoliaSearchModal({ cRef }) {
   const [isOpen, setIsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [query, setQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const inputRef = useRef(null)
+  const requestIdRef = useRef(0)
 
   const appId = siteConfig('ALGOLIA_APP_ID')
   const searchKey = siteConfig('ALGOLIA_SEARCH_ONLY_APP_KEY')
@@ -58,6 +60,13 @@ export default function AlgoliaSearchModal({ cRef }) {
     }
   }, [isOpen])
 
+  useEffect(() => {
+    if (isOpen) return
+    setLoading(false)
+    setQuery('')
+    setSearchResults([])
+  }, [isOpen])
+
   useImperativeHandle(
     cRef,
     () => ({
@@ -70,20 +79,32 @@ export default function AlgoliaSearchModal({ cRef }) {
     [isReady]
   )
 
-  const handleSearch = async query => {
+  const handleSearch = async nextQuery => {
     if (!isReady) return
-    if (!query) {
+    const trimmedQuery = nextQuery.trim()
+    if (!trimmedQuery) {
+      setQuery(nextQuery)
       setSearchResults([])
+      setLoading(false)
       return
     }
+    const requestId = requestIdRef.current + 1
+    requestIdRef.current = requestId
+    setQuery(nextQuery)
     setLoading(true)
     try {
-      const { hits } = await index.search(query, { hitsPerPage: 8 })
-      setSearchResults(hits)
+      const { hits } = await index.search(trimmedQuery, { hitsPerPage: 8 })
+      if (requestIdRef.current === requestId) {
+        setSearchResults(hits)
+      }
     } catch (error) {
-      console.error(error)
+      if (requestIdRef.current === requestId) {
+        console.error(error)
+      }
     } finally {
-      setLoading(false)
+      if (requestIdRef.current === requestId) {
+        setLoading(false)
+      }
     }
   }
 
@@ -131,8 +152,10 @@ export default function AlgoliaSearchModal({ cRef }) {
                 </Link>
               )
             })
-          ) : (
+          ) : query ? (
             <div className='py-10 text-center text-gray-400'>暂无相关结果</div>
+          ) : (
+            <div className='py-10 text-center text-gray-400'>输入关键词开始搜索</div>
           )}
         </div>
       </div>

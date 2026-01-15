@@ -14,6 +14,7 @@ const SearchInput = ({ currentTag, keyword, cRef, searchModalRef }) => {
   const { locale } = useGlobal()
   const router = useRouter()
   const searchInputRef = useRef(null)
+  const [isSearching, setIsSearching] = useState(false)
   useImperativeHandle(cRef, () => {
     return {
       focus: () => {
@@ -23,18 +24,27 @@ const SearchInput = ({ currentTag, keyword, cRef, searchModalRef }) => {
   })
   const handleSearch = () => {
     const key = searchInputRef.current.value
+    const hasAlgolia = Boolean(
+      siteConfig('ALGOLIA_APP_ID') &&
+        siteConfig('ALGOLIA_SEARCH_ONLY_APP_KEY') &&
+        siteConfig('ALGOLIA_INDEX')
+    )
     if (
       !key &&
-      siteConfig('ALGOLIA_APP_ID') &&
+      hasAlgolia &&
       searchModalRef?.current?.openSearch
     ) {
       searchModalRef.current.openSearch()
       return
     }
     if (key && key !== '') {
-      router.push({ pathname: '/search/' + key }).then(r => {})
+      setIsSearching(true)
+      router
+        .push({ pathname: '/search/' + key })
+        .finally(() => setIsSearching(false))
     } else {
-      router.push({ pathname: '/' }).then(r => {})
+      setIsSearching(true)
+      router.push({ pathname: '/' }).finally(() => setIsSearching(false))
     }
   }
   const handleKeyUp = e => {
@@ -95,11 +105,15 @@ const SearchInput = ({ currentTag, keyword, cRef, searchModalRef }) => {
       <div
         className='-ml-8 cursor-pointer float-right items-center justify-center py-2'
         onClick={handleSearch}>
-        <i
-          className={
-            'hover:text-black transform duration-200  text-gray-500 cursor-pointer fas fa-search'
-          }
-        />
+        {isSearching ? (
+          <i className='fa-solid fa-spinner animate-spin text-gray-500' />
+        ) : (
+          <i
+            className={
+              'hover:text-black transform duration-200  text-gray-500 cursor-pointer fas fa-search'
+            }
+          />
+        )}
       </div>
 
       {showClean && (
