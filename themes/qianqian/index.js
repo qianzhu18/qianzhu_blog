@@ -27,7 +27,6 @@ import CONFIG from './config'
 import { Style } from './style'
 // import { MadeWithButton } from './components/MadeWithButton'
 import replaceSearchResult from '@/components/Mark'
-import AlgoliaSearchModal from '@/components/AlgoliaSearchModal'
 import { useGlobal } from '@/lib/global'
 import { loadWowJS } from '@/lib/plugins/wow'
 import Link from 'next/link'
@@ -66,6 +65,10 @@ const SignInForm = dynamic(() =>
 const SignUpForm = dynamic(() =>
     import('./components/SignUpForm').then(m => m.SignUpForm)
 )
+const AlgoliaSearchModal = dynamic(
+    () => import('@/components/AlgoliaSearchModal'),
+    { ssr: false }
+)
 const Lenis = dynamic(() => import('@/components/Lenis'), { ssr: false })
 const GridBackground = dynamic(() => import('./components/GridBackground'), {
     ssr: false
@@ -95,6 +98,27 @@ const LayoutBase = props => {
     // 加载wow动画
     useEffect(() => {
         loadWowJS()
+    }, [])
+
+    useEffect(() => {
+        const hasAlgolia = Boolean(
+            siteConfig('ALGOLIA_APP_ID') &&
+                siteConfig('ALGOLIA_SEARCH_ONLY_APP_KEY') &&
+                siteConfig('ALGOLIA_INDEX')
+        )
+        if (!hasAlgolia || typeof window === 'undefined') return
+
+        const warmup = () => {
+            void import('@/components/AlgoliaSearchModal')
+        }
+
+        if (typeof window.requestIdleCallback === 'function') {
+            const idleId = window.requestIdleCallback(warmup, { timeout: 1500 })
+            return () => window.cancelIdleCallback?.(idleId)
+        }
+
+        const timer = setTimeout(warmup, 800)
+        return () => clearTimeout(timer)
     }, [])
 
     return (

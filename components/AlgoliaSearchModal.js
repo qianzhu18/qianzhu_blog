@@ -125,7 +125,13 @@ export default function AlgoliaSearchModal({ cRef }) {
           />
 
           {loading ? (
-            <div className='h-5 w-5 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent'></div>
+            <div className='flex items-center gap-2 rounded-full bg-indigo-500/10 px-3 py-1 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-200'>
+              <span className='relative flex h-2.5 w-2.5'>
+                <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-60'></span>
+                <span className='relative inline-flex h-2.5 w-2.5 rounded-full bg-indigo-500'></span>
+              </span>
+              <span className='text-xs font-medium'>搜索中</span>
+            </div>
           ) : (
             <kbd className='hidden rounded bg-gray-100 p-1 text-xs dark:bg-zinc-800 sm:block'>
               ESC

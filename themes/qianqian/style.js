@@ -144,15 +144,32 @@ const Style = () => {
     }
 
     /* 现代化链接样式 */
-    a {
+    #theme-qianqian #main-wrapper a,
+    #theme-proxio #main-wrapper a {
         color: var(--dewx-primary) !important;
         text-decoration: none !important;
         transition: all 0.2s ease !important;
     }
 
-    a:hover {
+    #theme-qianqian #main-wrapper a:hover,
+    #theme-proxio #main-wrapper a:hover {
         color: var(--dewx-primary-dark) !important;
         text-decoration: underline !important;
+    }
+
+    #theme-qianqian .ud-header a,
+    #theme-qianqian .ud-header button,
+    #theme-proxio .ud-header a,
+    #theme-proxio .ud-header button {
+        color: inherit !important;
+        text-decoration: none !important;
+    }
+
+    #theme-qianqian .ud-header a:hover,
+    #theme-qianqian .ud-header button:hover,
+    #theme-proxio .ud-header a:hover,
+    #theme-proxio .ud-header button:hover {
+        text-decoration: none !important;
     }
 
     /* 多级悬浮菜单 */

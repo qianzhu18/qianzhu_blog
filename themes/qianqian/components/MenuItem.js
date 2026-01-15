@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 /**
  * 菜单链接
@@ -10,12 +10,26 @@ import { useState } from 'react'
 export const MenuItem = ({ link, depth = 0 }) => {
   const hasSubMenu = link?.subMenus?.length > 0
   const router = useRouter()
+  const prefetchedRef = useRef(false)
 
   // 管理子菜单的展开状态
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false)
 
   const toggleSubMenu = () => {
     setIsSubMenuOpen(prev => !prev) // 切换子菜单状态
+  }
+
+  const prefetchRoutes = () => {
+    if (prefetchedRef.current) return
+    prefetchedRef.current = true
+
+    const targets = hasSubMenu ? link.subMenus : [link]
+    targets?.forEach(item => {
+      const href = item?.href
+      if (typeof href === 'string' && href.startsWith('/')) {
+        router.prefetch(href)
+      }
+    })
   }
 
   const label = link?.name || link?.title || link?.label
@@ -34,6 +48,9 @@ export const MenuItem = ({ link, depth = 0 }) => {
           <Link
             href={link?.href}
             target={link?.target}
+            onMouseEnter={prefetchRoutes}
+            onFocus={prefetchRoutes}
+            onTouchStart={prefetchRoutes}
             className={`${baseItemClass} ${activeClass} ${isRoot ? 'lg:mx-8 lg:group-hover:opacity-70' : ''} faa-tada animated-hover`}>
             {link?.icon && <i className={link.icon + ' my-auto'} />}
             <span className='whitespace-nowrap'>{label}</span>
@@ -46,6 +63,9 @@ export const MenuItem = ({ link, depth = 0 }) => {
         <li className='submenu-item group relative'>
           <button
             onClick={toggleSubMenu}
+            onMouseEnter={prefetchRoutes}
+            onFocus={prefetchRoutes}
+            onTouchStart={prefetchRoutes}
             className={`w-full text-left cursor-pointer flex items-center justify-between min-h-[44px] px-4 py-3 text-base font-semibold text-gray-900 dark:text-gray-100 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 ${isRoot ? 'lg:ml-8 lg:mr-0 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent lg:group-hover:opacity-70 xl:ml-10' : ''} ${activeClass} faa-tada animated-hover`}>
             <span className='flex items-center gap-2'>
               {link?.icon && <i className={link.icon + ' my-auto'} />}
