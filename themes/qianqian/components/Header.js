@@ -11,10 +11,13 @@ import CONFIG from '../config'
  */
 export const Header = props => {
     const router = useRouter()
-    const { searchModalRef } = props
+    const { searchModalRef, allNavPages } = props
     const [scrolled, setScrolled] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [percent, setPercent] = useState(0)
+    const randomPosts =
+        allNavPages?.filter(page => page?.type === 'Post' && page?.slug) || []
+    const hasRandomPosts = randomPosts.length > 0
 
     useEffect(() => {
         const handleScroll = () => {
@@ -59,7 +62,13 @@ export const Header = props => {
     }
 
     const handleRandom = () => {
-        router.push('/article/random').catch(() => router.push('/'))
+        if (!hasRandomPosts) {
+            router.push('/')
+            return
+        }
+        const randomIndex = Math.floor(Math.random() * randomPosts.length)
+        const randomPost = randomPosts[randomIndex]
+        router.push(`/${randomPost.slug}`)
     }
 
     return (
@@ -109,13 +118,15 @@ export const Header = props => {
                     </Link>
                 </div>
                 <div className='flex items-center gap-4 z-[1000]'>
-                    <button
-                        type='button'
-                        onClick={handleRandom}
-                        className='flex h-8 w-8 items-center justify-center rounded-lg bg-gray-800/50 text-gray-400 transition-all hover:text-white active:scale-95'
-                        aria-label='随机文章'>
-                        <i className='fa-solid fa-dice text-sm' />
-                    </button>
+                    {hasRandomPosts && (
+                        <button
+                            type='button'
+                            onClick={handleRandom}
+                            className='flex h-8 w-8 items-center justify-center rounded-lg bg-gray-800/50 text-gray-400 transition-all hover:text-white active:scale-95'
+                            aria-label='随机文章'>
+                            <i className='fa-solid fa-dice text-sm' />
+                        </button>
+                    )}
                     <button
                         type='button'
                         onClick={handleSearch}

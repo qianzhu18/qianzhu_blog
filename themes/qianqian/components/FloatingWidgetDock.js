@@ -1,6 +1,5 @@
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
-import { decryptEmail } from '@/lib/plugins/mailEncrypt'
 import { useEffect, useState } from 'react'
 
 /**
@@ -10,7 +9,6 @@ export const FloatingWidgetDock = () => {
   const { isDarkMode, toggleDarkMode } = useGlobal()
   const [mounted, setMounted] = useState(false)
 
-  const contactEmail = siteConfig('CONTACT_EMAIL')
   const chatbaseId = siteConfig('CHATBASE_ID')
   const difyEnabled = siteConfig('DIFY_CHATBOT_ENABLED')
   const difyBaseUrl = siteConfig('DIFY_CHATBOT_BASE_URL')
@@ -25,11 +23,6 @@ export const FloatingWidgetDock = () => {
     if (typeof window === 'undefined') return
     if (window.ssq?.push) {
       window.ssq.push('chatOpen')
-      return
-    }
-    const email = contactEmail ? decryptEmail(contactEmail) : ''
-    if (email) {
-      window.location.href = `mailto:${email}`
       return
     }
     console.warn('SalesSmartly script not loaded yet')

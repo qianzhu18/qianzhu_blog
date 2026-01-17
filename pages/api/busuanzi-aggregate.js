@@ -6,12 +6,19 @@ const configuredUrl = BLOG?.BUSUANZI_JS || DEFAULT_BUSUANZI_URL
 const BUSUANZI_URL = configuredUrl.includes('jsonpCallback')
   ? configuredUrl
   : DEFAULT_BUSUANZI_URL
-const DOMAINS = [
-  'https://qianzhu.online/',
-  'https://qianzhu.me/',
-  'https://blog.qianzhu.me/',
-  'https://in.qianzhu.dpdns.org/'
-]
+const normalizeDomain = url => {
+  if (!url) return ''
+  return url.endsWith('/') ? url : `${url}/`
+}
+
+const DOMAINS = BLOG?.LINK
+  ? [normalizeDomain(BLOG.LINK)]
+  : [
+      'https://qianzhu.online/',
+      'https://qianzhu.me/',
+      'https://blog.qianzhu.me/',
+      'https://in.qianzhu.dpdns.org/'
+    ]
 
 const extractJson = text => {
   const match = text.match(/BusuanziCallback\((\{[\s\S]*?\})\)/)
