@@ -1,7 +1,7 @@
 import { siteConfig } from '@/lib/config'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { DarkModeButton } from './DarkModeButton'
 import { MenuList } from './MenuList'
 import CONFIG from '../config'
@@ -15,23 +15,34 @@ export const Header = props => {
     const [scrolled, setScrolled] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [percent, setPercent] = useState(0)
+    const [isVisible, setIsVisible] = useState(true)
+    const lastScrollY = useRef(0)
     const randomPosts =
         allNavPages?.filter(page => page?.type === 'Post' && page?.slug) || []
     const hasRandomPosts = randomPosts.length > 0
 
     useEffect(() => {
         const handleScroll = () => {
-            const nextScrolled = window.scrollY > 10
+            const currentScroll = window.scrollY
+            const nextScrolled = currentScroll > 10
             setScrolled(prev => (prev === nextScrolled ? prev : nextScrolled))
 
             const totalHeight =
                 document.documentElement.scrollHeight - window.innerHeight
-            const currentScroll = window.scrollY
             const nextPercent =
                 totalHeight > 0
                     ? Math.min(100, Math.round((currentScroll / totalHeight) * 100))
                     : 0
             setPercent(prev => (prev === nextPercent ? prev : nextPercent))
+
+            if (currentScroll < 10) {
+                setIsVisible(true)
+            } else if (currentScroll > lastScrollY.current && currentScroll > 50) {
+                setIsVisible(false)
+            } else if (currentScroll < lastScrollY.current) {
+                setIsVisible(true)
+            }
+            lastScrollY.current = currentScroll
         }
         handleScroll()
         window.addEventListener('scroll', handleScroll, { passive: true })
@@ -105,11 +116,11 @@ export const Header = props => {
 
             {/* ================== 📱 移动端 Header ================== */}
             <div
-                className={`lg:hidden fixed top-0 left-0 z-[999] flex h-14 w-full items-center justify-between border-b px-4 transition-all duration-300 ${
+                className={`lg:hidden fixed top-0 left-0 z-[999] flex h-14 w-full items-center justify-between border-b px-4 transition-all duration-300 ease-in-out ${
                     scrolled
                         ? 'bg-black/95 border-gray-800 backdrop-blur-xl'
                         : 'bg-transparent border-transparent'
-                }`}>
+                } ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
                 <div className='flex items-center'>
                     <Link
                         href='/'

@@ -1,6 +1,6 @@
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /**
  * 千浅主题右侧浮动 Dock
@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react'
 export const FloatingWidgetDock = () => {
   const { isDarkMode, toggleDarkMode } = useGlobal()
   const [mounted, setMounted] = useState(false)
+  const [visible, setVisible] = useState(true)
+  const lastScrollY = useRef(0)
 
   const chatbaseId = siteConfig('CHATBASE_ID')
   const difyEnabled = siteConfig('DIFY_CHATBOT_ENABLED')
@@ -49,12 +51,30 @@ export const FloatingWidgetDock = () => {
 
   useEffect(() => {
     setMounted(true)
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      if (currentScrollY < 100) {
+        setVisible(true)
+      } else if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        setVisible(false)
+      } else if (currentScrollY < lastScrollY.current) {
+        setVisible(true)
+      }
+      lastScrollY.current = currentScrollY
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   if (!mounted) return null
 
   return (
-    <div className='fixed right-4 bottom-20 z-50 flex flex-col gap-3'>
+    <div
+      className={`fixed right-4 z-50 flex flex-col gap-3 transition-all duration-300 ease-in-out ${
+        visible
+          ? 'bottom-20 opacity-100 translate-y-0'
+          : 'bottom-4 opacity-0 translate-y-20 pointer-events-none'
+      }`}>
       <button
         type='button'
         onClick={handleAiChatClick}
