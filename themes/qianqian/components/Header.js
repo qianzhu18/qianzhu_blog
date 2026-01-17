@@ -14,6 +14,7 @@ export const Header = props => {
     const { searchModalRef, siteInfo } = props
     const [scrolled, setScrolled] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const postCount = siteInfo?.postCount ?? props?.postCount ?? 0
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 10)
@@ -43,6 +44,10 @@ export const Header = props => {
         )
         if (!hasAlgolia) return
         void import('@/components/AlgoliaSearchModal')
+    }
+
+    const handleRandom = () => {
+        router.push('/article/random').catch(() => router.push('/'))
     }
 
     return (
@@ -82,39 +87,39 @@ export const Header = props => {
                 className={`lg:hidden fixed top-0 left-0 z-[999] flex h-14 w-full items-center justify-between border-b px-4 transition-all duration-300 ${
                     scrolled
                         ? 'bg-black/95 border-gray-800 backdrop-blur-xl'
-                        : 'bg-black border-transparent'
+                        : 'bg-transparent border-transparent'
                 }`}>
                 <div className='flex items-center'>
                     <Link
                         href='/'
-                        className='text-lg font-bold text-white tracking-wider hover:text-indigo-400 transition-colors'>
+                        className='text-lg font-bold text-white tracking-wider hover:text-indigo-400 transition-colors z-[1000]'>
                         千逐
                     </Link>
                 </div>
-                <div className='flex items-center gap-5'>
+                <div className='flex items-center gap-4 z-[1000]'>
                     <button
                         type='button'
-                        onClick={() => router.push('/article/random')}
-                        className='text-gray-400 hover:text-white active:scale-95 transition-all'
+                        onClick={handleRandom}
+                        className='flex h-8 w-8 items-center justify-center rounded-lg bg-gray-800/50 text-gray-400 transition-all hover:text-white active:scale-95'
                         aria-label='随机文章'>
-                        <i className='fa-solid fa-dice text-lg' />
+                        <i className='fa-solid fa-dice text-sm' />
                     </button>
                     <button
                         type='button'
                         onClick={handleSearch}
-                        className='text-gray-400 hover:text-white active:scale-95 transition-all'
+                        className='flex h-8 w-8 items-center justify-center rounded-lg bg-gray-800/50 text-gray-400 transition-all hover:text-white active:scale-95'
                         aria-label='搜索'>
-                        <i className='fa-solid fa-magnifying-glass text-lg' />
+                        <i className='fa-solid fa-magnifying-glass text-sm' />
                     </button>
-                    <div className='flex h-6 w-6 items-center justify-center rounded-full border border-gray-700 bg-gray-800'>
+                    <div className='flex h-6 items-center justify-center rounded-full border border-gray-700 bg-gray-800 px-2'>
                         <span className='text-[10px] font-mono leading-none text-gray-300'>
-                            {siteInfo?.postCount || '0'}
+                            {postCount}
                         </span>
                     </div>
                     <button
                         type='button'
                         onClick={() => setMobileMenuOpen(prev => !prev)}
-                        className='text-gray-400 hover:text-white active:scale-95 transition-all'
+                        className='flex h-8 w-8 items-center justify-center text-gray-400 transition-all hover:text-white active:scale-95'
                         aria-label='展开菜单'>
                         <i className='fa-solid fa-bars text-lg' />
                     </button>

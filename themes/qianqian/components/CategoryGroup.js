@@ -12,14 +12,14 @@ const CategoryGroup = ({ categoryOptions }) => {
   if (!categoryOptions || categoryOptions.length === 0) return null
 
   return (
-    <div className='lg:hidden sticky top-14 z-[998] w-full bg-black/95 border-b border-gray-800 backdrop-blur-md'>
-      <div className='flex items-center px-4 py-2 space-x-2 overflow-x-auto no-scrollbar scroll-smooth'>
+    <div className='lg:hidden sticky top-14 z-40 w-full transition-colors duration-300 py-2 bg-gray-50/95 dark:bg-[#121212]/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800'>
+      <div className='flex items-center px-4 space-x-2 overflow-x-auto no-scrollbar scroll-smooth'>
         <Link
           href='/'
-          className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+          className={`shrink-0 px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
             router.pathname === '/'
-              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
-              : 'text-gray-400 bg-gray-900 hover:bg-gray-800'
+              ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20'
+              : 'text-gray-600 dark:text-gray-400 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700'
           }`}>
           首页
         </Link>
@@ -30,15 +30,15 @@ const CategoryGroup = ({ categoryOptions }) => {
             <Link
               key={cat.name}
               href={`/category/${encodeURIComponent(cat.name)}`}
-              className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+              className={`shrink-0 px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
                 isActive
-                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
-                  : 'text-gray-400 bg-gray-900 hover:bg-gray-800'
+                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20'
+                  : 'text-gray-600 dark:text-gray-400 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700'
               }`}>
               {cat.name}
               <span
-                className={`ml-1.5 text-[10px] ${
-                  isActive ? 'text-indigo-200' : 'text-gray-600'
+                className={`ml-1 ${
+                  isActive ? 'text-indigo-100' : 'text-gray-400'
                 }`}>
                 {cat.count}
               </span>

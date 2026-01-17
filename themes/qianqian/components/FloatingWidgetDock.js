@@ -1,12 +1,14 @@
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { decryptEmail } from '@/lib/plugins/mailEncrypt'
+import { useEffect, useState } from 'react'
 
 /**
  * 千浅主题右侧浮动 Dock
  */
 export const FloatingWidgetDock = () => {
-  const { toggleDarkMode } = useGlobal()
+  const { isDarkMode, toggleDarkMode } = useGlobal()
+  const [mounted, setMounted] = useState(false)
 
   const contactEmail = siteConfig('CONTACT_EMAIL')
   const chatbaseId = siteConfig('CHATBASE_ID')
@@ -46,35 +48,45 @@ export const FloatingWidgetDock = () => {
     }
   }
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
+
   return (
-    <div className='fixed right-4 bottom-24 z-50 flex flex-col gap-3'>
+    <div className='fixed right-4 bottom-20 z-50 flex flex-col gap-3'>
       <button
         type='button'
         onClick={handleAiChatClick}
-        className='flex h-11 w-11 items-center justify-center rounded-xl border border-gray-700 bg-black/80 shadow-xl backdrop-blur-md transition-transform active:scale-95'
+        className='flex h-10 w-10 items-center justify-center rounded-xl border border-gray-700 bg-black/80 shadow-lg backdrop-blur-md transition-transform active:scale-95'
         aria-label='AI 对话'>
-        <i className='fa-solid fa-robot text-indigo-400 text-lg' />
+        <i className='fa-solid fa-robot text-indigo-400 text-sm' />
       </button>
       <a
         href='#'
         onClick={handleContactClick}
-        className='flex h-11 w-11 items-center justify-center rounded-xl border border-gray-700 bg-black/80 shadow-xl backdrop-blur-md transition-transform active:scale-95'
+        className='flex h-10 w-10 items-center justify-center rounded-xl border border-gray-700 bg-black/80 shadow-lg backdrop-blur-md transition-transform active:scale-95'
         aria-label='发送邮件'>
-        <i className='fa-solid fa-envelope text-green-400 text-lg' />
+        <i className='fa-solid fa-envelope text-green-400 text-sm' />
       </a>
       <button
         type='button'
         onClick={toggleDarkMode}
-        className='flex h-11 w-11 items-center justify-center rounded-xl border border-gray-700 bg-black/80 shadow-xl backdrop-blur-md transition-transform active:scale-95'
+        className='group flex h-10 w-10 items-center justify-center rounded-xl border border-gray-700 bg-black/80 shadow-lg backdrop-blur-md transition-transform active:scale-95'
         aria-label='切换主题'>
-        <i className='fa-solid fa-gear text-gray-400 text-lg' />
+        <i
+          className={`fa-solid ${
+            isDarkMode ? 'fa-sun text-yellow-400' : 'fa-moon text-indigo-300'
+          } text-sm transition-transform group-hover:rotate-45`}
+        />
       </button>
       <button
         type='button'
         onClick={handleScrollTop}
-        className='flex h-11 w-11 items-center justify-center rounded-xl bg-[#F59E0B] text-black shadow-xl font-bold transition-transform active:scale-95'
+        className='flex h-10 w-10 items-center justify-center rounded-xl bg-[#F59E0B] text-black shadow-lg font-bold transition-transform active:scale-95'
         aria-label='回到顶部'>
-        <i className='fa-solid fa-arrow-up text-lg' />
+        <i className='fa-solid fa-arrow-up text-sm' />
       </button>
     </div>
   )
