@@ -10,10 +10,17 @@ import { MenuItem } from './MenuItem'
  * 响应式 折叠菜单
  */
 export const MenuList = props => {
-  const { customNav, customMenu } = props
+  const { customNav, customMenu, menuOpen, setMenuOpen } = props
   const { locale } = useGlobal()
 
-  const [showMenu, setShowMenu] = useState(false) // 控制菜单展开/收起状态
+  const [internalOpen, setInternalOpen] = useState(false)
+  const isControlled =
+    typeof menuOpen === 'boolean' && typeof setMenuOpen === 'function'
+  const showMenu = isControlled ? menuOpen : internalOpen
+  const setShowMenu = isControlled ? setMenuOpen : setInternalOpen
+  const idPrefix = props.idPrefix ? `${props.idPrefix}-` : ''
+  const togglerId = `${idPrefix}navbarToggler`
+  const collapseId = `${idPrefix}navbarCollapse`
   const router = useRouter()
 
   useEffect(() => {
@@ -78,20 +85,20 @@ export const MenuList = props => {
     <div>
       {/* 移动端菜单切换按钮 */}
       <button
-        id='navbarToggler'
-        aria-controls='navbarCollapse'
+        id={togglerId}
+        aria-controls={collapseId}
         aria-expanded={showMenu}
         onClick={toggleMenu}
         className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden ${
           showMenu ? 'navbarTogglerActive' : ''
-        }`}>
+        } ${isControlled ? 'hidden' : ''}`}>
         <span className='relative my-[6px] block h-[2px] w-[30px] bg-white duration-200 transition-all'></span>
         <span className='relative my-[6px] block h-[2px] w-[30px] bg-white duration-200 transition-all'></span>
         <span className='relative my-[6px] block h-[2px] w-[30px] bg-white duration-200 transition-all'></span>
       </button>
 
       <nav
-        id='navbarCollapse'
+        id={collapseId}
         className={`fixed inset-x-0 top-16 w-full max-h-[80vh] overflow-y-auto bg-white dark:bg-dark-2 border-t border-black/5 dark:border-white/10 px-2 py-3 shadow-xl lg:static lg:block lg:w-full lg:max-w-full lg:bg-transparent lg:px-4 lg:py-0 lg:shadow-none lg:border-0 lg:max-h-none lg:overflow-visible xl:px-6 ${
           showMenu ? 'block' : 'hidden lg:block'
         }`}>

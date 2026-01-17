@@ -172,6 +172,29 @@ const Style = () => {
         text-decoration: none !important;
     }
 
+    .no-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(79, 70, 229, 0.35);
+        border-radius: 999px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
     /* 多级悬浮菜单 */
     .menus_item_child {
         display: none;

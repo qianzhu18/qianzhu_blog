@@ -111,42 +111,39 @@ export default function AlgoliaSearchModal({ cRef }) {
   if (!isOpen || !isReady) return null
 
   return (
-    <div className='fixed inset-0 z-[100] flex items-start justify-center bg-black/40 p-4 pt-[15vh] backdrop-blur-xl animate-fade-in'>
-      <div className='absolute inset-0' onClick={() => setIsOpen(false)}></div>
-
-      <div className='relative w-full max-w-2xl overflow-hidden rounded-[32px] border border-white/20 bg-white/80 shadow-2xl backdrop-blur-3xl dark:bg-zinc-900/80'>
-        <div className='relative flex items-center border-b p-5 dark:border-zinc-800'>
-          <i className='anzhiyufont anzhiyu-icon-magnifying-glass text-xl text-gray-400' />
+    <div className='fixed inset-0 z-[9999] flex flex-col bg-zinc-900/95 backdrop-blur-2xl animate-fade-in'>
+      <div className='flex items-center p-4 pt-16 lg:pt-4 border-b border-gray-800'>
+        <div className='flex flex-1 items-center rounded-full border border-gray-700 bg-black px-5 py-3 transition-colors focus-within:border-indigo-500'>
+          <i className='fa-solid fa-magnifying-glass mr-3 text-lg text-gray-500' />
           <input
             ref={inputRef}
+            className='flex-1 bg-transparent text-base text-white outline-none placeholder:text-gray-600'
+            placeholder='Search...'
             onChange={event => handleSearch(event.target.value)}
-            className='w-full bg-transparent px-4 text-lg outline-none dark:text-white'
-            placeholder='寻找深度见解与灵感...'
           />
-          <kbd className='hidden rounded bg-gray-100 p-1 text-xs dark:bg-zinc-800 sm:block'>
-            ESC
-          </kbd>
+          {loading && (
+            <i className='fa-solid fa-circle-notch fa-spin text-indigo-500' />
+          )}
         </div>
+        <button
+          type='button'
+          onClick={() => setIsOpen(false)}
+          className='ml-4 font-bold text-gray-400 active:text-white'>
+          取消
+        </button>
+      </div>
 
-        {loading && (
-          <div className='absolute bottom-0 left-0 h-[2px] w-full animate-pulse bg-indigo-500 transition-all duration-500'></div>
-        )}
+      <div className='flex-1 overflow-y-auto p-4 custom-scrollbar'>
+        {loading &&
+          [1, 2, 3].map(item => (
+            <div
+              key={item}
+              className='mb-3 h-20 rounded-2xl bg-gray-800/50 p-4 animate-pulse'
+            />
+          ))}
 
-        <div className='max-h-[50vh] overflow-y-auto space-y-2 p-4'>
-          {loading ? (
-            <div className='space-y-4'>
-              <div className='text-xs text-indigo-500'>正在穿梭知识库...</div>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <div
-                  key={index}
-                  className='rounded-2xl bg-zinc-100/70 p-4 shadow-sm animate-pulse dark:bg-zinc-800/60'>
-                  <div className='h-4 w-1/3 rounded bg-zinc-300/70 dark:bg-zinc-700/60'></div>
-                  <div className='mt-3 h-3 w-2/3 rounded bg-zinc-300/60 dark:bg-zinc-700/50'></div>
-                </div>
-              ))}
-            </div>
-          ) : searchResults.length > 0 ? (
-            searchResults.map(hit => {
+        {!loading && searchResults.length > 0
+          ? searchResults.map(hit => {
               const slug = hit.slug || hit.objectID
               const href = `${normalizedBase}/${slug}`.replace(/\/{2,}/g, '/')
               return (
@@ -154,21 +151,23 @@ export default function AlgoliaSearchModal({ cRef }) {
                   key={hit.objectID || slug}
                   href={href}
                   onClick={() => setIsOpen(false)}>
-                  <div className='rounded-2xl p-4 transition-all transform hover:scale-[1.01] hover:bg-indigo-50 dark:hover:bg-indigo-900/30'>
-                    <div className='mb-1 font-bold'>{hit.title}</div>
-                    <div className='line-clamp-1 text-sm text-gray-500 dark:text-gray-400'>
-                      {hit.summary || hit.content || ''}
+                  <div className='group mb-3 rounded-2xl border border-gray-800 bg-black/40 p-4 transition-all active:bg-gray-800'>
+                    <div className='mb-1 flex items-center'>
+                      <span className='mr-2 text-xs text-indigo-500'>#</span>
+                      <h3 className='line-clamp-1 text-base font-bold text-gray-200'>
+                        {hit.title}
+                      </h3>
                     </div>
+                    <p className='line-clamp-2 pl-4 text-xs text-gray-500'>
+                      {hit.summary || hit.content || ''}
+                    </p>
                   </div>
                 </Link>
               )
             })
-          ) : query ? (
-            <div className='py-10 text-center text-gray-400'>暂无相关结果</div>
-          ) : (
-            <div className='py-10 text-center text-gray-400'>输入关键词开始搜索</div>
-          )}
-        </div>
+          : !loading && query && (
+              <div className='py-10 text-center text-gray-400'>暂无相关结果</div>
+            )}
       </div>
     </div>
   )

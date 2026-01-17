@@ -33,6 +33,7 @@ import Link from 'next/link'
 import { ArticleLock } from './components/ArticleLock'
 import { Banner } from './components/Banner'
 import { CTA } from './components/CTA'
+import CategoryGroup from './components/CategoryGroup'
 import FloatingWidgetDock from './components/FloatingWidgetDock'
 import SearchInput from './components/SearchInput'
 import { SVG404 } from './components/svg/SVG404'
@@ -87,7 +88,7 @@ const Live2D = dynamic(() => import('@/components/Live2D'), { ssr: false })
  * @returns
  */
 const LayoutBase = props => {
-    const { children } = props
+    const { children, categoryOptions } = props
     const searchModal = useRef(null)
 
     const layoutChildren = Children.map(children, child => {
@@ -128,6 +129,8 @@ const LayoutBase = props => {
             <Style />
             {/* 页头 */}
             <Header {...props} searchModalRef={searchModal} />
+
+            <CategoryGroup categoryOptions={categoryOptions} />
 
             <AlgoliaSearchModal cRef={searchModal} {...props} />
 

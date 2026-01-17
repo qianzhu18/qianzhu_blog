@@ -1,7 +1,7 @@
-/* eslint-disable no-unreachable */
 import { siteConfig } from '@/lib/config'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { DarkModeButton } from './DarkModeButton'
 import { MenuList } from './MenuList'
 import CONFIG from '../config'
@@ -11,7 +11,16 @@ import CONFIG from '../config'
  */
 export const Header = props => {
     const router = useRouter()
-    const { searchModalRef } = props
+    const { searchModalRef, siteInfo } = props
+    const [scrolled, setScrolled] = useState(false)
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+    useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 10)
+        handleScroll()
+        window.addEventListener('scroll', handleScroll, { passive: true })
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
 
     const handleSearch = () => {
         const hasAlgolia = Boolean(
@@ -38,20 +47,17 @@ export const Header = props => {
 
     return (
         <>
-            {/* <!-- ====== Navbar Section Start --> */}
-            <div
-                className='ud-header sticky top-0 z-[50] flex w-full items-center border-b border-zinc-100 bg-white/70 backdrop-blur-xl transition-all duration-300 dark:border-zinc-800 dark:bg-black/70'>
+            {/* ================== 💻 桌面端 Header ================== */}
+            <div className='hidden lg:block sticky top-0 z-[50] w-full border-b border-zinc-100 bg-white/70 backdrop-blur-xl transition-all duration-300 dark:border-zinc-800 dark:bg-black/70'>
                 <div className='container'>
                     <div className='relative -mx-4 flex items-center justify-between py-3'>
-                        {/* Logo */}
                         <div className='w-60 max-w-full px-4'>
                             <Link
                                 href='/'
-                                className='text-2xl font-black tracking-tighter text-zinc-800 dark:text-white whitespace-nowrap'>
+                                className='whitespace-nowrap text-2xl font-black tracking-tighter text-zinc-800 dark:text-white'>
                                 千逐
                             </Link>
                         </div>
-                        {/* 右侧菜单 */}
                         <div className='flex items-center gap-4 justify-end pr-16 lg:pr-0'>
                             <MenuList {...props} />
                             <button
@@ -63,13 +69,68 @@ export const Header = props => {
                                 aria-label='搜索'>
                                 <i className='fa-solid fa-magnifying-glass faa-tada animated-hover' />
                             </button>
-                            {/* 主题切换器 */}
-                            {siteConfig('THEME_SWITCH', false, CONFIG) && <DarkModeButton />}
+                            {siteConfig('THEME_SWITCH', false, CONFIG) && (
+                                <DarkModeButton />
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
-            {/* <!-- ====== Navbar Section End --> */}
+
+            {/* ================== 📱 移动端 Header ================== */}
+            <div
+                className={`lg:hidden fixed top-0 left-0 z-[999] flex h-14 w-full items-center justify-between border-b px-4 transition-all duration-300 ${
+                    scrolled
+                        ? 'bg-black/95 border-gray-800 backdrop-blur-xl'
+                        : 'bg-black border-transparent'
+                }`}>
+                <div className='flex items-center'>
+                    <Link
+                        href='/'
+                        className='text-lg font-bold text-white tracking-wider hover:text-indigo-400 transition-colors'>
+                        千逐
+                    </Link>
+                </div>
+                <div className='flex items-center gap-5'>
+                    <button
+                        type='button'
+                        onClick={() => router.push('/article/random')}
+                        className='text-gray-400 hover:text-white active:scale-95 transition-all'
+                        aria-label='随机文章'>
+                        <i className='fa-solid fa-dice text-lg' />
+                    </button>
+                    <button
+                        type='button'
+                        onClick={handleSearch}
+                        className='text-gray-400 hover:text-white active:scale-95 transition-all'
+                        aria-label='搜索'>
+                        <i className='fa-solid fa-magnifying-glass text-lg' />
+                    </button>
+                    <div className='flex h-6 w-6 items-center justify-center rounded-full border border-gray-700 bg-gray-800'>
+                        <span className='text-[10px] font-mono leading-none text-gray-300'>
+                            {siteInfo?.postCount || '0'}
+                        </span>
+                    </div>
+                    <button
+                        type='button'
+                        onClick={() => setMobileMenuOpen(prev => !prev)}
+                        className='text-gray-400 hover:text-white active:scale-95 transition-all'
+                        aria-label='展开菜单'>
+                        <i className='fa-solid fa-bars text-lg' />
+                    </button>
+                </div>
+            </div>
+
+            <div className='lg:hidden'>
+                <MenuList
+                    {...props}
+                    idPrefix='mobile'
+                    menuOpen={mobileMenuOpen}
+                    setMenuOpen={setMobileMenuOpen}
+                />
+            </div>
+
+            <div className='h-14 lg:hidden' />
         </>
     )
 }
