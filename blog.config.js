@@ -53,6 +53,14 @@ const BLOG = {
   ...require('./conf/plugin.config'), // 其他第三方插件 algolia全文索引
   ...require('./conf/performance.config'), // 性能优化配置
 
+  // 评论系统（Twikoo）
+  COMMENT_TWIKOO_ENV_ID:
+    process.env.NEXT_PUBLIC_COMMENT_TWIKOO_ENV_ID ||
+    'https://musical-gaufre-ad1316.netlify.app/.netlify/functions/twikoo',
+  COMMENT_TWIKOO_COUNT_ENABLE: true, // 显示评论数
+  COMMENT_TWIKOO_CDN_URL:
+    'https://cdn.staticfile.net/twikoo/1.6.39/twikoo.all.min.js', // CDN 加速
+
   // Busuanzi 统计脚本地址（可替换为稳定镜像源）
   BUSUANZI_JS:
     process.env.NEXT_PUBLIC_BUSUANZI_JS ||

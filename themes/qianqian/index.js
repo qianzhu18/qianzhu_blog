@@ -195,7 +195,7 @@ const LayoutIndex = props => {
             {/* 博文列表 */}
             {siteConfig('PROXIO_BLOG_ENABLE', true, CONFIG) && (
                 <>
-                    <Blog posts={posts} />
+                    <Blog posts={posts} siteInfo={props?.siteInfo} />
                     {/* 更多文章按钮 */}
                     <div className='container mx-auto flex justify-end mb-4'>
                         <Link className='text-lg underline' href={'/archive'}>
