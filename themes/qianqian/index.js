@@ -163,6 +163,17 @@ const LayoutBase = props => {
                     }}
                 />
             )}
+            {/* ================== SalesSmartly 聊天插件集成 ================== */}
+            <Script id='salesmartly-config' strategy='beforeInteractive'>
+                {`
+                    window.__ssc = window.__ssc || {};
+                    window.__ssc.setting = { hideIcon: true };
+                `}
+            </Script>
+            <Script
+                src='https://plugin-code.salesmartly.com/js/project_604859_624202_1768654219.js'
+                strategy='lazyOnload'
+            />
             {/* <MadeWithButton/> */}
         </div>
     )

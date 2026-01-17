@@ -21,12 +21,18 @@ export const FloatingWidgetDock = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const handleContactClick = event => {
-    if (!contactEmail || typeof window === 'undefined') return
-    event.preventDefault()
-    const email = decryptEmail(contactEmail)
-    if (!email) return
-    window.location.href = `mailto:${email}`
+  const handleOpenChat = () => {
+    if (typeof window === 'undefined') return
+    if (window.ssq?.push) {
+      window.ssq.push('chatOpen')
+      return
+    }
+    const email = contactEmail ? decryptEmail(contactEmail) : ''
+    if (email) {
+      window.location.href = `mailto:${email}`
+      return
+    }
+    console.warn('SalesSmartly script not loaded yet')
   }
 
   const handleAiChatClick = () => {
@@ -63,13 +69,13 @@ export const FloatingWidgetDock = () => {
         aria-label='AI 对话'>
         <i className='fa-solid fa-robot text-indigo-400 text-sm' />
       </button>
-      <a
-        href='#'
-        onClick={handleContactClick}
-        className='flex h-10 w-10 items-center justify-center rounded-xl border border-gray-700 bg-black/80 shadow-lg backdrop-blur-md transition-transform active:scale-95'
-        aria-label='发送邮件'>
-        <i className='fa-solid fa-envelope text-green-400 text-sm' />
-      </a>
+      <button
+        type='button'
+        onClick={handleOpenChat}
+        className='group flex h-10 w-10 items-center justify-center rounded-xl border border-gray-700 bg-black/80 shadow-lg backdrop-blur-md transition-transform active:scale-95'
+        aria-label='联系作者'>
+        <i className='fa-regular fa-envelope text-green-400 text-sm transition-all group-hover:fa-solid' />
+      </button>
       <button
         type='button'
         onClick={toggleDarkMode}

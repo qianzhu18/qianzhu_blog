@@ -11,13 +11,25 @@ import CONFIG from '../config'
  */
 export const Header = props => {
     const router = useRouter()
-    const { searchModalRef, siteInfo } = props
+    const { searchModalRef } = props
     const [scrolled, setScrolled] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const postCount = siteInfo?.postCount ?? props?.postCount ?? 0
+    const [percent, setPercent] = useState(0)
 
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 10)
+        const handleScroll = () => {
+            const nextScrolled = window.scrollY > 10
+            setScrolled(prev => (prev === nextScrolled ? prev : nextScrolled))
+
+            const totalHeight =
+                document.documentElement.scrollHeight - window.innerHeight
+            const currentScroll = window.scrollY
+            const nextPercent =
+                totalHeight > 0
+                    ? Math.min(100, Math.round((currentScroll / totalHeight) * 100))
+                    : 0
+            setPercent(prev => (prev === nextPercent ? prev : nextPercent))
+        }
         handleScroll()
         window.addEventListener('scroll', handleScroll, { passive: true })
         return () => window.removeEventListener('scroll', handleScroll)
@@ -112,8 +124,13 @@ export const Header = props => {
                         <i className='fa-solid fa-magnifying-glass text-sm' />
                     </button>
                     <div className='flex h-6 items-center justify-center rounded-full border border-gray-700 bg-gray-800 px-2'>
-                        <span className='text-[10px] font-mono leading-none text-gray-300'>
-                            {postCount}
+                        <span
+                            className={`min-w-[32px] text-center text-[10px] font-mono leading-none transition-all duration-300 ${
+                                percent > 0
+                                    ? 'text-indigo-400 font-bold'
+                                    : 'text-gray-500'
+                            }`}>
+                            {percent}%
                         </span>
                     </div>
                     <button
