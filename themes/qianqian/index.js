@@ -35,6 +35,8 @@ import { Banner } from './components/Banner'
 import { CTA } from './components/CTA'
 import CategoryGroup from './components/CategoryGroup'
 import FloatingWidgetDock from './components/FloatingWidgetDock'
+import AiChatDrawer from '@/components/Ai/AiChatDrawer'
+import AiFloatingButton from '@/components/Ai/AiFloatingButton'
 import SearchInput from './components/SearchInput'
 import { SVG404 } from './components/svg/SVG404'
 import Pagination from './components/Pagination'
@@ -127,6 +129,8 @@ const LayoutBase = props => {
             id='theme-qianqian'
             className={`${siteConfig('FONT_STYLE')} min-h-screen flex flex-col dark:bg-dark scroll-smooth`}>
             <Style />
+            <AiFloatingButton />
+            <AiChatDrawer />
             {/* 页头 */}
             <Header {...props} searchModalRef={searchModal} />
 
