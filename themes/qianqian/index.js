@@ -28,6 +28,7 @@ import { Style } from './style'
 // import { MadeWithButton } from './components/MadeWithButton'
 import replaceSearchResult from '@/components/Mark'
 import { useGlobal } from '@/lib/global'
+import { useAiStore } from '@/lib/store/aiStore'
 import { loadWowJS } from '@/lib/plugins/wow'
 import Link from 'next/link'
 import { ArticleLock } from './components/ArticleLock'
@@ -92,6 +93,7 @@ const Live2D = dynamic(() => import('@/components/Live2D'), { ssr: false })
 const LayoutBase = props => {
     const { children, categoryOptions } = props
     const searchModal = useRef(null)
+    const { isOpen } = useAiStore()
 
     const layoutChildren = Children.map(children, child => {
         if (!isValidElement(child)) return child
@@ -131,22 +133,27 @@ const LayoutBase = props => {
             <Style />
             <AiFloatingButton />
             <AiChatDrawer />
-            {/* 页头 */}
-            <Header {...props} searchModalRef={searchModal} />
+            <div
+                className={`relative min-h-screen flex flex-col transition-[padding] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] ${
+                    isOpen ? 'lg:pr-[400px]' : 'lg:pr-0'
+                }`}>
+                {/* 页头 */}
+                <Header {...props} searchModalRef={searchModal} />
 
-            <CategoryGroup categoryOptions={categoryOptions} />
+                <CategoryGroup categoryOptions={categoryOptions} />
 
-            <AlgoliaSearchModal cRef={searchModal} {...props} />
+                <AlgoliaSearchModal cRef={searchModal} {...props} />
 
-            <div id='main-wrapper' className='grow'>
-                {layoutChildren}
+                <div id='main-wrapper' className='grow'>
+                    {layoutChildren}
+                </div>
+
+                {/* 页脚 */}
+                <Footer {...props} />
             </div>
 
             {/* 背景：HomePage 风格交互网格（固定全屏，不影响交互） */}
             {siteConfig('PROXIO_GRID_BG_ENABLE', true, CONFIG) && <GridBackground />}
-
-            {/* 页脚 */}
-            <Footer {...props} />
 
             {/* 悬浮按钮 */}
             <FloatingWidgetDock />

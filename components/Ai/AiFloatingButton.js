@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAiStore } from '@/lib/store/aiStore'
 
 export default function AiFloatingButton() {
@@ -10,14 +10,18 @@ export default function AiFloatingButton() {
     setTriggerType
   } = useAiStore()
   const [localShow, setLocalShow] = useState(false)
+  const debounceRef = useRef(null)
 
   useEffect(() => {
     const handleSelection = () => {
-      setTimeout(() => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current)
+      }
+      debounceRef.current = setTimeout(() => {
         const selection = window.getSelection()
-        const text = selection.toString().trim()
+        const text = selection?.toString().trim() || ''
 
-        if (text.length > 2) {
+        if (text.length > 2 && selection?.rangeCount) {
           const range = selection.getRangeAt(0)
           const rect = range.getBoundingClientRect()
 
@@ -28,18 +32,22 @@ export default function AiFloatingButton() {
           setFabPosition({ x, y, show: true })
           setLocalShow(true)
         } else {
+          setContext('')
           setLocalShow(false)
           setTimeout(() => {
             setFabPosition(pos => ({ ...pos, show: false }))
           }, 200)
         }
-      }, 100)
+      }, 120)
     }
 
     document.addEventListener('mouseup', handleSelection)
     document.addEventListener('touchend', handleSelection)
 
     return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current)
+      }
       document.removeEventListener('mouseup', handleSelection)
       document.removeEventListener('touchend', handleSelection)
     }
@@ -67,6 +75,7 @@ export default function AiFloatingButton() {
           setTriggerType('context')
           openDrawer()
           setLocalShow(false)
+          setFabPosition(pos => ({ ...pos, show: false }))
         }}
         className='flex h-9 w-9 items-center justify-center rounded-xl border border-gray-200/50 bg-black/80 shadow-xl backdrop-blur-md transition-transform hover:scale-110 active:scale-95 dark:bg-white/90'>
         <span className='text-xs font-bold text-white dark:text-black'>
