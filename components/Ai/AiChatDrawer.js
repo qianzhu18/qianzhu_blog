@@ -54,7 +54,7 @@ export default function AiChatDrawer() {
           pointer-events-auto bg-white/90 dark:bg-[#181818]/90 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 shadow-2xl flex flex-col overflow-hidden
           transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]
 
-          md:fixed md:top-24 md:right-8
+          md:fixed md:top-24 md:right-8 md:bottom-auto md:left-auto
           md:w-[380px] md:h-[600px] md:max-h-[80vh]
           md:rounded-2xl
           md:origin-top-right
