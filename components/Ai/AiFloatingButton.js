@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react'
 import { useAiStore } from '@/lib/store/aiStore'
 
 export default function AiFloatingButton() {
-  const { setContext, setFabPosition, fabPosition, toggleOpen } = useAiStore()
+  const {
+    setContext,
+    setFabPosition,
+    fabPosition,
+    openDrawer,
+    setTriggerType
+  } = useAiStore()
   const [localShow, setLocalShow] = useState(false)
 
   useEffect(() => {
@@ -11,7 +17,7 @@ export default function AiFloatingButton() {
         const selection = window.getSelection()
         const text = selection.toString().trim()
 
-        if (text.length > 1) {
+        if (text.length > 2) {
           const range = selection.getRangeAt(0)
           const rect = range.getBoundingClientRect()
 
@@ -27,7 +33,7 @@ export default function AiFloatingButton() {
             setFabPosition(pos => ({ ...pos, show: false }))
           }, 200)
         }
-      }, 10)
+      }, 100)
     }
 
     document.addEventListener('mouseup', handleSelection)
@@ -45,26 +51,27 @@ export default function AiFloatingButton() {
 
   return (
     <div
-      className={`fixed z-[50] transition-all duration-300 ease-out ${
-        localShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+      className={`fixed z-[50] transition-all duration-200 ease-out ${
+        localShow
+          ? 'opacity-100 translate-y-0 scale-100'
+          : 'opacity-0 translate-y-2 scale-90'
       }`}
       style={{
         left: fabPosition.x,
         top: fabPosition.y - scrollY,
-        transform: 'translateX(-50%)',
-        pointerEvents: localShow ? 'auto' : 'none'
+        transform: 'translateX(-50%)'
       }}>
       <button
-        type='button'
         onClick={e => {
-          e.preventDefault()
           e.stopPropagation()
-          toggleOpen()
+          setTriggerType('context')
+          openDrawer()
           setLocalShow(false)
         }}
-        className='group flex h-10 w-10 items-center justify-center rounded-xl border border-gray-700 bg-black/80 shadow-lg backdrop-blur-md transition-transform active:scale-95'
-        aria-label='AI 对话'>
-        <i className='fa-solid fa-robot text-indigo-400 text-sm group-hover:text-indigo-300'></i>
+        className='flex h-9 w-9 items-center justify-center rounded-xl border border-gray-200/50 bg-black/80 shadow-xl backdrop-blur-md transition-transform hover:scale-110 active:scale-95 dark:bg-white/90'>
+        <span className='text-xs font-bold text-white dark:text-black'>
+          Ask
+        </span>
       </button>
     </div>
   )

@@ -1,5 +1,5 @@
-import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
+import { useAiStore } from '@/lib/store/aiStore'
 import { useEffect, useRef, useState } from 'react'
 
 /**
@@ -7,14 +7,10 @@ import { useEffect, useRef, useState } from 'react'
  */
 export const FloatingWidgetDock = () => {
   const { isDarkMode, toggleDarkMode } = useGlobal()
+  const { toggleOpen, setContext, setTriggerType } = useAiStore()
   const [mounted, setMounted] = useState(false)
   const [visible, setVisible] = useState(true)
   const lastScrollY = useRef(0)
-
-  const chatbaseId = siteConfig('CHATBASE_ID')
-  const difyEnabled = siteConfig('DIFY_CHATBOT_ENABLED')
-  const difyBaseUrl = siteConfig('DIFY_CHATBOT_BASE_URL')
-  const difyToken = siteConfig('DIFY_CHATBOT_TOKEN')
 
   const handleScrollTop = () => {
     if (typeof window === 'undefined') return
@@ -28,25 +24,6 @@ export const FloatingWidgetDock = () => {
       return
     }
     console.warn('SalesSmartly script not loaded yet')
-  }
-
-  const handleAiChatClick = () => {
-    if (typeof window === 'undefined') return
-    if (chatbaseId) {
-      window.open(
-        `https://www.chatbase.co/chatbot-iframe/${chatbaseId}`,
-        '_blank',
-        'noopener,noreferrer'
-      )
-      return
-    }
-    if (difyEnabled && difyBaseUrl && difyToken) {
-      window.open(
-        `${difyBaseUrl}/chat/${difyToken}`,
-        '_blank',
-        'noopener,noreferrer'
-      )
-    }
   }
 
   useEffect(() => {
@@ -77,7 +54,11 @@ export const FloatingWidgetDock = () => {
       }`}>
       <button
         type='button'
-        onClick={handleAiChatClick}
+        onClick={() => {
+          setTriggerType('global')
+          setContext('')
+          toggleOpen()
+        }}
         className='flex h-10 w-10 items-center justify-center rounded-xl border border-gray-700 bg-black/80 shadow-lg backdrop-blur-md transition-transform active:scale-95'
         aria-label='AI 对话'>
         <i className='fa-solid fa-robot text-indigo-400 text-sm' />
