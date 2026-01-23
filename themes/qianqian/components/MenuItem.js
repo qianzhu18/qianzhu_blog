@@ -37,7 +37,14 @@ export const MenuItem = ({ link, depth = 0 }) => {
   const baseItemClass = isRoot
     ? 'flex items-center gap-2 min-h-[44px] w-full rounded-lg px-4 py-3 text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent'
     : 'flex items-center gap-2 min-h-[44px] w-full rounded-lg px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-black/5 dark:hover:bg-white/5'
-  const activeClass = isRoot && router.route === '/' ? 'lg:text-white lg:group-hover:text-white' : ''
+  const href = typeof link?.href === 'string' ? link.href : ''
+  const isActive =
+    Boolean(href) &&
+    (router.asPath === href ||
+      router.pathname === href ||
+      (href !== '/' && router.asPath.startsWith(href)))
+  const activeClass =
+    isRoot && isActive ? 'lg:text-emerald-700 dark:lg:text-emerald-300' : ''
   const submenuPositionClass = depth > 0 ? 'lg:left-full lg:top-0 lg:ml-2' : 'lg:left-0 lg:top-full'
 
   return (
