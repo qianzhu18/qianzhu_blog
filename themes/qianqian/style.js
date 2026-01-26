@@ -172,6 +172,14 @@ const Style = () => {
         text-decoration: none !important;
     }
 
+    #theme-qianqian .qianqian-nav-button {
+        color: var(--dewx-text) !important;
+    }
+
+    :is(.dark #theme-qianqian .qianqian-nav-button) {
+        color: var(--dewx-text) !important;
+    }
+
     .no-scrollbar {
         scrollbar-width: none;
         -ms-overflow-style: none;

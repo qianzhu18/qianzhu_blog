@@ -37,7 +37,12 @@ export const MenuItem = ({ link, depth = 0 }) => {
   const baseItemClass = isRoot
     ? 'flex items-center gap-2 min-h-[44px] w-full rounded-lg px-4 py-3 text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent'
     : 'flex items-center gap-2 min-h-[44px] w-full rounded-lg px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-black/5 dark:hover:bg-white/5'
-  const activeClass = isRoot && router.route === '/' ? 'lg:text-white lg:group-hover:text-white' : ''
+  const isHomeRoute = router.route === '/'
+  const isHomeLink = link?.href === '/'
+  const activeClass =
+    isRoot && isHomeRoute && isHomeLink
+      ? 'lg:text-emerald-700 lg:group-hover:text-emerald-700 dark:lg:text-emerald-300 dark:lg:group-hover:text-emerald-300'
+      : ''
   const submenuPositionClass = depth > 0 ? 'lg:left-full lg:top-0 lg:ml-2' : 'lg:left-0 lg:top-full'
 
   return (
@@ -66,7 +71,7 @@ export const MenuItem = ({ link, depth = 0 }) => {
             onMouseEnter={prefetchRoutes}
             onFocus={prefetchRoutes}
             onTouchStart={prefetchRoutes}
-            className={`w-full text-left cursor-pointer flex items-center justify-between min-h-[44px] px-4 py-3 text-base font-semibold text-gray-900 dark:text-gray-100 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 ${isRoot ? 'lg:ml-8 lg:mr-0 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent lg:group-hover:opacity-70 xl:ml-10' : ''} ${activeClass} faa-tada animated-hover`}>
+            className={`w-full text-left cursor-pointer flex items-center justify-between min-h-[44px] px-4 py-3 text-base font-semibold text-gray-900 dark:text-gray-100 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 ${isRoot ? 'qianqian-nav-button lg:ml-8 lg:mr-0 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent lg:group-hover:opacity-70 xl:ml-10' : ''} ${activeClass} faa-tada animated-hover`}>
             <span className='flex items-center gap-2'>
               {link?.icon && <i className={link.icon + ' my-auto'} />}
               <span className='whitespace-nowrap'>{label}</span>
