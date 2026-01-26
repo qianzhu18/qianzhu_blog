@@ -165,6 +165,22 @@ const Style = () => {
         text-decoration: none !important;
     }
 
+    #theme-qianqian .nav-dropdown-trigger {
+        color: #1f2937 !important;
+    }
+
+    #theme-qianqian .nav-dropdown-trigger svg {
+        color: #1f2937 !important;
+    }
+
+    .dark #theme-qianqian .nav-dropdown-trigger {
+        color: #e5e7eb !important;
+    }
+
+    .dark #theme-qianqian .nav-dropdown-trigger svg {
+        color: #e5e7eb !important;
+    }
+
     #theme-qianqian .ud-header a:hover,
     #theme-qianqian .ud-header button:hover,
     #theme-proxio .ud-header a:hover,

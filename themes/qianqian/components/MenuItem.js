@@ -71,7 +71,7 @@ export const MenuItem = ({ link, depth = 0 }) => {
             onMouseEnter={prefetchRoutes}
             onFocus={prefetchRoutes}
             onTouchStart={prefetchRoutes}
-            className={`w-full text-left cursor-pointer flex items-center justify-between min-h-[44px] px-4 py-3 text-base font-semibold text-gray-900 dark:text-gray-100 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 ${isRoot ? 'qianqian-nav-button lg:ml-8 lg:mr-0 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent lg:group-hover:opacity-70 xl:ml-10' : ''} ${activeClass} faa-tada animated-hover`}>
+            className={`nav-dropdown-trigger w-full text-left cursor-pointer flex items-center justify-between min-h-[44px] px-4 py-3 text-base font-semibold text-gray-900 dark:text-gray-100 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 ${isRoot ? 'qianqian-nav-button lg:ml-8 lg:mr-0 lg:inline-flex lg:w-auto lg:px-0 lg:py-3 lg:text-sm lg:rounded-none lg:hover:bg-transparent lg:group-hover:opacity-70 xl:ml-10' : ''} ${activeClass} faa-tada animated-hover`}>
             <span className='flex items-center gap-2'>
               {link?.icon && <i className={link.icon + ' my-auto'} />}
               <span className='whitespace-nowrap'>{label}</span>

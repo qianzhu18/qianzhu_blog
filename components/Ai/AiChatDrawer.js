@@ -144,6 +144,8 @@ export default function AiChatDrawer() {
     setInput('')
     setIsLoading(true)
 
+    let assistantContent = ''
+
     try {
       const requestBody = {
         messages: nextMessages.map(m => ({
@@ -178,10 +180,9 @@ export default function AiChatDrawer() {
       }
 
       const handleErrorPayload = data => {
-        applyAssistantMessage(
-          data?.user_message || '网络连接异常',
-          false
-        )
+        const fallback = data?.user_message || '网络连接异常'
+        const content = assistantContent?.trim() ? assistantContent : fallback
+        applyAssistantMessage(content, false)
       }
 
       if (!res.ok) {
@@ -203,16 +204,12 @@ export default function AiChatDrawer() {
           data = {}
         }
         applyAssistantMessage(data?.reply || '暂无回复', false)
-        if (isFreePlan) {
-          setQuotaUsed(prev => Math.min(FREE_CHAT_LIMIT, prev + 1))
-        }
         return
       }
 
       const reader = res.body.getReader()
       const decoder = new TextDecoder('utf-8')
       let buffer = ''
-      let assistantContent = ''
       let streamFailed = false
 
       const processPayload = payload => {
@@ -263,15 +260,18 @@ export default function AiChatDrawer() {
 
       if (!streamFailed) {
         applyAssistantMessage(assistantContent || '暂无回复', false)
-        if (isFreePlan) {
-          setQuotaUsed(prev => Math.min(FREE_CHAT_LIMIT, prev + 1))
-        }
       }
     } catch (e) {
       setMessages(prev =>
         prev.map((msg, idx) =>
           idx === assistantIndex
-            ? { ...msg, content: '网络连接异常', streaming: false }
+            ? {
+                ...msg,
+                content: assistantContent?.trim()
+                  ? assistantContent
+                  : '网络连接异常',
+                streaming: false
+              }
             : msg
         )
       )
@@ -495,7 +495,7 @@ export default function AiChatDrawer() {
                     使用自定义 API
                   </div>
                   <div className='text-[10px] text-gray-400'>
-                    填写后将不受免费额度限制。
+                    填写后将使用你的自定义 API 服务。
                   </div>
                 </div>
                 <input

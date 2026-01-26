@@ -100,6 +100,22 @@ const isRateLimitError = error => {
   )
 }
 
+const isTimeoutError = error => {
+  const message =
+    error?.message ||
+    error?.error?.message ||
+    error?.response?.data?.error?.message ||
+    ''
+  const normalized = String(message).toLowerCase()
+  return (
+    error?.name === 'AbortError' ||
+    normalized.includes('timeout') ||
+    normalized.includes('timed out')
+  )
+}
+
+const REQUEST_TIMEOUT_MS = 20000
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).send('Method Not Allowed')
 
@@ -140,7 +156,7 @@ export default async function handler(req, res) {
   const defaultModel = usingAnthropic
     ? process.env.ZAI_MODEL || process.env.AI_MODEL || 'GLM-4.7-FlashX'
     : zaiKey
-      ? process.env.ZAI_MODEL || process.env.AI_MODEL || 'GLM-4.7'
+      ? process.env.ZAI_MODEL || process.env.AI_MODEL || 'GLM-4.7-FlashX'
       : usingOpenAI
         ? process.env.OPENAI_MODEL || 'gpt-4o-mini'
         : process.env.OPENROUTER_MODEL || 'z-ai/glm-4.7-flash'
@@ -205,7 +221,17 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
     res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
     res.setHeader('Cache-Control', 'no-cache, no-transform')
     res.setHeader('Connection', 'keep-alive')
+    res.setHeader('X-Accel-Buffering', 'no')
     res.flushHeaders?.()
+
+    let hasStreamed = false
+    const writeStreamError = payload => {
+      if (hasStreamed) {
+        res.write(`data: ${JSON.stringify({ done: true })}\n\n`)
+      } else {
+        res.write(`data: ${JSON.stringify(payload)}\n\n`)
+      }
+    }
 
     try {
       const response = await fetch(endpoint, {
@@ -246,12 +272,14 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
               if (payload?.type === 'content_block_start') {
                 const text = payload?.content_block?.text || ''
                 if (text) {
+                  hasStreamed = true
                   res.write(`data: ${JSON.stringify({ delta: text })}\n\n`)
                 }
               }
               if (payload?.type === 'content_block_delta') {
                 const text = payload?.delta?.text || ''
                 if (text) {
+                  hasStreamed = true
                   res.write(`data: ${JSON.stringify({ delta: text })}\n\n`)
                 }
               }
@@ -263,7 +291,7 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
                   { message: payload?.error?.message || 'AI Error' },
                   usingCustomApi
                 )
-                res.write(`data: ${JSON.stringify(errorPayload)}\n\n`)
+                writeStreamError(errorPayload)
               }
             } catch (e) {
               // ignore invalid chunks
@@ -275,7 +303,7 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
     } catch (error) {
       console.error('AI Error:', error)
       const payload = getErrorPayload(error, usingCustomApi)
-      res.write(`data: ${JSON.stringify(payload)}\n\n`)
+      writeStreamError(payload)
     } finally {
       res.end()
     }
@@ -284,7 +312,8 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
 
   const openai = new OpenAI({
     apiKey,
-    baseURL
+    baseURL,
+    timeout: REQUEST_TIMEOUT_MS
   })
   const canFallbackToOpenRouter =
     !usingCustomApi && Boolean(openrouterKey) && baseURL !== openrouterBase
@@ -293,7 +322,8 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
   const buildOpenAiClient = (key, url) =>
     new OpenAI({
       apiKey: key,
-      baseURL: url
+      baseURL: url,
+      timeout: REQUEST_TIMEOUT_MS
     })
 
   if (!shouldStream) {
@@ -304,7 +334,10 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
       })
       return res.status(200).json({ reply: completion.choices[0].message.content })
     } catch (error) {
-      if (canFallbackToOpenRouter && isRateLimitError(error)) {
+      if (
+        canFallbackToOpenRouter &&
+        (isRateLimitError(error) || isTimeoutError(error))
+      ) {
         try {
           const fallbackClient = buildOpenAiClient(
             openrouterKey,
@@ -333,9 +366,17 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
   res.setHeader('Cache-Control', 'no-cache, no-transform')
   res.setHeader('Connection', 'keep-alive')
+  res.setHeader('X-Accel-Buffering', 'no')
   res.flushHeaders?.()
 
   let hasStreamed = false
+  const writeStreamError = payload => {
+    if (hasStreamed) {
+      res.write(`data: ${JSON.stringify({ done: true })}\n\n`)
+    } else {
+      res.write(`data: ${JSON.stringify(payload)}\n\n`)
+    }
+  }
   const streamWithClient = async (client, streamModel) => {
     const completionStream = await client.chat.completions.create({
       model: streamModel,
@@ -356,7 +397,11 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
   try {
     await streamWithClient(openai, model)
   } catch (error) {
-    if (canFallbackToOpenRouter && !hasStreamed && isRateLimitError(error)) {
+    if (
+      canFallbackToOpenRouter &&
+      !hasStreamed &&
+      (isRateLimitError(error) || isTimeoutError(error))
+    ) {
       try {
         const fallbackClient = buildOpenAiClient(
           openrouterKey,
@@ -366,12 +411,12 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
       } catch (fallbackError) {
         console.error('AI Error:', fallbackError)
         const payload = getErrorPayload(fallbackError, usingCustomApi)
-        res.write(`data: ${JSON.stringify(payload)}\n\n`)
+        writeStreamError(payload)
       }
     } else {
       console.error('AI Error:', error)
       const payload = getErrorPayload(error, usingCustomApi)
-      res.write(`data: ${JSON.stringify(payload)}\n\n`)
+      writeStreamError(payload)
     }
   } finally {
     res.end()
