@@ -2,11 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useAiStore } from '@/lib/store/aiStore'
 
-const API_PROMPT_AFTER_MS = 20 * 60 * 1000
 const STORAGE_KEYS = {
-  api: 'nn_ai_custom_api',
-  usageStarted: 'nn_ai_usage_started',
-  apiPrompted: 'nn_ai_api_prompted'
+  api: 'nn_ai_custom_api'
 }
 const DEFAULT_API_SETTINGS = {
   enabled: false,
@@ -54,9 +51,6 @@ export default function AiChatDrawer() {
   const [isLoading, setIsLoading] = useState(false)
   const [apiSettings, setApiSettings] = useState(DEFAULT_API_SETTINGS)
   const [showSettings, setShowSettings] = useState(false)
-  const [apiNotice, setApiNotice] = useState('')
-  const [usageStartedAt, setUsageStartedAt] = useState(0)
-  const [apiPrompted, setApiPrompted] = useState(false)
   const [articleMeta, setArticleMeta] = useState({
     available: false,
     length: 0
@@ -82,48 +76,11 @@ export default function AiChatDrawer() {
     } catch (e) {
       // ignore corrupted storage
     }
-
-    const usageStarted = Number(
-      window.localStorage.getItem(STORAGE_KEYS.usageStarted)
-    )
-    if (Number.isFinite(usageStarted)) {
-      setUsageStartedAt(Math.max(0, usageStarted))
-    }
-
-    const prompted = window.localStorage.getItem(STORAGE_KEYS.apiPrompted)
-    if (prompted === 'true') {
-      setApiPrompted(true)
-    }
   }, [])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
     window.localStorage.setItem(STORAGE_KEYS.api, JSON.stringify(apiSettings))
-  }, [apiSettings])
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (usageStartedAt > 0) {
-      window.localStorage.setItem(
-        STORAGE_KEYS.usageStarted,
-        String(usageStartedAt)
-      )
-    }
-  }, [usageStartedAt])
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    window.localStorage.setItem(STORAGE_KEYS.apiPrompted, String(apiPrompted))
-  }, [apiPrompted])
-
-  useEffect(() => {
-    const ready =
-      apiSettings.enabled &&
-      Boolean(apiSettings.baseUrl.trim()) &&
-      Boolean(apiSettings.apiKey.trim())
-    if (ready) {
-      setApiNotice('')
-    }
   }, [apiSettings])
 
   useEffect(() => {
@@ -165,26 +122,6 @@ export default function AiChatDrawer() {
     const trimmedInput = input.trim()
     const hasContext = Boolean(activeContext || selectedText)
     if (!trimmedInput && !hasContext) return
-    if (apiSettings.enabled && !isCustomApiReady) {
-      setApiNotice('请先填写 API 地址和 Key，或关闭自定义 API。')
-      setShowSettings(true)
-      setApiPrompted(true)
-      return
-    }
-    setApiNotice('')
-    const now = Date.now()
-    if (!usageStartedAt) {
-      setUsageStartedAt(now)
-    }
-    const usageAnchor = usageStartedAt || now
-    if (
-      !apiPrompted &&
-      !isCustomApiReady &&
-      now - usageAnchor >= API_PROMPT_AFTER_MS
-    ) {
-      setShowSettings(true)
-      setApiPrompted(true)
-    }
 
     let currentContext = activeContext
     if (!currentContext && selectedText) {
@@ -206,6 +143,8 @@ export default function AiChatDrawer() {
     ])
     setInput('')
     setIsLoading(true)
+
+    let assistantContent = ''
 
     try {
       const requestBody = {
@@ -241,31 +180,9 @@ export default function AiChatDrawer() {
       }
 
       const handleErrorPayload = data => {
-        if (data?.error_code === 'INSUFFICIENT_QUOTA') {
-          setApiNotice(
-            data?.user_message ||
-              '当前服务额度已用尽，请配置自定义 API。'
-          )
-          setShowSettings(true)
-          setApiPrompted(true)
-        }
-        if (data?.error_code === 'RATE_LIMITED') {
-          setApiNotice(
-            data?.user_message ||
-              '对话过于频繁，服务已暂时失效，请配置自定义 API。'
-          )
-          setShowSettings(true)
-          setApiPrompted(true)
-        }
-        if (data?.error_code === 'MISSING_API_KEY') {
-          setApiNotice('AI 服务未配置或 Key 无效，请检查设置。')
-          setShowSettings(true)
-          setApiPrompted(true)
-        }
-        applyAssistantMessage(
-          data?.user_message || '网络连接异常',
-          false
-        )
+        const fallback = data?.user_message || '网络连接异常'
+        const content = assistantContent?.trim() ? assistantContent : fallback
+        applyAssistantMessage(content, false)
       }
 
       if (!res.ok) {
@@ -293,7 +210,6 @@ export default function AiChatDrawer() {
       const reader = res.body.getReader()
       const decoder = new TextDecoder('utf-8')
       let buffer = ''
-      let assistantContent = ''
       let streamFailed = false
 
       const processPayload = payload => {
@@ -349,7 +265,13 @@ export default function AiChatDrawer() {
       setMessages(prev =>
         prev.map((msg, idx) =>
           idx === assistantIndex
-            ? { ...msg, content: '网络连接异常', streaming: false }
+            ? {
+                ...msg,
+                content: assistantContent?.trim()
+                  ? assistantContent
+                  : '网络连接异常',
+                streaming: false
+              }
             : msg
         )
       )
@@ -367,7 +289,6 @@ export default function AiChatDrawer() {
   const shouldShowContextPanel =
     hasActiveContext || hasSelection || articleMeta.available
   const settingsToggleLabel = showSettings ? '收起设置' : 'API 设置'
-  const showSettingsToggle = showSettings || apiPrompted
   const contextLabel =
     contextMeta?.source === 'article'
       ? '文章全文'
@@ -404,20 +325,12 @@ export default function AiChatDrawer() {
             </span>
           </div>
           <div className='flex items-center gap-2'>
-            {showSettingsToggle && (
-              <button
-                type='button'
-                onClick={() =>
-                  setShowSettings(prev => {
-                    const next = !prev
-                    if (next) setApiPrompted(true)
-                    return next
-                  })
-                }
-                className='rounded-full border border-gray-200/70 bg-white/80 px-2 py-0.5 text-[10px] text-gray-600 transition hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-gray-300'>
-                {settingsToggleLabel}
-              </button>
-            )}
+            <button
+              type='button'
+              onClick={() => setShowSettings(prev => !prev)}
+              className='rounded-full border border-gray-200/70 bg-white/80 px-2 py-0.5 text-[10px] text-gray-600 transition hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-gray-300'>
+              {settingsToggleLabel}
+            </button>
             <button
               onClick={closeDrawer}
               className='rounded-full p-1 text-gray-500 transition hover:bg-gray-100 dark:hover:bg-gray-800'>
@@ -574,12 +487,6 @@ export default function AiChatDrawer() {
         </div>
 
         <div className='shrink-0 border-t border-black/5 bg-gradient-to-t from-white via-white/80 to-transparent p-4 dark:border-white/10 dark:from-[#121212] dark:via-[#121212]/80'>
-          {apiNotice && (
-            <div className='mb-3 rounded-lg border border-rose-200/70 bg-rose-50 px-3 py-2 text-[11px] text-rose-700 dark:border-rose-900/40 dark:bg-rose-900/20 dark:text-rose-200'>
-              {apiNotice}
-            </div>
-          )}
-
           {showSettings && (
             <div className='mb-3 space-y-2 rounded-xl border border-gray-200/70 bg-white/80 p-3 text-[11px] text-gray-600 dark:border-white/10 dark:bg-white/5 dark:text-gray-300'>
               <label className='flex items-center justify-between gap-3'>
@@ -588,7 +495,7 @@ export default function AiChatDrawer() {
                     使用自定义 API
                   </div>
                   <div className='text-[10px] text-gray-400'>
-                    填写后将使用你自己的 API 服务。
+                    填写后将使用你的自定义 API 服务。
                   </div>
                 </div>
                 <input
@@ -612,7 +519,7 @@ export default function AiChatDrawer() {
                       baseUrl: e.target.value
                     }))
                   }
-                  placeholder='API 地址，例如 https://api.z.ai/api/anthropic'
+                  placeholder='API 地址，例如 https://api.openai.com/v1'
                   className='w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs text-gray-700 focus:border-emerald-300 focus:outline-none focus:ring-1 focus:ring-emerald-400 dark:border-white/10 dark:bg-black/20 dark:text-gray-200'
                 />
                 <input
@@ -635,7 +542,7 @@ export default function AiChatDrawer() {
                       model: e.target.value
                     }))
                   }
-                  placeholder='模型（可选），例如 GLM-4.7-FlashX'
+                  placeholder='模型（可选），例如 z-ai/glm-4.7-flash'
                   className='w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs text-gray-700 focus:border-emerald-300 focus:outline-none focus:ring-1 focus:ring-emerald-400 dark:border-white/10 dark:bg-black/20 dark:text-gray-200'
                 />
               </div>

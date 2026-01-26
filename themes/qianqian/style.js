@@ -165,11 +165,35 @@ const Style = () => {
         text-decoration: none !important;
     }
 
+    #theme-qianqian .nav-dropdown-trigger {
+        color: #1f2937 !important;
+    }
+
+    #theme-qianqian .nav-dropdown-trigger svg {
+        color: #1f2937 !important;
+    }
+
+    .dark #theme-qianqian .nav-dropdown-trigger {
+        color: #e5e7eb !important;
+    }
+
+    .dark #theme-qianqian .nav-dropdown-trigger svg {
+        color: #e5e7eb !important;
+    }
+
     #theme-qianqian .ud-header a:hover,
     #theme-qianqian .ud-header button:hover,
     #theme-proxio .ud-header a:hover,
     #theme-proxio .ud-header button:hover {
         text-decoration: none !important;
+    }
+
+    #theme-qianqian .qianqian-nav-button {
+        color: var(--dewx-text) !important;
+    }
+
+    :is(.dark #theme-qianqian .qianqian-nav-button) {
+        color: var(--dewx-text) !important;
     }
 
     .no-scrollbar {

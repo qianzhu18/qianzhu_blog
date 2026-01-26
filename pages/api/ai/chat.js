@@ -1,46 +1,4 @@
 import { OpenAI } from 'openai'
-import { getClientIp } from '@/lib/middleware/security'
-import { globalRateLimiter } from '@/lib/utils/validation'
-
-const FREE_CHAT_LIMIT = 8
-const FREE_CHAT_WINDOW_MS = 10 * 60 * 1000
-
-const getErrorPayload = (error, usingCustomApi) => {
-  const message = error?.message || 'AI Error'
-  const normalized = message.toLowerCase()
-  if (
-    normalized.includes('quota') ||
-    normalized.includes('insufficient') ||
-    normalized.includes('credit')
-  ) {
-    return {
-      status: 402,
-      error_code: 'INSUFFICIENT_QUOTA',
-      user_message: usingCustomApi
-        ? '当前 API 额度已用尽，请检查你的 Key 或账号余额。'
-        : '当前服务额度已用尽，请稍后再试或配置自定义 API。',
-      error: message
-    }
-  }
-  if (
-    normalized.includes('api key') ||
-    normalized.includes('authentication') ||
-    normalized.includes('unauthorized')
-  ) {
-    return {
-      status: 401,
-      error_code: 'MISSING_API_KEY',
-      user_message: 'API Key 无效或未授权。',
-      error: message
-    }
-  }
-  return {
-    status: 500,
-    error_code: 'AI_ERROR',
-    user_message: 'AI 服务暂时不可用，请稍后再试。',
-    error: message
-  }
-}
 
 const buildAnthropicEndpoint = baseURL => {
   const normalized = baseURL.replace(/\/+$/, '')
@@ -67,6 +25,97 @@ const extractAnthropicContent = data => {
   return ''
 }
 
+const getErrorPayload = (error, usingCustomApi) => {
+  const status = error?.status || error?.response?.status || error?.statusCode
+  const message =
+    error?.message ||
+    error?.error?.message ||
+    error?.response?.data?.error?.message ||
+    'AI Error'
+  const normalized = String(message).toLowerCase()
+  if (
+    status === 429 ||
+    normalized.includes('rate limit') ||
+    normalized.includes('too many requests')
+  ) {
+    return {
+      status: 429,
+      error_code: 'RATE_LIMIT',
+      user_message: '请求过多，请稍后再试。',
+      error: message
+    }
+  }
+  if (
+    status === 402 ||
+    normalized.includes('quota') ||
+    normalized.includes('insufficient') ||
+    normalized.includes('credit')
+  ) {
+    return {
+      status: 402,
+      error_code: 'INSUFFICIENT_QUOTA',
+      user_message: '服务暂时不可用，请稍后再试。',
+      error: message
+    }
+  }
+  if (
+    status === 401 ||
+    status === 403 ||
+    normalized.includes('api key') ||
+    normalized.includes('authentication') ||
+    normalized.includes('unauthorized') ||
+    normalized.includes('user not found') ||
+    normalized.includes('invalid api key') ||
+    normalized.includes('invalid token')
+  ) {
+    return {
+      status: 401,
+      error_code: 'MISSING_API_KEY',
+      user_message: 'API Key 无效或未授权。',
+      error: message
+    }
+  }
+  return {
+    status: 500,
+    error_code: 'AI_ERROR',
+    user_message: 'AI 服务暂时不可用，请稍后再试。',
+    error: message
+  }
+}
+
+const isRateLimitError = error => {
+  const status = error?.status || error?.response?.status || error?.statusCode
+  const message =
+    error?.message ||
+    error?.error?.message ||
+    error?.response?.data?.error?.message ||
+    ''
+  const normalized = String(message).toLowerCase()
+  return (
+    status === 429 ||
+    normalized.includes('rate limit') ||
+    normalized.includes('too many requests') ||
+    normalized.includes('concurrent') ||
+    normalized.includes('并发')
+  )
+}
+
+const isTimeoutError = error => {
+  const message =
+    error?.message ||
+    error?.error?.message ||
+    error?.response?.data?.error?.message ||
+    ''
+  const normalized = String(message).toLowerCase()
+  return (
+    error?.name === 'AbortError' ||
+    normalized.includes('timeout') ||
+    normalized.includes('timed out')
+  )
+}
+
+const REQUEST_TIMEOUT_MS = 20000
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).send('Method Not Allowed')
 
@@ -77,50 +126,48 @@ export default async function handler(req, res) {
   const customApiKey = typeof api?.apiKey === 'string' ? api.apiKey.trim() : ''
   const customModel = typeof api?.model === 'string' ? api.model.trim() : ''
 
-  const defaultBaseUrl =
+  const openrouterKey = process.env.OPENROUTER_API_KEY || ''
+  const openrouterBase =
+    process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1'
+  const zaiKey = process.env.ZAI_API_KEY || process.env.AI_API_KEY || ''
+  const zaiBase =
     process.env.ZAI_API_BASE_URL ||
     process.env.AI_API_BASE_URL ||
     'https://api.z.ai/api/anthropic'
-  const baseURL = /^https?:\/\//.test(customBaseUrl)
+  const openaiKey = process.env.OPENAI_API_KEY || ''
+  const openaiBase =
+    process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1'
+  const hasCustomApi =
+    Boolean(customApiKey) && /^https?:\/\//.test(customBaseUrl)
+
+  const baseURL = hasCustomApi
     ? customBaseUrl
-    : defaultBaseUrl
-  const apiKey =
-    customApiKey ||
-    process.env.ZAI_API_KEY ||
-    process.env.AI_API_KEY ||
-    process.env.OPENROUTER_API_KEY
-  const model =
-    customModel ||
-    process.env.ZAI_MODEL ||
-    process.env.AI_MODEL ||
-    process.env.OPENROUTER_MODEL ||
-    'GLM-4.7-FlashX'
+    : zaiKey
+      ? zaiBase
+      : openrouterKey
+        ? openrouterBase
+        : openaiBase
+  const apiKey = hasCustomApi
+    ? customApiKey
+    : zaiKey || openrouterKey || openaiKey
   const usingCustomApi = Boolean(customApiKey)
+  const usingAnthropic = /anthropic|z\.ai/i.test(baseURL)
+  const usingOpenAI = /api\.openai\.com/i.test(baseURL)
+  const defaultModel = usingAnthropic
+    ? process.env.ZAI_MODEL || process.env.AI_MODEL || 'GLM-4.7-FlashX'
+    : zaiKey
+      ? process.env.ZAI_MODEL || process.env.AI_MODEL || 'GLM-4.7-FlashX'
+      : usingOpenAI
+        ? process.env.OPENAI_MODEL || 'gpt-4o-mini'
+        : process.env.OPENROUTER_MODEL || 'z-ai/glm-4.7-flash'
+  const model = customModel || defaultModel
   const shouldStream = stream !== false
-  const usingAnthropic = /anthropic/i.test(baseURL)
 
   if (!apiKey) {
     return res.status(400).json({
       error_code: 'MISSING_API_KEY',
       user_message: 'AI 服务未配置或 Key 缺失。'
     })
-  }
-
-  if (!usingCustomApi) {
-    const identifier = `${getClientIp(req)}:ai-chat`
-    if (
-      globalRateLimiter.isRateLimited(
-        identifier,
-        FREE_CHAT_LIMIT,
-        FREE_CHAT_WINDOW_MS
-      )
-    ) {
-      return res.status(429).json({
-        error_code: 'RATE_LIMITED',
-        user_message: '对话过于频繁，服务已暂时失效，请配置 API 后继续使用。',
-        retry_after: Math.ceil(FREE_CHAT_WINDOW_MS / 1000)
-      })
-    }
   }
 
   const systemPrompt = `你是一个专业的中文阅读助手，帮助用户高质量理解文章并给出可执行建议。
@@ -156,7 +203,7 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
         if (!response.ok) {
           const errorText = await response.text()
           const errorPayload = getErrorPayload(
-            { message: errorText },
+            { message: errorText, status: response.status },
             usingCustomApi
           )
           return res.status(errorPayload.status).json(errorPayload)
@@ -174,7 +221,17 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
     res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
     res.setHeader('Cache-Control', 'no-cache, no-transform')
     res.setHeader('Connection', 'keep-alive')
+    res.setHeader('X-Accel-Buffering', 'no')
     res.flushHeaders?.()
+
+    let hasStreamed = false
+    const writeStreamError = payload => {
+      if (hasStreamed) {
+        res.write(`data: ${JSON.stringify({ done: true })}\n\n`)
+      } else {
+        res.write(`data: ${JSON.stringify(payload)}\n\n`)
+      }
+    }
 
     try {
       const response = await fetch(endpoint, {
@@ -186,7 +243,7 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
       if (!response.ok || !response.body) {
         const errorText = await response.text()
         const errorPayload = getErrorPayload(
-          { message: errorText },
+          { message: errorText, status: response.status },
           usingCustomApi
         )
         res.write(`data: ${JSON.stringify(errorPayload)}\n\n`)
@@ -215,12 +272,14 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
               if (payload?.type === 'content_block_start') {
                 const text = payload?.content_block?.text || ''
                 if (text) {
+                  hasStreamed = true
                   res.write(`data: ${JSON.stringify({ delta: text })}\n\n`)
                 }
               }
               if (payload?.type === 'content_block_delta') {
                 const text = payload?.delta?.text || ''
                 if (text) {
+                  hasStreamed = true
                   res.write(`data: ${JSON.stringify({ delta: text })}\n\n`)
                 }
               }
@@ -232,7 +291,7 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
                   { message: payload?.error?.message || 'AI Error' },
                   usingCustomApi
                 )
-                res.write(`data: ${JSON.stringify(errorPayload)}\n\n`)
+                writeStreamError(errorPayload)
               }
             } catch (e) {
               // ignore invalid chunks
@@ -244,7 +303,7 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
     } catch (error) {
       console.error('AI Error:', error)
       const payload = getErrorPayload(error, usingCustomApi)
-      res.write(`data: ${JSON.stringify(payload)}\n\n`)
+      writeStreamError(payload)
     } finally {
       res.end()
     }
@@ -253,8 +312,19 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
 
   const openai = new OpenAI({
     apiKey,
-    baseURL
+    baseURL,
+    timeout: REQUEST_TIMEOUT_MS
   })
+  const canFallbackToOpenRouter =
+    !usingCustomApi && Boolean(openrouterKey) && baseURL !== openrouterBase
+  const openrouterModel =
+    process.env.OPENROUTER_MODEL || 'z-ai/glm-4.7-flash'
+  const buildOpenAiClient = (key, url) =>
+    new OpenAI({
+      apiKey: key,
+      baseURL: url,
+      timeout: REQUEST_TIMEOUT_MS
+    })
 
   if (!shouldStream) {
     try {
@@ -264,6 +334,28 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
       })
       return res.status(200).json({ reply: completion.choices[0].message.content })
     } catch (error) {
+      if (
+        canFallbackToOpenRouter &&
+        (isRateLimitError(error) || isTimeoutError(error))
+      ) {
+        try {
+          const fallbackClient = buildOpenAiClient(
+            openrouterKey,
+            openrouterBase
+          )
+          const completion = await fallbackClient.chat.completions.create({
+            model: openrouterModel,
+            messages: [{ role: 'system', content: systemPrompt }, ...messages]
+          })
+          return res
+            .status(200)
+            .json({ reply: completion.choices[0].message.content })
+        } catch (fallbackError) {
+          console.error('AI Error:', fallbackError)
+          const payload = getErrorPayload(fallbackError, usingCustomApi)
+          return res.status(payload.status).json(payload)
+        }
+      }
       console.error('AI Error:', error)
       const payload = getErrorPayload(error, usingCustomApi)
       return res.status(payload.status).json(payload)
@@ -274,11 +366,20 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
   res.setHeader('Cache-Control', 'no-cache, no-transform')
   res.setHeader('Connection', 'keep-alive')
+  res.setHeader('X-Accel-Buffering', 'no')
   res.flushHeaders?.()
 
-  try {
-    const completionStream = await openai.chat.completions.create({
-      model,
+  let hasStreamed = false
+  const writeStreamError = payload => {
+    if (hasStreamed) {
+      res.write(`data: ${JSON.stringify({ done: true })}\n\n`)
+    } else {
+      res.write(`data: ${JSON.stringify(payload)}\n\n`)
+    }
+  }
+  const streamWithClient = async (client, streamModel) => {
+    const completionStream = await client.chat.completions.create({
+      model: streamModel,
       messages: [{ role: 'system', content: systemPrompt }, ...messages],
       stream: true
     })
@@ -286,14 +387,37 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
     for await (const chunk of completionStream) {
       const delta = chunk?.choices?.[0]?.delta?.content || ''
       if (delta) {
+        hasStreamed = true
         res.write(`data: ${JSON.stringify({ delta })}\n\n`)
       }
     }
     res.write(`data: ${JSON.stringify({ done: true })}\n\n`)
+  }
+
+  try {
+    await streamWithClient(openai, model)
   } catch (error) {
-    console.error('AI Error:', error)
-    const payload = getErrorPayload(error, usingCustomApi)
-    res.write(`data: ${JSON.stringify(payload)}\n\n`)
+    if (
+      canFallbackToOpenRouter &&
+      !hasStreamed &&
+      (isRateLimitError(error) || isTimeoutError(error))
+    ) {
+      try {
+        const fallbackClient = buildOpenAiClient(
+          openrouterKey,
+          openrouterBase
+        )
+        await streamWithClient(fallbackClient, openrouterModel)
+      } catch (fallbackError) {
+        console.error('AI Error:', fallbackError)
+        const payload = getErrorPayload(fallbackError, usingCustomApi)
+        writeStreamError(payload)
+      }
+    } else {
+      console.error('AI Error:', error)
+      const payload = getErrorPayload(error, usingCustomApi)
+      writeStreamError(payload)
+    }
   } finally {
     res.end()
   }
