@@ -83,6 +83,23 @@ const getErrorPayload = (error, usingCustomApi) => {
   }
 }
 
+const isRateLimitError = error => {
+  const status = error?.status || error?.response?.status || error?.statusCode
+  const message =
+    error?.message ||
+    error?.error?.message ||
+    error?.response?.data?.error?.message ||
+    ''
+  const normalized = String(message).toLowerCase()
+  return (
+    status === 429 ||
+    normalized.includes('rate limit') ||
+    normalized.includes('too many requests') ||
+    normalized.includes('concurrent') ||
+    normalized.includes('并发')
+  )
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).send('Method Not Allowed')
 
@@ -269,6 +286,15 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
     apiKey,
     baseURL
   })
+  const canFallbackToOpenRouter =
+    !usingCustomApi && Boolean(openrouterKey) && baseURL !== openrouterBase
+  const openrouterModel =
+    process.env.OPENROUTER_MODEL || 'z-ai/glm-4.7-flash'
+  const buildOpenAiClient = (key, url) =>
+    new OpenAI({
+      apiKey: key,
+      baseURL: url
+    })
 
   if (!shouldStream) {
     try {
@@ -278,6 +304,25 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
       })
       return res.status(200).json({ reply: completion.choices[0].message.content })
     } catch (error) {
+      if (canFallbackToOpenRouter && isRateLimitError(error)) {
+        try {
+          const fallbackClient = buildOpenAiClient(
+            openrouterKey,
+            openrouterBase
+          )
+          const completion = await fallbackClient.chat.completions.create({
+            model: openrouterModel,
+            messages: [{ role: 'system', content: systemPrompt }, ...messages]
+          })
+          return res
+            .status(200)
+            .json({ reply: completion.choices[0].message.content })
+        } catch (fallbackError) {
+          console.error('AI Error:', fallbackError)
+          const payload = getErrorPayload(fallbackError, usingCustomApi)
+          return res.status(payload.status).json(payload)
+        }
+      }
       console.error('AI Error:', error)
       const payload = getErrorPayload(error, usingCustomApi)
       return res.status(payload.status).json(payload)
@@ -290,9 +335,10 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
   res.setHeader('Connection', 'keep-alive')
   res.flushHeaders?.()
 
-  try {
-    const completionStream = await openai.chat.completions.create({
-      model,
+  let hasStreamed = false
+  const streamWithClient = async (client, streamModel) => {
+    const completionStream = await client.chat.completions.create({
+      model: streamModel,
       messages: [{ role: 'system', content: systemPrompt }, ...messages],
       stream: true
     })
@@ -300,14 +346,33 @@ ${context ? `以下是用户引入的上下文，请优先基于它回答：\n""
     for await (const chunk of completionStream) {
       const delta = chunk?.choices?.[0]?.delta?.content || ''
       if (delta) {
+        hasStreamed = true
         res.write(`data: ${JSON.stringify({ delta })}\n\n`)
       }
     }
     res.write(`data: ${JSON.stringify({ done: true })}\n\n`)
+  }
+
+  try {
+    await streamWithClient(openai, model)
   } catch (error) {
-    console.error('AI Error:', error)
-    const payload = getErrorPayload(error, usingCustomApi)
-    res.write(`data: ${JSON.stringify(payload)}\n\n`)
+    if (canFallbackToOpenRouter && !hasStreamed && isRateLimitError(error)) {
+      try {
+        const fallbackClient = buildOpenAiClient(
+          openrouterKey,
+          openrouterBase
+        )
+        await streamWithClient(fallbackClient, openrouterModel)
+      } catch (fallbackError) {
+        console.error('AI Error:', fallbackError)
+        const payload = getErrorPayload(fallbackError, usingCustomApi)
+        res.write(`data: ${JSON.stringify(payload)}\n\n`)
+      }
+    } else {
+      console.error('AI Error:', error)
+      const payload = getErrorPayload(error, usingCustomApi)
+      res.write(`data: ${JSON.stringify(payload)}\n\n`)
+    }
   } finally {
     res.end()
   }
