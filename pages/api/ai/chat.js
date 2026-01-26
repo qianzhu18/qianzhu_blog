@@ -54,9 +54,7 @@ const getErrorPayload = (error, usingCustomApi) => {
     return {
       status: 402,
       error_code: 'INSUFFICIENT_QUOTA',
-      user_message: usingCustomApi
-        ? '当前 API 额度已用尽，请检查你的 Key 或账号余额。'
-        : '免费额度已用尽，请联系开发者或填写自定义 API。',
+      user_message: '服务暂时不可用，请稍后再试。',
       error: message
     }
   }
@@ -124,9 +122,11 @@ export default async function handler(req, res) {
   const usingOpenAI = /api\.openai\.com/i.test(baseURL)
   const defaultModel = usingAnthropic
     ? process.env.ZAI_MODEL || process.env.AI_MODEL || 'GLM-4.7-FlashX'
-    : usingOpenAI
-      ? process.env.OPENAI_MODEL || 'gpt-4o-mini'
-      : process.env.OPENROUTER_MODEL || 'z-ai/glm-4.7-flash'
+    : zaiKey
+      ? process.env.ZAI_MODEL || process.env.AI_MODEL || 'GLM-4.7'
+      : usingOpenAI
+        ? process.env.OPENAI_MODEL || 'gpt-4o-mini'
+        : process.env.OPENROUTER_MODEL || 'z-ai/glm-4.7-flash'
   const model = customModel || defaultModel
   const shouldStream = stream !== false
 
