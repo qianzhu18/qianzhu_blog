@@ -1,12 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
-import { siteConfig } from '@/lib/config'
 import { useAiStore } from '@/lib/store/aiStore'
 
-const FREE_CHAT_LIMIT = 8
 const STORAGE_KEYS = {
-  api: 'nn_ai_custom_api',
-  quota: 'nn_ai_free_quota_used'
+  api: 'nn_ai_custom_api'
 }
 const DEFAULT_API_SETTINGS = {
   enabled: false,
@@ -54,16 +51,12 @@ export default function AiChatDrawer() {
   const [isLoading, setIsLoading] = useState(false)
   const [apiSettings, setApiSettings] = useState(DEFAULT_API_SETTINGS)
   const [showSettings, setShowSettings] = useState(false)
-  const [quotaUsed, setQuotaUsed] = useState(0)
-  const [quotaNotice, setQuotaNotice] = useState('')
-  const [apiNotice, setApiNotice] = useState('')
   const [articleMeta, setArticleMeta] = useState({
     available: false,
     length: 0
   })
   const messagesEndRef = useRef(null)
   const router = useRouter()
-  const contactEmail = siteConfig('CONTACT_EMAIL')
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -83,31 +76,11 @@ export default function AiChatDrawer() {
     } catch (e) {
       // ignore corrupted storage
     }
-
-    const used = Number(window.localStorage.getItem(STORAGE_KEYS.quota))
-    if (Number.isFinite(used)) {
-      setQuotaUsed(Math.max(0, used))
-    }
   }, [])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
     window.localStorage.setItem(STORAGE_KEYS.api, JSON.stringify(apiSettings))
-  }, [apiSettings])
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    window.localStorage.setItem(STORAGE_KEYS.quota, String(quotaUsed))
-  }, [quotaUsed])
-
-  useEffect(() => {
-    const ready =
-      apiSettings.enabled &&
-      Boolean(apiSettings.baseUrl.trim()) &&
-      Boolean(apiSettings.apiKey.trim())
-    if (ready) {
-      setQuotaNotice('')
-    }
   }, [apiSettings])
 
   useEffect(() => {
@@ -149,17 +122,6 @@ export default function AiChatDrawer() {
     const trimmedInput = input.trim()
     const hasContext = Boolean(activeContext || selectedText)
     if (!trimmedInput && !hasContext) return
-    if (apiSettings.enabled && !isCustomApiReady) {
-      setApiNotice('请先填写 API 地址和 Key，或关闭自定义 API。')
-      setShowSettings(true)
-      return
-    }
-    if (isFreePlan && freeRemaining <= 0) {
-      setQuotaNotice('exhausted')
-      return
-    }
-    setApiNotice('')
-    setQuotaNotice('')
 
     let currentContext = activeContext
     if (!currentContext && selectedText) {
@@ -216,13 +178,6 @@ export default function AiChatDrawer() {
       }
 
       const handleErrorPayload = data => {
-        if (data?.error_code === 'INSUFFICIENT_QUOTA') {
-          setQuotaNotice('exhausted')
-        }
-        if (data?.error_code === 'MISSING_API_KEY') {
-          setApiNotice('AI 服务未配置或 Key 无效，请检查设置。')
-          setShowSettings(true)
-        }
         applyAssistantMessage(
           data?.user_message || '网络连接异常',
           false
@@ -331,26 +286,9 @@ export default function AiChatDrawer() {
     apiSettings.enabled &&
     Boolean(apiSettings.baseUrl.trim()) &&
     Boolean(apiSettings.apiKey.trim())
-  const freeRemaining = Math.max(0, FREE_CHAT_LIMIT - quotaUsed)
-  const isFreePlan = !isCustomApiReady
-  const isFreeQuotaExceeded = isFreePlan && freeRemaining <= 0
-  const showQuotaNotice = isFreeQuotaExceeded || Boolean(quotaNotice)
   const shouldShowContextPanel =
     hasActiveContext || hasSelection || articleMeta.available
-  const apiStatusLabel = isCustomApiReady
-    ? '自定义 API'
-    : apiSettings.enabled
-      ? '自定义 API 待配置'
-      : `免费剩余 ${freeRemaining}/${FREE_CHAT_LIMIT}`
-  const apiStatusClass = isCustomApiReady
-    ? 'border-emerald-200/70 bg-emerald-50/80 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-900/30 dark:text-emerald-200'
-    : apiSettings.enabled
-      ? 'border-amber-200/70 bg-amber-50/80 text-amber-700 dark:border-amber-900/40 dark:bg-amber-900/20 dark:text-amber-200'
-      : 'border-gray-200/70 bg-white/80 text-gray-600 dark:border-white/10 dark:bg-white/5 dark:text-gray-300'
   const settingsToggleLabel = showSettings ? '收起设置' : 'API 设置'
-  const quotaNoticeText = isCustomApiReady
-    ? '当前 API 额度已用尽，请检查你的 Key 或账号余额。'
-    : '免费额度已用尽，请联系开发者或填写自定义 API 继续使用。'
   const contextLabel =
     contextMeta?.source === 'article'
       ? '文章全文'
@@ -387,10 +325,6 @@ export default function AiChatDrawer() {
             </span>
           </div>
           <div className='flex items-center gap-2'>
-            <span
-              className={`rounded-full border px-2 py-0.5 text-[10px] ${apiStatusClass}`}>
-              {apiStatusLabel}
-            </span>
             <button
               type='button'
               onClick={() => setShowSettings(prev => !prev)}
@@ -553,24 +487,6 @@ export default function AiChatDrawer() {
         </div>
 
         <div className='shrink-0 border-t border-black/5 bg-gradient-to-t from-white via-white/80 to-transparent p-4 dark:border-white/10 dark:from-[#121212] dark:via-[#121212]/80'>
-          {showQuotaNotice && (
-            <div className='mb-3 rounded-lg border border-amber-200/70 bg-amber-50 px-3 py-2 text-[11px] text-amber-700 dark:border-amber-900/40 dark:bg-amber-900/20 dark:text-amber-200'>
-              {quotaNoticeText}
-              {!isCustomApiReady && contactEmail && (
-                <a
-                  className='ml-2 underline underline-offset-2'
-                  href={`mailto:${contactEmail}`}>
-                  联系开发者
-                </a>
-              )}
-            </div>
-          )}
-          {apiNotice && (
-            <div className='mb-3 rounded-lg border border-rose-200/70 bg-rose-50 px-3 py-2 text-[11px] text-rose-700 dark:border-rose-900/40 dark:bg-rose-900/20 dark:text-rose-200'>
-              {apiNotice}
-            </div>
-          )}
-
           {showSettings && (
             <div className='mb-3 space-y-2 rounded-xl border border-gray-200/70 bg-white/80 p-3 text-[11px] text-gray-600 dark:border-white/10 dark:bg-white/5 dark:text-gray-300'>
               <label className='flex items-center justify-between gap-3'>
@@ -650,7 +566,7 @@ export default function AiChatDrawer() {
             />
             <button
               onClick={() => void handleSend()}
-              disabled={isLoading || (isFreePlan && freeRemaining <= 0)}
+              disabled={isLoading}
               className='flex h-10 w-10 items-center justify-center rounded-xl bg-black text-white shadow-md transition active:scale-95 disabled:opacity-50 disabled:shadow-none dark:bg-white dark:text-black'>
               <svg
                 className='h-4 w-4'
