@@ -40,6 +40,7 @@ devserver-*.log
 /pnpm-lock.yaml
 .idea
 .vscode
+.worktrees
 
 
 # sitemap
