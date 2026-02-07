@@ -37,7 +37,7 @@ export const MenuList = props => {
     }
   }, [showMenu])
 
-  let links = [
+  const defaultLinks = [
     {
       icon: 'fas fa-archive',
       name: locale.NAV.ARCHIVE,
@@ -64,13 +64,22 @@ export const MenuList = props => {
     }
   ]
 
-  if (customNav) {
-    links = customNav.concat(links)
-  }
+  const fallbackLinks = defaultLinks.filter(link => link?.show !== false)
+  const navLinks = (Array.isArray(customNav) ? customNav : []).filter(
+    link => Boolean(link) && link?.show !== false
+  )
+  const customMenuLinks = (Array.isArray(customMenu) ? customMenu : []).filter(
+    link => Boolean(link) && link?.show !== false
+  )
+
+  let links = navLinks.length > 0 ? navLinks.concat(fallbackLinks) : fallbackLinks
 
   // 如果 开启自定义菜单，则覆盖Page生成的菜单
-  if (siteConfig('CUSTOM_MENU', BLOG.CUSTOM_MENU)) {
-    links = customMenu
+  if (
+    siteConfig('CUSTOM_MENU', BLOG.CUSTOM_MENU) &&
+    customMenuLinks.length > 0
+  ) {
+    links = customMenuLinks
   }
 
   if (!links || links.length === 0) {
