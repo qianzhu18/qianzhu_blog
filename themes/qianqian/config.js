@@ -10,6 +10,8 @@ const CONFIG = {
 
     // 英雄区块导航
     PROXIO_HERO_ENABLE: true, // 开启英雄区
+    PROXIO_HERO_STATUS_TEXT: '系统在线 · 首栏体验已升级', // 首栏状态胶囊文案
+    PROXIO_HERO_SLOGAN: '千千君子，温润如玉', // 首栏副标题
     PROXIO_HERO_TITLE_1: '千逐 · 系统构建者 / AI 与认知探索', // 英雄区文字
     PROXIO_HERO_TITLE_2: '把第一性原理与奥卡姆剃刀落到可运行的系统，链接同频的创造者', // 英雄区文字
     // 英雄区两个按钮，如果TEXT留空则隐藏按钮
@@ -22,6 +24,7 @@ const CONFIG = {
 
     // 英雄区配图，如需隐藏，改为空值即可 ''
     PROXIO_HERO_BANNER_IMAGE: '/images/hero-jade.svg', // hero区背景，默认是获取Notion背景，如需另外配置图片可以填写在这里
+    PROXIO_HERO_BANNER_IMAGE_DESKTOP: '/images/hero-jade.svg', // 桌面端首栏封面图
     // qianqian 风格：提高可读性与质感
     PROXIO_HERO_OVERLAY_ENABLE: true,
     PROXIO_HERO_OVERLAY_COLOR: 'rgba(33,73,68,0.28)',
