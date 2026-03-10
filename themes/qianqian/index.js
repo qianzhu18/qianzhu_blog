@@ -11,7 +11,8 @@ import {
     cloneElement,
     isValidElement,
     useEffect,
-    useRef
+    useRef,
+    useState
 } from 'react'
 import { Career } from './components/Career'
 import { Blog } from './components/Blog'
@@ -94,6 +95,22 @@ const LayoutBase = props => {
     const { children, categoryOptions } = props
     const searchModal = useRef(null)
     const { isOpen } = useAiStore()
+    const router = useRouter()
+    const [mobileToolbarCompact, setMobileToolbarCompact] = useState(false)
+    const [mobileCategoryPanelOpen, setMobileCategoryPanelOpen] = useState(false)
+    const mobileToolbarCompactRef = useRef(false)
+    const mobileCategoryPanelOpenRef = useRef(false)
+    const lastMobileScrollYRef = useRef(0)
+    const collapseTimerRef = useRef(null)
+    const expandTimerRef = useRef(null)
+
+    useEffect(() => {
+        mobileToolbarCompactRef.current = mobileToolbarCompact
+    }, [mobileToolbarCompact])
+
+    useEffect(() => {
+        mobileCategoryPanelOpenRef.current = mobileCategoryPanelOpen
+    }, [mobileCategoryPanelOpen])
 
     const layoutChildren = Children.map(children, child => {
         if (!isValidElement(child)) return child
@@ -126,6 +143,113 @@ const LayoutBase = props => {
         return () => clearTimeout(timer)
     }, [])
 
+    useEffect(() => {
+        if (typeof window === 'undefined') return
+
+        const clearToolbarTimers = () => {
+            if (collapseTimerRef.current) {
+                clearTimeout(collapseTimerRef.current)
+                collapseTimerRef.current = null
+            }
+            if (expandTimerRef.current) {
+                clearTimeout(expandTimerRef.current)
+                expandTimerRef.current = null
+            }
+        }
+
+        const collapseToolbar = () => {
+            if (mobileToolbarCompactRef.current) return
+            setMobileToolbarCompact(true)
+            if (mobileCategoryPanelOpenRef.current) {
+                setMobileCategoryPanelOpen(false)
+            }
+        }
+
+        const expandToolbar = () => {
+            if (!mobileToolbarCompactRef.current) return
+            setMobileToolbarCompact(false)
+            if (mobileCategoryPanelOpenRef.current) {
+                setMobileCategoryPanelOpen(false)
+            }
+        }
+
+        const handleScroll = () => {
+            if (window.innerWidth >= 1024) {
+                lastMobileScrollYRef.current = window.scrollY
+                return
+            }
+
+            const currentScrollY = window.scrollY
+            const delta = currentScrollY - lastMobileScrollYRef.current
+
+            if (currentScrollY <= 48) {
+                clearToolbarTimers()
+                expandToolbar()
+            } else if (
+                mobileToolbarCompactRef.current &&
+                currentScrollY <= 140 &&
+                delta < -12
+            ) {
+                clearToolbarTimers()
+                expandToolbar()
+            } else if (delta > 8 && currentScrollY > 96) {
+                if (!mobileToolbarCompactRef.current) {
+                    if (expandTimerRef.current) {
+                        clearTimeout(expandTimerRef.current)
+                        expandTimerRef.current = null
+                    }
+                    if (!collapseTimerRef.current) {
+                        collapseTimerRef.current = setTimeout(() => {
+                            collapseToolbar()
+                            collapseTimerRef.current = null
+                        }, 220)
+                    }
+                }
+                if (mobileCategoryPanelOpenRef.current && currentScrollY > 140) {
+                    setMobileCategoryPanelOpen(false)
+                }
+            } else if (delta < -40) {
+                if (mobileToolbarCompactRef.current) {
+                    if (collapseTimerRef.current) {
+                        clearTimeout(collapseTimerRef.current)
+                        collapseTimerRef.current = null
+                    }
+                    if (!expandTimerRef.current) {
+                        expandTimerRef.current = setTimeout(() => {
+                            expandToolbar()
+                            expandTimerRef.current = null
+                        }, 180)
+                    }
+                }
+            }
+
+            lastMobileScrollYRef.current = currentScrollY
+        }
+
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                clearToolbarTimers()
+                setMobileToolbarCompact(false)
+                setMobileCategoryPanelOpen(false)
+            }
+        }
+
+        handleScroll()
+        handleResize()
+        window.addEventListener('scroll', handleScroll, { passive: true })
+        window.addEventListener('resize', handleResize)
+
+        return () => {
+            clearToolbarTimers()
+            window.removeEventListener('scroll', handleScroll)
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [])
+
+    useEffect(() => {
+        setMobileCategoryPanelOpen(false)
+    }, [router.asPath])
+
     return (
         <div
             id='theme-qianqian'
@@ -138,9 +262,21 @@ const LayoutBase = props => {
                     isOpen ? 'lg:pr-[400px]' : 'lg:pr-0'
                 }`}>
                 {/* 页头 */}
-                <Header {...props} searchModalRef={searchModal} />
+                <Header
+                    {...props}
+                    searchModalRef={searchModal}
+                    mobileToolbarCompact={mobileToolbarCompact}
+                    mobileCategoryPanelOpen={mobileCategoryPanelOpen}
+                    setMobileCategoryPanelOpen={setMobileCategoryPanelOpen}
+                    hasMobileCategoryGroup={Boolean(categoryOptions?.length)}
+                />
 
-                <CategoryGroup categoryOptions={categoryOptions} />
+                <CategoryGroup
+                    categoryOptions={categoryOptions}
+                    compactMode={mobileToolbarCompact}
+                    panelOpen={mobileCategoryPanelOpen}
+                    setPanelOpen={setMobileCategoryPanelOpen}
+                />
 
                 <AlgoliaSearchModal cRef={searchModal} {...props} />
 
@@ -203,6 +339,17 @@ const LayoutIndex = props => {
         <>
             {/* 英雄区 */}
             {siteConfig('PROXIO_HERO_ENABLE', true, CONFIG) && <Hero {...props} />}
+
+            {/* 合作伙伴 */}
+            {siteConfig('PROXIO_BRANDS_ENABLE', true, CONFIG) && <Brand />}
+
+
+            {/* 生涯 */}
+            {siteConfig('PROXIO_CAREER_ENABLE', true, CONFIG) && <Career />}
+
+            {/* 团队介绍 */}
+            {siteConfig('PROXIO_ABOUT_ENABLE', true, CONFIG) && <Team />}
+
             {/* 博文列表 */}
             {siteConfig('PROXIO_BLOG_ENABLE', true, CONFIG) && (
                 <>
@@ -216,16 +363,6 @@ const LayoutIndex = props => {
                     </div>
                 </>
             )}
-
-            {/* 团队介绍 */}
-            {siteConfig('PROXIO_ABOUT_ENABLE', true, CONFIG) && <Team />}
-
-            {/* 合作伙伴 */}
-            {siteConfig('PROXIO_BRANDS_ENABLE', true, CONFIG) && <Brand />}
-
-
-            {/* 生涯 */}
-            {siteConfig('PROXIO_CAREER_ENABLE', true, CONFIG) && <Career />}
 
             {/* 产品特性 */}
             {siteConfig('PROXIO_FEATURE_ENABLE', true, CONFIG) && <Features />}

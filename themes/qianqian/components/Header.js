@@ -1,7 +1,7 @@
 import { siteConfig } from '@/lib/config'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DarkModeButton } from './DarkModeButton'
 import { MenuList } from './MenuList'
 import CONFIG from '../config'
@@ -11,38 +11,21 @@ import CONFIG from '../config'
  */
 export const Header = props => {
     const router = useRouter()
-    const { searchModalRef, allNavPages } = props
+    const {
+        searchModalRef,
+        mobileToolbarCompact = false,
+        mobileCategoryPanelOpen = false,
+        setMobileCategoryPanelOpen,
+        hasMobileCategoryGroup = false
+    } = props
     const [scrolled, setScrolled] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const [percent, setPercent] = useState(0)
-    const [isVisible, setIsVisible] = useState(true)
-    const lastScrollY = useRef(0)
-    const randomPosts =
-        allNavPages?.filter(page => page?.type === 'Post' && page?.slug) || []
-    const hasRandomPosts = randomPosts.length > 0
 
     useEffect(() => {
         const handleScroll = () => {
             const currentScroll = window.scrollY
             const nextScrolled = currentScroll > 10
             setScrolled(prev => (prev === nextScrolled ? prev : nextScrolled))
-
-            const totalHeight =
-                document.documentElement.scrollHeight - window.innerHeight
-            const nextPercent =
-                totalHeight > 0
-                    ? Math.min(100, Math.round((currentScroll / totalHeight) * 100))
-                    : 0
-            setPercent(prev => (prev === nextPercent ? prev : nextPercent))
-
-            if (currentScroll < 10) {
-                setIsVisible(true)
-            } else if (currentScroll > lastScrollY.current && currentScroll > 50) {
-                setIsVisible(false)
-            } else if (currentScroll < lastScrollY.current) {
-                setIsVisible(true)
-            }
-            lastScrollY.current = currentScroll
         }
         handleScroll()
         window.addEventListener('scroll', handleScroll, { passive: true })
@@ -56,9 +39,11 @@ export const Header = props => {
                 siteConfig('ALGOLIA_INDEX')
         )
         if (hasAlgolia) {
+            setMobileCategoryPanelOpen?.(false)
             searchModalRef?.current?.openSearch?.()
             return
         }
+        setMobileCategoryPanelOpen?.(false)
         router.push('/search')
     }
 
@@ -72,14 +57,9 @@ export const Header = props => {
         void import('@/components/AlgoliaSearchModal')
     }
 
-    const handleRandom = () => {
-        if (!hasRandomPosts) {
-            router.push('/')
-            return
-        }
-        const randomIndex = Math.floor(Math.random() * randomPosts.length)
-        const randomPost = randomPosts[randomIndex]
-        router.push(`/${randomPost.slug}`)
+    const handleToolbarToggle = () => {
+        setMobileMenuOpen(false)
+        setMobileCategoryPanelOpen?.(prev => !prev)
     }
 
     return (
@@ -116,28 +96,42 @@ export const Header = props => {
 
             {/* ================== 📱 移动端 Header ================== */}
             <div
-                className={`lg:hidden fixed top-0 left-0 z-[999] flex h-14 w-full items-center justify-between border-b px-4 transition-all duration-300 ease-in-out ${
-                    scrolled
+                className={`lg:hidden fixed top-0 left-0 z-[999] flex h-12 w-full items-center justify-between border-b px-4 transition-all duration-300 ease-in-out ${
+                    scrolled || mobileToolbarCompact || mobileCategoryPanelOpen
                         ? 'bg-black/95 border-gray-800 backdrop-blur-xl'
                         : 'bg-transparent border-transparent'
-                } ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
-                <div className='flex items-center'>
+                }`}>
+                <div className='flex min-w-0 items-center gap-3'>
                     <Link
                         href='/'
                         className='text-lg font-bold text-white tracking-wider hover:text-indigo-400 transition-colors z-[1000]'>
                         千逐
                     </Link>
-                </div>
-                <div className='flex items-center gap-4 z-[1000]'>
-                    {hasRandomPosts && (
+                    {hasMobileCategoryGroup && mobileToolbarCompact && (
                         <button
                             type='button'
-                            onClick={handleRandom}
-                            className='flex h-8 w-8 items-center justify-center rounded-lg bg-gray-800/50 text-gray-400 transition-all hover:text-white active:scale-95'
-                            aria-label='随机文章'>
-                            <i className='fa-solid fa-dice text-sm' />
+                            onClick={handleToolbarToggle}
+                            className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-semibold transition-all ${
+                                mobileCategoryPanelOpen
+                                    ? 'border-emerald-400/60 bg-emerald-400/12 text-white'
+                                    : 'border-white/10 bg-white/8 text-white/78'
+                            }`}
+                            aria-label='展开功能区'
+                            aria-controls='mobile-category-panel'
+                            aria-expanded={mobileCategoryPanelOpen}>
+                            <i className='fa-solid fa-grip text-[10px]' />
+                            <span>栏目</span>
+                            <i
+                                className={`fa-solid ${
+                                    mobileCategoryPanelOpen
+                                        ? 'fa-chevron-up'
+                                        : 'fa-chevron-down'
+                                } text-[10px]`}
+                            />
                         </button>
                     )}
+                </div>
+                <div className='flex items-center gap-2.5 z-[1000]'>
                     <button
                         type='button'
                         onClick={handleSearch}
@@ -145,19 +139,12 @@ export const Header = props => {
                         aria-label='搜索'>
                         <i className='fa-solid fa-magnifying-glass text-sm' />
                     </button>
-                    <div className='flex h-6 items-center justify-center rounded-full border border-gray-700 bg-gray-800 px-2'>
-                        <span
-                            className={`min-w-[32px] text-center text-[10px] font-mono leading-none transition-all duration-300 ${
-                                percent > 0
-                                    ? 'text-indigo-400 font-bold'
-                                    : 'text-gray-500'
-                            }`}>
-                            {percent}%
-                        </span>
-                    </div>
                     <button
                         type='button'
-                        onClick={() => setMobileMenuOpen(prev => !prev)}
+                        onClick={() => {
+                            setMobileCategoryPanelOpen?.(false)
+                            setMobileMenuOpen(prev => !prev)
+                        }}
                         className='flex h-8 w-8 items-center justify-center text-gray-400 transition-all hover:text-white active:scale-95'
                         aria-label='展开菜单'>
                         <i className='fa-solid fa-bars text-lg' />
@@ -174,7 +161,7 @@ export const Header = props => {
                 />
             </div>
 
-            <div className='h-14 lg:hidden' />
+            <div className='h-12 lg:hidden' />
         </>
     )
 }

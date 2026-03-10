@@ -1,6 +1,5 @@
 import { BeiAnGongAn } from '@/components/BeiAnGongAn'
 import BeiAnSite from '@/components/BeiAnSite'
-import CopyRightDate from '@/components/CopyRightDate'
 import DarkModeButton from '@/components/DarkModeButton'
 import LazyImage from '@/components/LazyImage'
 import PoweredBy from '@/components/PoweredBy'
@@ -16,6 +15,13 @@ import SocialButton from './SocialButton'
 export const Footer = ({ title }) => {
   const { siteInfo } = useGlobal()
   const PROXIO_FOOTER_LINKS = siteConfig('PROXIO_FOOTER_LINKS', [], CONFIG)
+  const footerName =
+    siteConfig('PROXIO_HERO_TITLE_1', CONFIG.PROXIO_HERO_TITLE_1, CONFIG) || title
+  const footerSlogan = siteConfig(
+    'PROXIO_FOOTER_SLOGAN',
+    CONFIG.PROXIO_FOOTER_SLOGAN,
+    CONFIG
+  )
 
   return (
     <footer
@@ -32,13 +38,11 @@ export const Footer = ({ title }) => {
                 width={24}
                 alt={siteConfig('AUTHOR')}
               />
-              <h1 className='text-lg'>{title}</h1>
-              <span
-                className='underline font-bold justify-start'>
-                {siteConfig('AUTHOR')}
+              <span className='underline font-bold justify-start'>
+                {footerName}
               </span>
             </div>
-            <div className='px-1'>{siteConfig('DESCRIPTION')}</div>
+            <div className='px-1'>{footerSlogan}</div>
             <div className='px-1'>{siteConfig('CONTACT_EMAIL')}</div>
           </div>
 

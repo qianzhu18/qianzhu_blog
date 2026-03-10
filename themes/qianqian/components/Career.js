@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-unescaped-entities */
 import { siteConfig } from '@/lib/config'
-import Link from 'next/link'
+import CONFIG from '../config'
 
 /**
  * 首页的生涯模块
  */
 export const Career = () => {
-  const Careers = siteConfig('PROXIO_CAREERS')
+  const Careers = siteConfig('PROXIO_CAREERS', [], CONFIG)
   return (
     <>
       {/* <!-- ====== About Section Start --> */}
@@ -20,11 +20,11 @@ export const Career = () => {
             <div className='w-full px-4 lg:w-1/2'>
               <div className='mb-12 max-w-[540px] lg:mb-0'>
                 <span className='px-3 py-0.5 rounded-2xl dark:bg-dark-1 border border-gray-200 dark:border-[#333333] dark:text-white'>
-                  {siteConfig('PROXIO_CAREER_TITLE')}
+                  {siteConfig('PROXIO_CAREER_TITLE', CONFIG.PROXIO_CAREER_TITLE, CONFIG)}
                 </span>
                 <h2
                   className='mb-10 text-3xl font-semibold leading-relaxed dark:text-dark-6'
-                >{siteConfig('PROXIO_CAREER_TEXT')}</h2>
+                >{siteConfig('PROXIO_CAREER_TEXT', CONFIG.PROXIO_CAREER_TEXT, CONFIG)}</h2>
               </div>
             </div>
 

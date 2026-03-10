@@ -285,11 +285,12 @@ const getSEOMeta = (props, router, locale) => {
   const keyword = router?.query?.s
 
   const TITLE = siteConfig('TITLE')
+  const DESCRIPTION = siteConfig('DESCRIPTION')
   switch (router.route) {
     case '/':
       return {
         title: `${TITLE}`,
-        description: `${siteInfo?.description}`,
+        description: `${DESCRIPTION}`,
         image: `${siteInfo?.pageCover}`,
         slug: '',
         type: 'website'
@@ -297,7 +298,7 @@ const getSEOMeta = (props, router, locale) => {
     case '/archive':
       return {
         title: `${locale.NAV.ARCHIVE} | ${siteInfo?.title}`,
-        description: `${siteInfo?.description}`,
+        description: `${DESCRIPTION}`,
         image: `${siteInfo?.pageCover}`,
         slug: 'archive',
         type: 'website'
@@ -305,7 +306,7 @@ const getSEOMeta = (props, router, locale) => {
     case '/page/[page]':
       return {
         title: `${page} | Page | ${siteInfo?.title}`,
-        description: `${siteInfo?.description}`,
+        description: `${DESCRIPTION}`,
         image: `${siteInfo?.pageCover}`,
         slug: 'page/' + page,
         type: 'website'
@@ -313,7 +314,7 @@ const getSEOMeta = (props, router, locale) => {
     case '/category/[category]':
       return {
         title: `${category} | ${locale.COMMON.CATEGORY} | ${siteInfo?.title}`,
-        description: `${siteInfo?.description}`,
+        description: `${DESCRIPTION}`,
         slug: 'category/' + category,
         image: `${siteInfo?.pageCover}`,
         type: 'website'
@@ -321,7 +322,7 @@ const getSEOMeta = (props, router, locale) => {
     case '/category/[category]/page/[page]':
       return {
         title: `${category} | ${locale.COMMON.CATEGORY} | ${siteInfo?.title}`,
-        description: `${siteInfo?.description}`,
+        description: `${DESCRIPTION}`,
         slug: 'category/' + category,
         image: `${siteInfo?.pageCover}`,
         type: 'website'
@@ -330,7 +331,7 @@ const getSEOMeta = (props, router, locale) => {
     case '/tag/[tag]/page/[page]':
       return {
         title: `${tag} | ${locale.COMMON.TAGS} | ${siteInfo?.title}`,
-        description: `${siteInfo?.description}`,
+        description: `${DESCRIPTION}`,
         image: `${siteInfo?.pageCover}`,
         slug: 'tag/' + tag,
         type: 'website'
@@ -338,7 +339,7 @@ const getSEOMeta = (props, router, locale) => {
     case '/search':
       return {
         title: `${keyword || ''}${keyword ? ' | ' : ''}${locale.NAV.SEARCH} | ${siteInfo?.title}`,
-        description: `${siteInfo?.description}`,
+        description: `${DESCRIPTION}`,
         image: `${siteInfo?.pageCover}`,
         slug: 'search',
         type: 'website'
@@ -360,7 +361,7 @@ const getSEOMeta = (props, router, locale) => {
     case '/tag':
       return {
         title: `${locale.COMMON.TAGS} | ${siteInfo?.title}`,
-        description: `${siteInfo?.description}`,
+        description: `${DESCRIPTION}`,
         image: `${siteInfo?.pageCover}`,
         slug: 'tag',
         type: 'website'
@@ -368,7 +369,7 @@ const getSEOMeta = (props, router, locale) => {
     case '/category':
       return {
         title: `${locale.COMMON.CATEGORY} | ${siteInfo?.title}`,
-        description: `${siteInfo?.description}`,
+        description: `${DESCRIPTION}`,
         image: `${siteInfo?.pageCover}`,
         slug: 'category',
         type: 'website'

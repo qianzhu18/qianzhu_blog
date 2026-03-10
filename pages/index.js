@@ -24,25 +24,13 @@ const Index = props => {
     if (window.history && 'scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
     }
-
-    const lockToTeam = () => {
-      const team = document.getElementById('team')
-      if (team) {
-        team.scrollIntoView({ behavior: 'auto', block: 'center' })
-      }
-    }
-
-    lockToTeam()
-    const intervalId = setInterval(lockToTeam, 50)
-    return () => clearInterval(intervalId)
+    window.scrollTo({ top: 0, behavior: 'auto' })
   }, [isLoading])
 
   const handleSplashFinish = () => {
     setIsLoading(false)
     if (typeof window !== 'undefined') {
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-      }, 1500)
+      window.scrollTo({ top: 0, behavior: 'auto' })
     }
   }
 

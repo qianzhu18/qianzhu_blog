@@ -6,19 +6,44 @@ const CONFIG = {
     // 大陆网络优化：关闭重型特效（可按需开启）
     QIANQIAN_EFFECTS_ENABLE: false,
     PROXIO_WELCOME_COVER_ENABLE: true, //是否显示页面进入的欢迎文字
-    PROXIO_WELCOME_TEXT: '进入千逐的数字世界：计算机科学｜系统构建者｜AI 与认知探索者', // 欢迎文字，留空则不启用
+    PROXIO_WELCOME_TEXT: '进入千逐的构建现场：AI Product · Systems · Community', // 欢迎文字，留空则不启用
 
     // 英雄区块导航
     PROXIO_HERO_ENABLE: true, // 开启英雄区
-    PROXIO_HERO_TITLE_1: '千逐 · 系统构建者 / AI 与认知探索', // 英雄区文字
-    PROXIO_HERO_TITLE_2: '把第一性原理与奥卡姆剃刀落到可运行的系统，链接同频的创造者', // 英雄区文字
-    // 英雄区两个按钮，如果TEXT留空则隐藏按钮
-    PROXIO_HERO_BUTTON_1_TEXT: '认识千逐', // 英雄区按钮
+    PROXIO_HERO_STATUS_TEXT: '持续构建中 · Product × Systems × Community',
+    PROXIO_HERO_SLOGAN: 'AI Product Builder · System Thinker · Community Connector',
+    PROXIO_HERO_TITLE_1: '千逐 / qianzhu / Lucien', // 英雄区文字
+    PROXIO_HERO_TITLE_2:
+        '你好，我是千逐。我在产品、技术与社区的交叉处持续构建：一边做 AI 产品与 MVP，一边亲手搭系统、跑工作流、验证真实场景，也在探索 AI × Web3 与开放协作网络的可能性。', // 英雄区文字
+    PROXIO_HERO_MOBILE_SUMMARY:
+        '你好，我是千逐。构建 AI 产品、系统与社区，探索 AI × Web3 的开放可能。',
+    // 英雄区按钮，如果TEXT留空则隐藏按钮
+    PROXIO_HERO_BUTTON_1_TEXT: '关于我', // 英雄区按钮
     PROXIO_HERO_BUTTON_1_URL:
         '#team', // 英雄区按钮，跳转到首页“关于我”区块
-    PROXIO_HERO_BUTTON_2_TEXT: '查看履历', // 英雄区按钮
-    PROXIO_HERO_BUTTON_2_URL: '#about', // 英雄区按钮
+    PROXIO_HERO_BUTTON_2_TEXT: '查看文章', // 英雄区按钮
+    PROXIO_HERO_BUTTON_2_URL: '#latest', // 英雄区按钮
     PROXIO_HERO_BUTTON_2_ICON: '', // 英雄区按钮2的图标，不需要则留空
+    PROXIO_HERO_BUTTON_3_TEXT: '与我连接',
+    PROXIO_HERO_BUTTON_3_URL: 'mailto:qianzhuxue@gmail.com',
+    PROXIO_HERO_FEATURE_CARDS: [
+        {
+            title: 'AI Product',
+            items: ['需求分析', '链路设计', 'MVP 推进']
+        },
+        {
+            title: 'Agentic Engineering',
+            items: ['AI Coding', '工作流搭建', '自动化实验']
+        },
+        {
+            title: 'Community Practice',
+            items: ['校园连接', '社群组织', '活动协作']
+        },
+        {
+            title: 'Open Systems',
+            items: ['AI × Web3', '去中心化协作', '开放网络探索']
+        }
+    ],
 
     // 英雄区配图，如需隐藏，改为空值即可 ''
     PROXIO_HERO_BANNER_IMAGE: '/images/hero-jade.svg', // hero区背景，默认是获取Notion背景，如需另外配置图片可以填写在这里
@@ -31,9 +56,9 @@ const CONFIG = {
 
     // 文章区块
     PROXIO_BLOG_ENABLE: true, // 首页博文区块开关
-    PROXIO_BLOG_TITLE: '作品',
+    PROXIO_BLOG_TITLE: 'Selected Writing',
     PROXIO_BLOG_COUNT: 6, // 首页博文区块展示前6篇文章（两行 * 3列）
-    PROXIO_BLOG_TEXT_1: '我的最新动态',
+    PROXIO_BLOG_TEXT_1: '最近的实践记录与文章',
 
     // 首页网格交互背景
     PROXIO_GRID_BG_ENABLE: true,
@@ -75,26 +100,26 @@ const CONFIG = {
 
     // 首页生涯区块
     PROXIO_CAREER_ENABLE: true, // 区块开关
-    PROXIO_CAREER_TITLE: '系统构建与履历',
+    PROXIO_CAREER_TITLE: '实践记录',
     PROXIO_CAREER_TEXT:
-        '把社群、知识库与 AI 工作流落到真实场景的实践记录',
+        '从 AI 产品到开放系统的实践记录',
 
     // 生涯内容卡牌 ，title是标题 ，bio是备注，text是详情
     PROXIO_CAREERS: [
         {
-            title: '社群与跨校链接',
-            bio: '洋来社 · 长理分浪 · 跨年级/跨校 AI 生态 ｜ 2024-至今',
-            text: '在“拱火”氛围里链接创造者：策划分享与工作坊，沉淀高信噪比的知识库与行动复盘，运营 200+ 成员的跨校 AI 社群，让不同年级、不同学校的伙伴建立真实、长期的链接。'
+            title: 'AI Product / MVP',
+            bio: '从需求、链路到原型推进',
+            text: '关注真实场景与实际可用性，记录从想法到产品的构建过程。'
         },
         {
-            title: '湖南省大学生创新创业园 · 应用技术部 & 社群核心构建者',
-            bio: '大一暑假',
-            text: '主导初创社群从 0 到 1 的运营体系设计，规划成员引入、分层激励与知识库沉淀，探索 AI 工具在社群运营中的落地。'
+            title: 'Community / Collaboration',
+            bio: '连接校园、社群与活动现场',
+            text: '在组织与协作中观察真实需求，让产品、社区与反馈形成闭环。'
         },
         {
-            title: '观猹 · 校园大使',
-            bio: '大一学年',
-            text: '连接官方与校园，维护核心学习者社群，策划资源传达与本地化活动，并将校园需求反馈以优化策略。'
+            title: 'Open Systems / AI × Web3',
+            bio: '探索代理、身份与任务网络',
+            text: '关注开放协议、节点协作与去中心化关系，思考系统如何在开放环境中持续生长。'
         }
     ],
 
@@ -180,37 +205,40 @@ const CONFIG = {
 
     // 关于作者区块
     PROXIO_ABOUT_ENABLE: true, // 关于作者区块区块开关
-    PROXIO_ABOUT_TITLE: '关于作者',
-    PROXIO_ABOUT_TEXT_1: '计算机科学 | 系统构建者 | AI 与认知探索者',
+    PROXIO_ABOUT_TITLE: '关于我',
+    PROXIO_ABOUT_TEXT_1: '我习惯站在产品、技术与社区的交叉点思考问题',
     PROXIO_ABOUT_TEXT_2:
-        '你好，我是千逐，热衷把复杂认知过程转化成可运行的系统。以第一性原理、奥卡姆剃刀和反脆弱为准绳，近期关注 AI 的“涌现”与整体论。在社群与项目里，我喜欢“拱火”，搭建跨年级认知社群、跨校 AI 生态，用结构化知识库、自动化工作流和高信噪比链接，寻找同频的长期合作者。',
+        '我是千逐，也使用 qianzhu / Lucien 这个名字。我习惯站在产品、技术与社区的交叉点思考问题：既关心需求和用户，也关心系统如何被真正搭起来、跑起来，并在真实反馈中不断迭代。现在我主要关注三件事：AI 产品与 Agentic Engineering、社区驱动的协作实践，以及 AI × Web3 与开放系统探索。',
     PROXIO_ABOUT_PHOTO_URL: 'https://imagehost.qianzhu.online/api/rfile/千逐（卡通版）.jpg',
-    PROXIO_ABOUT_KEY_1: '系统构建',
-    PROXIO_ABOUT_VAL_1: '跨年级社群｜跨校 AI 生态',
-    PROXIO_ABOUT_KEY_2: '知识与生产力',
-    PROXIO_ABOUT_VAL_2: 'Obsidian 第二大脑｜Apple 生态工作流',
-    PROXIO_ABOUT_KEY_3: '自动化与 AI',
-    PROXIO_ABOUT_VAL_3: 'n8n · Agent 链路 · 爬虫/脚本',
-    PROXIO_ABOUT_KEY_4: '技术基石',
-    PROXIO_ABOUT_VAL_4: '容器 · 网络协议 · 运维基础',
+    PROXIO_ABOUT_KEY_1: 'AI Product',
+    PROXIO_ABOUT_VAL_1: '需求分析 · Rapid MVP',
+    PROXIO_ABOUT_KEY_2: 'Agentic Engineering',
+    PROXIO_ABOUT_VAL_2: 'AI Coding · Workflow Design',
+    PROXIO_ABOUT_KEY_3: 'Community Practice',
+    PROXIO_ABOUT_VAL_3: '校园连接 · 社群组织',
+    PROXIO_ABOUT_KEY_4: 'Open Systems',
+    PROXIO_ABOUT_VAL_4: 'AI × Web3 · Networks',
 
-    PROXIO_ABOUT_BUTTON_URL: 'https://www.qianzhu.me/',
-    PROXIO_ABOUT_BUTTON_TEXT: '关于我',
+    PROXIO_ABOUT_BUTTON_URL: '',
+    PROXIO_ABOUT_BUTTON_TEXT: '',
 
     // 横向滚动文字
     PROXIO_BRANDS_ENABLE: true, // 滚动文字
     PROXIO_BRANDS: [
-        '系统构建',
-        '跨年级认知社群',
-        '跨校 AI 生态',
-        'Obsidian 第二大脑',
-        '自动化工作流',
-        'n8n · Agent 链路',
-        '容器与网络基础',
-        'AI 与认知探索'
+        'AI Product',
+        'Agentic Engineering',
+        'Workflow Design',
+        'Rapid MVP',
+        'Community Collaboration',
+        'Hackathon',
+        'Open Systems',
+        'AI × Web3',
+        'Decentralized Networks',
+        'System Thinking'
     ],
 
-    PROXIO_FOOTER_SLOGAN: '用结构化思维与 AI 工具，把认知落为可迭代的系统。',
+    PROXIO_FOOTER_SLOGAN:
+        'Building AI-native products, systems, and community-driven networks.',
 
     // 页脚三列菜单组
     // 页脚菜单
@@ -240,9 +268,9 @@ const CONFIG = {
     // 页面底部的行动呼吁模块
     PROXIO_CTA_ENABLE: true,
     PROXIO_CTA_TITLE: '与我链接',
-    PROXIO_CTA_TITLE_2: '共建反脆弱的系统与社群',
+    PROXIO_CTA_TITLE_2: '一起构建产品、系统与开放协作网络',
     PROXIO_CTA_DESCRIPTION:
-        '如果你也热爱系统构建、认知科学或 AI 工作流，欢迎来“拱火”。带上想法、问题或好奇心找我，一起把热烈的创意落到真实场景，做长期的合作者。',
+        '如果你也在做 AI 产品、工作流自动化、社区实践，或者对 AI × Web3、去中心化协作网络感兴趣，欢迎来聊。我更愿意和真正做事的人一起，把想法推进成可运行的东西。',
     PROXIO_CTA_BUTTON: true, // 是否显示按钮
     PROXIO_CTA_BUTTON_URL:
         'mailto:qianzhuxue@gmail.com',

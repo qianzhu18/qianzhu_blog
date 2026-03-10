@@ -1,5 +1,6 @@
 import { siteConfig } from '@/lib/config'
 import Link from 'next/link'
+import CONFIG from '../config'
 
 /**
  * CTA，用于创建一个呼吁用户行动的部分（Call To Action，简称 CTA）。
@@ -7,14 +8,14 @@ import Link from 'next/link'
  * 用户的公告栏内容将在此显示
  **/
 export const CTA = () => {
-  const enable = siteConfig('PROXIO_CTA_ENABLE')
+  const enable = siteConfig('PROXIO_CTA_ENABLE', true, CONFIG)
   if (!enable) {
     return null
   }
   return (
     <>
       {/* <!-- ====== CTA Section Start --> */}
-      <section className='relative z-10 overflow-hidden bg-gray-1 dark:bg-black py-20 lg:py-[115px]'>
+      <section id='contact' className='relative z-10 overflow-hidden bg-gray-1 dark:bg-black py-20 lg:py-[115px]'>
         <div className='container mx-auto'>
           <div className='relative overflow-hidden'>
             <div className='-mx-4 flex flex-wrap items-stretch'>
@@ -22,24 +23,24 @@ export const CTA = () => {
                 <div className='mx-auto max-w-[570px] text-center wow fadeInUp' data-wow-delay='.2s'>
                   <div>
                     <span className='px-3 py-0.5 rounded-2xl dark:bg-dark-1 border border-gray-200 dark:border-[#333333] dark:text-white'>
-                      {siteConfig('PROXIO_CTA_TITLE')}
+                      {siteConfig('PROXIO_CTA_TITLE', CONFIG.PROXIO_CTA_TITLE, CONFIG)}
                     </span>
                   </div>
                   <h2 className='mb-2.5 text-3xl font-bold dark:text-white md:text-[38px] md:leading-[1.44]'>
 
                     <span className='text-3xl font-normal md:text-[40px]'>
-                      {siteConfig('PROXIO_CTA_TITLE_2')}
+                      {siteConfig('PROXIO_CTA_TITLE_2', CONFIG.PROXIO_CTA_TITLE_2, CONFIG)}
                     </span>
                   </h2>
                   <p className='mx-auto mb-6 max-w-[515px] text-base leading-[1.5] dark:text-white'>
-                    {siteConfig('PROXIO_CTA_DESCRIPTION')}
+                    {siteConfig('PROXIO_CTA_DESCRIPTION', CONFIG.PROXIO_CTA_DESCRIPTION, CONFIG)}
                   </p>
-                  {siteConfig('PROXIO_CTA_BUTTON') && (
+                  {siteConfig('PROXIO_CTA_BUTTON', CONFIG.PROXIO_CTA_BUTTON, CONFIG) && (
                     <>
                       <Link
-                        href={siteConfig('PROXIO_CTA_BUTTON_URL', '')}
+                        href={siteConfig('PROXIO_CTA_BUTTON_URL', CONFIG.PROXIO_CTA_BUTTON_URL, CONFIG)}
                         className='inline-flex items-center justify-center rounded-2xl bg-white px-7 py-[14px] text-center text-base font-medium text-dark shadow-1 transition duration-300 ease-in-out hover:bg-gray-2'>
-                        {siteConfig('PROXIO_CTA_BUTTON_TEXT')}
+                        {siteConfig('PROXIO_CTA_BUTTON_TEXT', CONFIG.PROXIO_CTA_BUTTON_TEXT, CONFIG)}
                       </Link>
                     </>
                   )}

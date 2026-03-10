@@ -2,13 +2,14 @@
 
 import { siteConfig } from '@/lib/config'
 import { useEffect, useRef } from 'react'
+import CONFIG from '../config'
 
 /**
  * 合作伙伴滚动组件
  * @returns
  */
 export const Brand = () => {
-  const brands = siteConfig('PROXIO_BRANDS', [])
+  const brands = siteConfig('PROXIO_BRANDS', [], CONFIG) || []
 
   const scrollContainerRef = useRef(null)
 

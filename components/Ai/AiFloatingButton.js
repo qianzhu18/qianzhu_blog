@@ -69,7 +69,7 @@ export default function AiFloatingButton() {
 
   return (
     <div
-      className={`fixed z-[9999] transition-all duration-200 ease-out ${
+      className={`fixed z-[9999] hidden lg:block transition-all duration-200 ease-out ${
         localShow
           ? 'opacity-100 translate-y-0 scale-100'
           : 'opacity-0 translate-y-2 scale-90 pointer-events-none'

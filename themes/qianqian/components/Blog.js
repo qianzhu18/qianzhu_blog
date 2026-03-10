@@ -1,5 +1,6 @@
 import { siteConfig } from '@/lib/config'
 import BlogPostCard from './BlogPostCard'
+import CONFIG from '../config'
 
 /**
  * 博文列表
@@ -7,7 +8,7 @@ import BlogPostCard from './BlogPostCard'
  * @returns
  */
 export const Blog = ({ posts, siteInfo }) => {
-  const enable = siteConfig('PROXIO_BLOG_ENABLE')
+  const enable = siteConfig('PROXIO_BLOG_ENABLE', true, CONFIG)
   if (!enable) {
     return null
   }
@@ -26,12 +27,12 @@ export const Blog = ({ posts, siteInfo }) => {
                 <div className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200/50 dark:border-blue-700/50'>
                   <span className='w-2 h-2 bg-blue-500 rounded-full animate-pulse'></span>
                   <span className='text-sm font-medium text-blue-700 dark:text-blue-300'>
-                    {siteConfig('PROXIO_BLOG_TITLE')}
+                    {siteConfig('PROXIO_BLOG_TITLE', CONFIG.PROXIO_BLOG_TITLE, CONFIG)}
                   </span>
                 </div>
 
                 <h2 className='text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent sm:text-4xl md:text-[40px] md:leading-[1.2]'>
-                  {siteConfig('PROXIO_BLOG_TEXT_1')}
+                  {siteConfig('PROXIO_BLOG_TEXT_1', CONFIG.PROXIO_BLOG_TEXT_1, CONFIG)}
                 </h2>
               </div>
             </div>

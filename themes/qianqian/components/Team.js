@@ -2,13 +2,28 @@
 import { siteConfig } from '@/lib/config'
 import Link from 'next/link'
 import Image from 'next/image'
+import CONFIG from '../config'
 /**
  * 作者团队
  * @returns 
  */
 export const Team = () => {
-    const PROXIO_ABOUT_PHOTO_URL = siteConfig('PROXIO_ABOUT_PHOTO_URL')
+    const PROXIO_ABOUT_PHOTO_URL = siteConfig(
+        'PROXIO_ABOUT_PHOTO_URL',
+        CONFIG.PROXIO_ABOUT_PHOTO_URL,
+        CONFIG
+    )
     const AUTHOR = siteConfig('AUTHOR')
+    const aboutButtonText = siteConfig(
+        'PROXIO_ABOUT_BUTTON_TEXT',
+        CONFIG.PROXIO_ABOUT_BUTTON_TEXT,
+        CONFIG
+    )
+    const aboutButtonUrl = siteConfig(
+        'PROXIO_ABOUT_BUTTON_URL',
+        CONFIG.PROXIO_ABOUT_BUTTON_URL,
+        CONFIG
+    )
 
     return (
         <>
@@ -37,33 +52,47 @@ export const Team = () => {
                         <div className='flex flex-col px-4 space-y-4 mx-auto justify-between max-w-[485px]'>
                             <div>
                                 <span className='px-3 py-0.5 mb-2 dark:bg-dark-1 rounded-2xl border border-gray-200 dark:border-[#333333] dark:text-white'>
-                                    {siteConfig('PROXIO_ABOUT_TITLE')}
+                                    {siteConfig('PROXIO_ABOUT_TITLE', CONFIG.PROXIO_ABOUT_TITLE, CONFIG)}
                                 </span>
                             </div>
                             <h2 className='mb-3 text-xl md:text-3xl leading-[1.2] dark:text-white '>
-                                {siteConfig('PROXIO_ABOUT_TEXT_1')}
+                                {siteConfig('PROXIO_ABOUT_TEXT_1', CONFIG.PROXIO_ABOUT_TEXT_1, CONFIG)}
                             </h2>
                             <p
                                 dangerouslySetInnerHTML={{
-                                    __html: siteConfig('PROXIO_ABOUT_TEXT_2')
+                                    __html: siteConfig('PROXIO_ABOUT_TEXT_2', CONFIG.PROXIO_ABOUT_TEXT_2, CONFIG)
                                 }}
                                 className='text-base text-body-color dark:text-dark-6'></p>
                             {/* 数值四宫格 */}
                             <div className='grid grid-cols-2 grid-rows-2 pt-6 gap-4'>
-                                <KeyVal k={siteConfig('PROXIO_ABOUT_KEY_1')} v={siteConfig('PROXIO_ABOUT_VAL_1')} />
-                                <KeyVal k={siteConfig('PROXIO_ABOUT_KEY_2')} v={siteConfig('PROXIO_ABOUT_VAL_2')} />
-                                <KeyVal k={siteConfig('PROXIO_ABOUT_KEY_3')} v={siteConfig('PROXIO_ABOUT_VAL_3')} />
-                                <KeyVal k={siteConfig('PROXIO_ABOUT_KEY_4')} v={siteConfig('PROXIO_ABOUT_VAL_4')} />
+                                <KeyVal
+                                    k={siteConfig('PROXIO_ABOUT_KEY_1', CONFIG.PROXIO_ABOUT_KEY_1, CONFIG)}
+                                    v={siteConfig('PROXIO_ABOUT_VAL_1', CONFIG.PROXIO_ABOUT_VAL_1, CONFIG)}
+                                />
+                                <KeyVal
+                                    k={siteConfig('PROXIO_ABOUT_KEY_2', CONFIG.PROXIO_ABOUT_KEY_2, CONFIG)}
+                                    v={siteConfig('PROXIO_ABOUT_VAL_2', CONFIG.PROXIO_ABOUT_VAL_2, CONFIG)}
+                                />
+                                <KeyVal
+                                    k={siteConfig('PROXIO_ABOUT_KEY_3', CONFIG.PROXIO_ABOUT_KEY_3, CONFIG)}
+                                    v={siteConfig('PROXIO_ABOUT_VAL_3', CONFIG.PROXIO_ABOUT_VAL_3, CONFIG)}
+                                />
+                                <KeyVal
+                                    k={siteConfig('PROXIO_ABOUT_KEY_4', CONFIG.PROXIO_ABOUT_KEY_4, CONFIG)}
+                                    v={siteConfig('PROXIO_ABOUT_VAL_4', CONFIG.PROXIO_ABOUT_VAL_4, CONFIG)}
+                                />
                             </div>
 
-                            <div className='mt-8 w-full flex justify-end py-2'>
-                                <Link
-                                    href={siteConfig('PROXIO_ABOUT_BUTTON_URL', '')}
-                                    className='px-4 py-2 rounded-3xl border dark:border-gray-200 border-[#333333] text-base font-medium text-dark hover:bg-gray-100 dark:text-white dark:hover:bg-white dark:hover:text-black duration-200'>
-                                    {siteConfig('PROXIO_ABOUT_BUTTON_TEXT')}
-                                    <i className="pl-4 fa-solid fa-arrow-right"></i>
-                                </Link>
-                            </div>
+                            {aboutButtonText && aboutButtonUrl && (
+                                <div className='mt-8 w-full flex justify-end py-2'>
+                                    <Link
+                                        href={aboutButtonUrl}
+                                        className='px-4 py-2 rounded-3xl border dark:border-gray-200 border-[#333333] text-base font-medium text-dark hover:bg-gray-100 dark:text-white dark:hover:bg-white dark:hover:text-black duration-200'>
+                                        {aboutButtonText}
+                                        <i className="pl-4 fa-solid fa-arrow-right"></i>
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
