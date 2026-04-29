@@ -334,7 +334,10 @@ const LayoutBase = props => {
 const LayoutIndex = props => {
     const count = siteConfig('PROXIO_BLOG_COUNT', 4, CONFIG)
     const { locale } = useGlobal()
-    const posts = props?.allNavPages ? props.allNavPages.slice(0, count) : []
+    const posts = (props?.latestPosts || props?.posts || props?.allNavPages || []).slice(
+        0,
+        count
+    )
     return (
         <>
             {/* 英雄区 */}
