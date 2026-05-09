@@ -1,6 +1,11 @@
 import getAllPageIds from '@/lib/db/notion/getAllPageIds'
 import { adapterNotionBlockMap } from '@/lib/utils/notion.util'
 
+jest.mock('p-limit', () => ({
+  __esModule: true,
+  default: jest.fn(() => fn => fn())
+}))
+
 jest.mock('@/lib/cache/cache_manager', () => ({
   getDataFromCache: jest.fn(),
   getOrSetDataWithCache: jest.fn(),
