@@ -57,6 +57,8 @@ NotionNext 现在非常适合做个人博客、作品集、知识库和轻内容
 - `Event`: 活动
 - `Page`: 静态说明页
 
+实现时，`Member` / `Event` 应与现有 Notion 页面 `type` 约定、`lib/db/SiteDataApi.js` 的数据契约，以及主题 `props` 与路由的既有模式对齐，避免与文章/页面流程硬分叉。
+
 如果继续全部混在 `Post/Page` 里，后续主题、搜索、SEO、列表页、导航、侧边栏都会越来越难维护。
 
 #### 3. 活动发布与展示
@@ -227,20 +229,7 @@ NotionNext 现在非常适合做个人博客、作品集、知识库和轻内容
 
 ## 文档化建议
 
-如果后续真的做这条线，建议新增：
+本文档可作为该方向的**总览路线图**。若后续落地实现，建议再补充更细的设计文档，例如：
 
-- `docs/COMMUNITY_SITE_ROADMAP.md`
-- `docs/COMMUNITY_SITE_SCHEMA.md`
-- `docs/COMMUNITY_SITE_EXAMPLES.md`
-
-## 对简历价值的判断
-
-如果这条线推进成功，它的含金量会明显高于普通主题 bugfix，因为它对应的是：
-
-- 从博客模板向社区内容平台扩展
-- 数据模型设计
-- 路由与主题契约设计
-- 内容系统与组织信息系统分层
-- 多角色内容生产的产品化能力
-
-这类贡献写进简历，不再只是“修开源 bug”，而是“参与设计并推动内容平台在社区官网场景下的能力扩展”。
+- `docs/COMMUNITY_SITE_SCHEMA.md`（字段与数据契约）
+- `docs/COMMUNITY_SITE_EXAMPLES.md`（主题与 Notion 配置示例）
