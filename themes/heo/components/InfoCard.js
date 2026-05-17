@@ -8,6 +8,77 @@ import CONFIG from '../config'
 import Announcement from './Announcement'
 import Card from './Card'
 
+function normalizeGreetingItem(item) {
+  if (item === undefined || item === null) {
+    return null
+  }
+
+  const text = String(item).trim()
+  return text || null
+}
+
+function parseGreetingArrayString(value) {
+  const trimmed = value.trim()
+  if (!trimmed.startsWith('[') || !trimmed.endsWith(']')) {
+    return null
+  }
+
+  const candidates = [
+    trimmed,
+    trimmed.replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, (_, content) => {
+      const escapedContent = content
+        .replace(/\\/g, '\\\\')
+        .replace(/"/g, '\\"')
+      return `"${escapedContent}"`
+    })
+  ]
+
+  for (const candidate of candidates) {
+    try {
+      const parsed = JSON.parse(candidate)
+      if (Array.isArray(parsed)) {
+        return parsed
+      }
+    } catch (error) {
+      // Ignore malformed greeting config and fall back below.
+    }
+  }
+
+  return trimmed
+    .slice(1, -1)
+    .split(',')
+    .map(item => item.trim().replace(/^['"]|['"]$/g, ''))
+}
+
+export function normalizeGreetingList(
+  greetings,
+  fallbackGreetings = CONFIG.HEO_INFOCARD_GREETINGS
+) {
+  const fallback = Array.isArray(fallbackGreetings)
+    ? fallbackGreetings.map(normalizeGreetingItem).filter(Boolean)
+    : []
+
+  if (Array.isArray(greetings)) {
+    const normalized = greetings.map(normalizeGreetingItem).filter(Boolean)
+    return normalized.length > 0 ? normalized : fallback
+  }
+
+  if (typeof greetings === 'string') {
+    const parsed = parseGreetingArrayString(greetings)
+    if (Array.isArray(parsed)) {
+      const normalized = parsed.map(normalizeGreetingItem).filter(Boolean)
+      if (normalized.length > 0) {
+        return normalized
+      }
+    }
+
+    const singleGreeting = normalizeGreetingItem(greetings)
+    return singleGreeting ? [singleGreeting] : fallback
+  }
+
+  return fallback
+}
+
 /**
  * 社交信息卡
  * @param {*} props
@@ -101,7 +172,9 @@ function MoreButton() {
  * 欢迎语
  */
 function GreetingsWords() {
-  const greetings = siteConfig('HEO_INFOCARD_GREETINGS', null, CONFIG)
+  const greetings = normalizeGreetingList(
+    siteConfig('HEO_INFOCARD_GREETINGS', null, CONFIG)
+  )
   const [greeting, setGreeting] = useState(greetings[0])
   // 每次点击，随机获取greetings中的一个
   const handleChangeGreeting = () => {

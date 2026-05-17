@@ -9,13 +9,13 @@ const QrCode = dynamic(() => import('@/components/QrCode'), { ssr: false })
 const BASE_BUTTON_CLASS =
   'cursor-pointer rounded-full mx-1 w-8 h-8 flex items-center justify-center text-white'
 
-const SHARE_ICON_CLASS = {
+export const SHARE_ICON_CLASS = {
   facebook: 'fab fa-facebook-f',
   messenger: 'fab fa-facebook-messenger',
   line: 'fab fa-line',
   reddit: 'fab fa-reddit-alien',
   email: 'fas fa-envelope',
-  twitter: 'fab fa-x-twitter',
+  twitter: 'fab fa-twitter',
   telegram: 'fab fa-telegram-plane',
   whatsapp: 'fab fa-whatsapp',
   linkedin: 'fab fa-linkedin-in',
