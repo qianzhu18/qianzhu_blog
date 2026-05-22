@@ -39,7 +39,8 @@ const customJestConfig = {
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
     '<rootDir>/out/',
-    '<rootDir>/.vercel/'
+    '<rootDir>/.vercel/',
+    '<rootDir>/.worktrees/'
   ],
   
   // Transform files
