@@ -1,0 +1,125 @@
+import BLOG from '@/blog.config'
+import { siteConfig } from '@/lib/config'
+import { useGlobal } from '@/lib/global'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { MenuBarMobile } from './MenuBarMobile'
+import { MenuItem } from './MenuItem'
+
+/**
+ * 响应式 折叠菜单
+ */
+export const MenuList = props => {
+  const { customNav, customMenu, menuOpen, setMenuOpen } = props
+  const { locale } = useGlobal()
+
+  const [internalOpen, setInternalOpen] = useState(false)
+  const isControlled =
+    typeof menuOpen === 'boolean' && typeof setMenuOpen === 'function'
+  const showMenu = isControlled ? menuOpen : internalOpen
+  const setShowMenu = isControlled ? setMenuOpen : setInternalOpen
+  const idPrefix = props.idPrefix ? `${props.idPrefix}-` : ''
+  const togglerId = `${idPrefix}navbarToggler`
+  const collapseId = `${idPrefix}navbarCollapse`
+  const router = useRouter()
+
+  useEffect(() => {
+    setShowMenu(false)
+  }, [router, setShowMenu])
+
+  // 锁定滚动，提升移动端抽屉体验
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = showMenu ? 'hidden' : ''
+    }
+    return () => {
+      if (typeof document !== 'undefined') document.body.style.overflow = ''
+    }
+  }, [showMenu])
+
+  const defaultLinks = [
+    {
+      icon: 'fas fa-archive',
+      name: locale.NAV.ARCHIVE,
+      href: '/archive',
+      show: siteConfig('HEO_MENU_ARCHIVE')
+    },
+    {
+      icon: 'fas fa-search',
+      name: locale.NAV.SEARCH,
+      href: '/search',
+      show: siteConfig('HEO_MENU_SEARCH')
+    },
+    {
+      icon: 'fas fa-folder',
+      name: locale.COMMON.CATEGORY,
+      href: '/category',
+      show: siteConfig('HEO_MENU_CATEGORY')
+    },
+    {
+      icon: 'fas fa-tag',
+      name: locale.COMMON.TAGS,
+      href: '/tag',
+      show: siteConfig('HEO_MENU_TAG')
+    }
+  ]
+
+  const fallbackLinks = defaultLinks.filter(link => link?.show !== false)
+  const navLinks = (Array.isArray(customNav) ? customNav : []).filter(
+    link => Boolean(link) && link?.show !== false
+  )
+  const customMenuLinks = (Array.isArray(customMenu) ? customMenu : []).filter(
+    link => Boolean(link) && link?.show !== false
+  )
+
+  let links = navLinks.length > 0 ? navLinks.concat(fallbackLinks) : fallbackLinks
+
+  // 如果 开启自定义菜单，则覆盖Page生成的菜单
+  if (
+    siteConfig('CUSTOM_MENU', BLOG.CUSTOM_MENU) &&
+    customMenuLinks.length > 0
+  ) {
+    links = customMenuLinks
+  }
+
+  if (!links || links.length === 0) {
+    return null
+  }
+
+  const toggleMenu = () => {
+    setShowMenu(!showMenu) // 切换菜单状态
+  }
+
+  return (
+    <div>
+      {/* 移动端菜单切换按钮 */}
+      <button
+        id={togglerId}
+        aria-controls={collapseId}
+        aria-expanded={showMenu}
+        onClick={toggleMenu}
+        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden ${
+          showMenu ? 'navbarTogglerActive' : ''
+        } ${isControlled ? 'hidden' : ''}`}>
+        <span className='relative my-[6px] block h-[2px] w-[30px] bg-white duration-200 transition-all'></span>
+        <span className='relative my-[6px] block h-[2px] w-[30px] bg-white duration-200 transition-all'></span>
+        <span className='relative my-[6px] block h-[2px] w-[30px] bg-white duration-200 transition-all'></span>
+      </button>
+
+      <nav
+        id={collapseId}
+        className={`fixed inset-x-0 top-12 z-[999] w-full max-h-[80vh] overflow-y-auto bg-white dark:bg-dark-2 border-t border-black/5 dark:border-white/10 px-2 py-3 shadow-xl lg:static lg:z-auto lg:block lg:w-full lg:max-w-full lg:bg-transparent lg:px-4 lg:py-0 lg:shadow-none lg:border-0 lg:max-h-none lg:overflow-visible xl:px-6 ${
+          showMenu ? 'block' : 'hidden lg:block'
+        }`}>
+        <div className='lg:hidden'>
+          <MenuBarMobile links={links} />
+        </div>
+        <ul className='hidden lg:flex lg:items-center lg:space-y-0 2xl:ml-20'>
+          {links?.map((link, index) => (
+            <MenuItem key={index} link={link} />
+          ))}
+        </ul>
+      </nav>
+    </div>
+  )
+}

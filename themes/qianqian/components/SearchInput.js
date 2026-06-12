@@ -1,0 +1,131 @@
+import { siteConfig } from '@/lib/config'
+import { useGlobal } from '@/lib/global'
+import { useRouter } from 'next/router'
+import { useImperativeHandle, useRef, useState } from 'react'
+
+let lock = false
+
+/**
+ * 搜索输入框
+ * @param {*} param0
+ * @returns
+ */
+const SearchInput = ({ currentTag, keyword, cRef, searchModalRef }) => {
+  const { locale } = useGlobal()
+  const router = useRouter()
+  const searchInputRef = useRef(null)
+  const [isSearching, setIsSearching] = useState(false)
+  useImperativeHandle(cRef, () => {
+    return {
+      focus: () => {
+        searchInputRef?.current?.focus()
+      }
+    }
+  })
+  const handleSearch = () => {
+    const key = searchInputRef.current.value
+    const hasAlgolia = Boolean(
+      siteConfig('ALGOLIA_APP_ID') &&
+        siteConfig('ALGOLIA_SEARCH_ONLY_APP_KEY') &&
+        siteConfig('ALGOLIA_INDEX')
+    )
+    if (
+      !key &&
+      hasAlgolia &&
+      searchModalRef?.current?.openSearch
+    ) {
+      searchModalRef.current.openSearch()
+      return
+    }
+    if (key && key !== '') {
+      setIsSearching(true)
+      router
+        .push({ pathname: '/search/' + key })
+        .finally(() => setIsSearching(false))
+    } else {
+      setIsSearching(true)
+      router.push({ pathname: '/' }).finally(() => setIsSearching(false))
+    }
+  }
+  const handleKeyUp = e => {
+    if (e.keyCode === 13) {
+      // 回车
+      handleSearch(searchInputRef.current.value)
+    } else if (e.keyCode === 27) {
+      // ESC
+      cleanSearch()
+    }
+  }
+  const cleanSearch = () => {
+    searchInputRef.current.value = ''
+    setShowClean(false)
+  }
+  function lockSearchInput() {
+    lock = true
+  }
+
+  function unLockSearchInput() {
+    lock = false
+  }
+  const [showClean, setShowClean] = useState(false)
+  const updateSearchKey = val => {
+    if (lock) {
+      return
+    }
+    searchInputRef.current.value = val
+    if (val) {
+      setShowClean(true)
+    } else {
+      setShowClean(false)
+    }
+  }
+
+  return (
+    <section className='flex w-full bg-gray-100'>
+      <input
+        ref={searchInputRef}
+        type='search'
+        placeholder={
+          currentTag
+            ? `${locale.SEARCH.TAGS} #${currentTag}`
+            : `${locale.SEARCH.ARTICLES}`
+        }
+        aria-label={locale.SEARCH.ARTICLES}
+        className={
+          'outline-none w-full text-sm pl-4 transition focus:shadow-lg font-light leading-10 text-black bg-gray-100 dark:bg-gray-900 dark:text-white'
+        }
+        onKeyUp={handleKeyUp}
+        onCompositionStart={lockSearchInput}
+        onCompositionUpdate={lockSearchInput}
+        onCompositionEnd={unLockSearchInput}
+        onChange={e => updateSearchKey(e.target.value)}
+        defaultValue={keyword || ''}
+      />
+
+      <div
+        className='-ml-8 cursor-pointer float-right items-center justify-center py-2'
+        onClick={handleSearch}>
+        {isSearching ? (
+          <i className='fa-solid fa-spinner animate-spin text-gray-500' />
+        ) : (
+          <i
+            className={
+              'hover:text-black transform duration-200  text-gray-500 cursor-pointer fas fa-search'
+            }
+          />
+        )}
+      </div>
+
+      {showClean && (
+        <div className='-ml-12 cursor-pointer dark:bg-gray-600 dark:hover:bg-gray-800 float-right items-center justify-center py-2'>
+          <i
+            className='hover:text-black transform duration-200 text-gray-400 cursor-pointer fas fa-times'
+            onClick={cleanSearch}
+          />
+        </div>
+      )}
+    </section>
+  )
+}
+
+export default SearchInput

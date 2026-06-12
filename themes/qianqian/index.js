@@ -1,0 +1,808 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable @next/next/no-img-element */
+
+'use client'
+import dynamic from 'next/dynamic'
+import { siteConfig } from '@/lib/config'
+import { isBrowser } from '@/lib/utils'
+import { useRouter } from 'next/router'
+import {
+    Children,
+    cloneElement,
+    isValidElement,
+    useEffect,
+    useRef,
+    useState
+} from 'react'
+import { Career } from './components/Career'
+import { Blog } from './components/Blog'
+import { Brand } from './components/Brand'
+import { Features } from './components/Features'
+import { Footer } from './components/Footer'
+import { Header } from './components/Header'
+import { Hero } from './components/Hero'
+// import { Pricing } from './components/Pricing'
+import { Team } from './components/Team'
+import { Testimonials } from './components/Testimonials'
+import CONFIG from './config'
+import { Style } from './style'
+// import { MadeWithButton } from './components/MadeWithButton'
+import replaceSearchResult from '@/components/Mark'
+import { useGlobal } from '@/lib/global'
+import { useAiStore } from '@/lib/store/aiStore'
+import { loadWowJS } from '@/lib/plugins/wow'
+import Link from 'next/link'
+import { ArticleLock } from './components/ArticleLock'
+import { Banner } from './components/Banner'
+import { CTA } from './components/CTA'
+import CategoryGroup from './components/CategoryGroup'
+import FloatingWidgetDock from './components/FloatingWidgetDock'
+import AiChatDrawer from '@/components/Ai/AiChatDrawer'
+import AiFloatingButton from '@/components/Ai/AiFloatingButton'
+import SearchInput from './components/SearchInput'
+import { SVG404 } from './components/svg/SVG404'
+import Pagination from './components/Pagination'
+import Script from 'next/script'
+
+const Loading = dynamic(() => import('@/components/Loading'))
+const NotionPage = dynamic(() => import('@/components/NotionPage'), { ssr: true })
+const Comment = dynamic(() => import('@/components/Comment'))
+const ShareBar = dynamic(() => import('@/components/ShareBar'))
+const DashboardBody = dynamic(
+    () => import('@/components/ui/dashboard/DashboardBody'),
+    { ssr: false }
+)
+const DashboardHeader = dynamic(
+    () => import('@/components/ui/dashboard/DashboardHeader'),
+    { ssr: false }
+)
+const SignIn = dynamic(
+    () => import('@clerk/nextjs').then(m => m.SignIn),
+    { ssr: false }
+)
+const SignUp = dynamic(
+    () => import('@clerk/nextjs').then(m => m.SignUp),
+    { ssr: false }
+)
+const SignInForm = dynamic(() =>
+    import('./components/SignInForm').then(m => m.SignInForm)
+)
+const SignUpForm = dynamic(() =>
+    import('./components/SignUpForm').then(m => m.SignUpForm)
+)
+const AlgoliaSearchModal = dynamic(
+    () => import('@/components/AlgoliaSearchModal'),
+    { ssr: false }
+)
+const Lenis = dynamic(() => import('@/components/Lenis'), { ssr: false })
+const GridBackground = dynamic(() => import('./components/GridBackground'), {
+    ssr: false
+})
+const LoadingCover = dynamic(() => import('./components/WelcomeOverlayHP'), {
+    ssr: false
+})
+const Live2D = dynamic(() => import('@/components/Live2D'), { ssr: false })
+
+/**
+ * 布局框架
+ * Landing-2 主题用作产品落地页展示
+ * 结合Stripe或者lemonsqueezy插件可以成为saas支付订阅
+ * https://play-tailwind.tailgrids.com/
+ * @param {*} props
+ * @returns
+ */
+const LayoutBase = props => {
+    const { children, categoryOptions } = props
+    const searchModal = useRef(null)
+    const { isOpen } = useAiStore()
+    const router = useRouter()
+    const [mobileToolbarCompact, setMobileToolbarCompact] = useState(false)
+    const [mobileCategoryPanelOpen, setMobileCategoryPanelOpen] = useState(false)
+    const mobileToolbarCompactRef = useRef(false)
+    const mobileCategoryPanelOpenRef = useRef(false)
+    const lastMobileScrollYRef = useRef(0)
+    const collapseTimerRef = useRef(null)
+    const expandTimerRef = useRef(null)
+
+    useEffect(() => {
+        mobileToolbarCompactRef.current = mobileToolbarCompact
+    }, [mobileToolbarCompact])
+
+    useEffect(() => {
+        mobileCategoryPanelOpenRef.current = mobileCategoryPanelOpen
+    }, [mobileCategoryPanelOpen])
+
+    const layoutChildren = Children.map(children, child => {
+        if (!isValidElement(child)) return child
+        return cloneElement(child, { searchModalRef: searchModal })
+    })
+
+    // 加载wow动画
+    useEffect(() => {
+        loadWowJS()
+    }, [])
+
+    useEffect(() => {
+        const hasAlgolia = Boolean(
+            siteConfig('ALGOLIA_APP_ID') &&
+                siteConfig('ALGOLIA_SEARCH_ONLY_APP_KEY') &&
+                siteConfig('ALGOLIA_INDEX')
+        )
+        if (!hasAlgolia || typeof window === 'undefined') return
+
+        const warmup = () => {
+            void import('@/components/AlgoliaSearchModal')
+        }
+
+        if (typeof window.requestIdleCallback === 'function') {
+            const idleId = window.requestIdleCallback(warmup, { timeout: 1500 })
+            return () => window.cancelIdleCallback?.(idleId)
+        }
+
+        const timer = setTimeout(warmup, 800)
+        return () => clearTimeout(timer)
+    }, [])
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return
+
+        const clearToolbarTimers = () => {
+            if (collapseTimerRef.current) {
+                clearTimeout(collapseTimerRef.current)
+                collapseTimerRef.current = null
+            }
+            if (expandTimerRef.current) {
+                clearTimeout(expandTimerRef.current)
+                expandTimerRef.current = null
+            }
+        }
+
+        const collapseToolbar = () => {
+            if (mobileToolbarCompactRef.current) return
+            setMobileToolbarCompact(true)
+            if (mobileCategoryPanelOpenRef.current) {
+                setMobileCategoryPanelOpen(false)
+            }
+        }
+
+        const expandToolbar = () => {
+            if (!mobileToolbarCompactRef.current) return
+            setMobileToolbarCompact(false)
+            if (mobileCategoryPanelOpenRef.current) {
+                setMobileCategoryPanelOpen(false)
+            }
+        }
+
+        const handleScroll = () => {
+            if (window.innerWidth >= 1024) {
+                lastMobileScrollYRef.current = window.scrollY
+                return
+            }
+
+            const currentScrollY = window.scrollY
+            const delta = currentScrollY - lastMobileScrollYRef.current
+
+            if (currentScrollY <= 48) {
+                clearToolbarTimers()
+                expandToolbar()
+            } else if (
+                mobileToolbarCompactRef.current &&
+                currentScrollY <= 140 &&
+                delta < -12
+            ) {
+                clearToolbarTimers()
+                expandToolbar()
+            } else if (delta > 8 && currentScrollY > 96) {
+                if (!mobileToolbarCompactRef.current) {
+                    if (expandTimerRef.current) {
+                        clearTimeout(expandTimerRef.current)
+                        expandTimerRef.current = null
+                    }
+                    if (!collapseTimerRef.current) {
+                        collapseTimerRef.current = setTimeout(() => {
+                            collapseToolbar()
+                            collapseTimerRef.current = null
+                        }, 220)
+                    }
+                }
+                if (mobileCategoryPanelOpenRef.current && currentScrollY > 140) {
+                    setMobileCategoryPanelOpen(false)
+                }
+            } else if (delta < -40) {
+                if (mobileToolbarCompactRef.current) {
+                    if (collapseTimerRef.current) {
+                        clearTimeout(collapseTimerRef.current)
+                        collapseTimerRef.current = null
+                    }
+                    if (!expandTimerRef.current) {
+                        expandTimerRef.current = setTimeout(() => {
+                            expandToolbar()
+                            expandTimerRef.current = null
+                        }, 180)
+                    }
+                }
+            }
+
+            lastMobileScrollYRef.current = currentScrollY
+        }
+
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                clearToolbarTimers()
+                setMobileToolbarCompact(false)
+                setMobileCategoryPanelOpen(false)
+            }
+        }
+
+        handleScroll()
+        handleResize()
+        window.addEventListener('scroll', handleScroll, { passive: true })
+        window.addEventListener('resize', handleResize)
+
+        return () => {
+            clearToolbarTimers()
+            window.removeEventListener('scroll', handleScroll)
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [])
+
+    useEffect(() => {
+        setMobileCategoryPanelOpen(false)
+    }, [router.asPath])
+
+    return (
+        <div
+            id='theme-qianqian'
+            className={`${siteConfig('FONT_STYLE')} min-h-screen flex flex-col dark:bg-dark scroll-smooth`}>
+            <Style />
+            <AiFloatingButton />
+            <AiChatDrawer />
+            <div
+                className={`relative min-h-screen flex flex-col transition-[padding] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] ${
+                    isOpen ? 'lg:pr-[400px]' : 'lg:pr-0'
+                }`}>
+                {/* 页头 */}
+                <Header
+                    {...props}
+                    searchModalRef={searchModal}
+                    mobileToolbarCompact={mobileToolbarCompact}
+                    mobileCategoryPanelOpen={mobileCategoryPanelOpen}
+                    setMobileCategoryPanelOpen={setMobileCategoryPanelOpen}
+                    hasMobileCategoryGroup={Boolean(categoryOptions?.length)}
+                />
+
+                <CategoryGroup
+                    categoryOptions={categoryOptions}
+                    compactMode={mobileToolbarCompact}
+                    panelOpen={mobileCategoryPanelOpen}
+                    setPanelOpen={setMobileCategoryPanelOpen}
+                />
+
+                <AlgoliaSearchModal cRef={searchModal} {...props} />
+
+                <div id='main-wrapper' className='grow'>
+                    {layoutChildren}
+                </div>
+
+                {/* 页脚 */}
+                <Footer {...props} />
+            </div>
+
+            {/* 背景：HomePage 风格交互网格（固定全屏，不影响交互） */}
+            {siteConfig('PROXIO_GRID_BG_ENABLE', true, CONFIG) && <GridBackground />}
+
+            {/* 悬浮按钮 */}
+            <FloatingWidgetDock />
+
+            {/* 鼠标阻尼动画 */}
+            <Lenis />
+            {/* 数字桌宠组件（为大陆网络优化默认关闭，可在配置中开启） */}
+            {siteConfig('WIDGET_PET', false, CONFIG) && <Live2D />}
+            {/* 千浅主题特效系统（为大陆网络优化默认关闭，可在配置中开启） */}
+            {siteConfig('QIANQIAN_EFFECTS_ENABLE', false, CONFIG) && (
+                <Script 
+                    src="/themes/qianqian/qianqian-effects.js" 
+                    strategy="afterInteractive"
+                    onLoad={() => {
+                        if (typeof window !== 'undefined' && window.initQianqianEffects) {
+                            window.initQianqianEffects()
+                        }
+                    }}
+                />
+            )}
+            {/* ================== SalesSmartly 聊天插件集成 ================== */}
+            <Script id='salesmartly-config' strategy='beforeInteractive'>
+                {`
+                    window.__ssc = window.__ssc || {};
+                    window.__ssc.setting = { hideIcon: true };
+                `}
+            </Script>
+            <Script
+                src='https://plugin-code.salesmartly.com/js/project_604859_624202_1768654219.js'
+                strategy='lazyOnload'
+            />
+            {/* <MadeWithButton/> */}
+        </div>
+    )
+}
+
+/**
+ * 首页布局
+ * @param {*} props
+ * @returns
+ */
+const LayoutIndex = props => {
+    const count = siteConfig('PROXIO_BLOG_COUNT', 4, CONFIG)
+    const { locale } = useGlobal()
+    const posts = (props?.latestPosts || props?.posts || props?.allNavPages || []).slice(
+        0,
+        count
+    )
+    return (
+        <>
+            {/* 英雄区 */}
+            {siteConfig('PROXIO_HERO_ENABLE', true, CONFIG) && <Hero {...props} />}
+
+            {/* 合作伙伴 */}
+            {siteConfig('PROXIO_BRANDS_ENABLE', true, CONFIG) && <Brand />}
+
+
+            {/* 生涯 */}
+            {siteConfig('PROXIO_CAREER_ENABLE', true, CONFIG) && <Career />}
+
+            {/* 团队介绍 */}
+            {siteConfig('PROXIO_ABOUT_ENABLE', true, CONFIG) && <Team />}
+
+            {/* 博文列表 */}
+            {siteConfig('PROXIO_BLOG_ENABLE', true, CONFIG) && (
+                <>
+                    <Blog posts={posts} siteInfo={props?.siteInfo} />
+                    {/* 更多文章按钮 */}
+                    <div className='container mx-auto flex justify-end mb-4'>
+                        <Link className='text-lg underline' href={'/archive'}>
+                            <span>{locale.COMMON.MORE}</span>
+                            <i className='ml-2 fas fa-arrow-right' />
+                        </Link>
+                    </div>
+                </>
+            )}
+
+            {/* 产品特性 */}
+            {siteConfig('PROXIO_FEATURE_ENABLE', true, CONFIG) && <Features />}
+
+            {/* 评价展示 */}
+            {siteConfig('PROXIO_TESTIMONIALS_ENABLE', true, CONFIG) && (
+                <Testimonials />
+            )}
+
+            {/* 行动呼吁 */}
+            {siteConfig('PROXIO_CTA_ENABLE', true, CONFIG) && <CTA />}
+
+            {siteConfig('PROXIO_WELCOME_COVER_ENABLE', false, CONFIG) && <LoadingCover />}
+        </>
+    )
+}
+
+/**
+ * 文章详情页布局
+ * @param {*} props
+ * @returns
+ */
+const LayoutSlug = props => {
+    const { post, lock, validPassword } = props
+
+    // 如果 是 /article/[slug] 的文章路径则視情況进行重定向到另一个域名
+    const router = useRouter()
+    if (
+        !post &&
+        siteConfig('PROXIO_POST_REDIRECT_ENABLE') &&
+        isBrowser &&
+        router.route === '/[prefix]/[slug]'
+    ) {
+        const redirectUrl =
+            siteConfig('PROXIO_POST_REDIRECT_URL') +
+            router.asPath.replace('?theme=landing', '')
+        router.push(redirectUrl)
+        return (
+            <div id='theme-proxio'>
+                <Loading />
+            </div>
+        )
+    }
+
+    return (
+        <>
+            <Banner title={post?.title} description={post?.summary} />
+            <div className='container mx-auto grow'>
+                <div className='flex justify-center'>
+                    <div id='container-inner' className='w-full max-w-4xl p-4'>
+                        {lock && <ArticleLock validPassword={validPassword} />}
+
+                        {!lock && post && (
+                            <div id='article-wrapper' className='mx-auto'>
+                                <NotionPage {...props} />
+                                <Comment frontMatter={post} />
+                                <ShareBar post={post} />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+/**
+ * 仪表盘
+ * @param {*} props
+ * @returns
+ */
+const LayoutDashboard = props => {
+    const { post } = props
+
+    return (
+        <>
+            <div className='container mx-auto grow'>
+                <div className='flex justify-center'>
+                    <div id='container-inner' className='w-full max-w-4xl p-4'>
+                        {post && (
+                            <div id='article-wrapper' className='mx-auto'>
+                                <NotionPage {...props} />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+            {/* 仪表盘 */}
+            <DashboardHeader />
+            <DashboardBody />
+        </>
+    )
+}
+
+/**
+ * 搜索
+ * @param {*} props
+ * @returns
+ */
+const LayoutSearch = props => {
+    const { keyword } = props
+    const router = useRouter()
+    const currentSearch = keyword || router?.query?.s
+    const page = Number(props?.page || 1)
+    const POSTS_PER_PAGE = siteConfig('POSTS_PER_PAGE', 12, props?.NOTION_CONFIG)
+    const totalPage =
+        Math.ceil((props?.postCount ?? props?.posts?.length ?? 0) / POSTS_PER_PAGE) || 1
+
+    useEffect(() => {
+        if (isBrowser) {
+            replaceSearchResult({
+                doms: document.getElementById('posts-wrapper'),
+                search: keyword,
+                target: {
+                    element: 'span',
+                    className: 'text-red-500 border-b border-dashed'
+                }
+            })
+        }
+    }, [])
+    return (
+        <>
+            <section className='max-w-7xl mx-auto bg-white pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]'>
+                <SearchInput {...props} />
+                {currentSearch && (
+                    <>
+                        <Blog {...props} />
+                        {totalPage > 1 && (
+                            <div className='mt-6'>
+                                <Pagination page={page} totalPage={totalPage} />
+                            </div>
+                        )}
+                    </>
+                )}
+            </section>
+        </>
+    )
+}
+
+/**
+ * 文章归档
+ * @param {*} props
+ * @returns
+ */
+const LayoutArchive = props => (
+    <>
+        {/* 博文列表 */}
+        <Blog {...props} />
+    </>
+)
+
+/**
+ * 404页面
+ * @param {*} props
+ * @returns
+ */
+const Layout404 = () => {
+    return (
+        <>
+            {/* <!-- ====== 404 Section Start --> */}
+            <section className='bg-white py-20 dark:bg-dark-2 lg:py-[110px]'>
+                <div className='container mx-auto'>
+                    <div className='flex flex-wrap items-center -mx-4'>
+                        <div className='w-full px-4 md:w-5/12 lg:w-6/12'>
+                            <div className='text-center'>
+                                <img
+                                    src='/images/starter/404.svg'
+                                    alt='image'
+                                    className='max-w-full mx-auto'
+                                />
+                            </div>
+                        </div>
+                        <div className='w-full px-4 md:w-7/12 lg:w-6/12 xl:w-5/12'>
+                            <div>
+                                <div className='mb-8'>
+                                    <SVG404 />
+                                </div>
+                                <h3 className='mb-5 text-2xl font-semibold text-dark dark:text-white'>
+                                    {siteConfig('PROXIO_404_TITLE')}
+                                </h3>
+                                <p className='mb-8 text-base text-body-color dark:text-dark-6'>
+                                    {siteConfig('PROXIO_404_TEXT')}
+                                </p>
+                                <Link
+                                    href='/'
+                                    className='py-3 text-base font-medium text-white transition rounded-md bg-dark px-7 hover:bg-primary'>
+                                    {siteConfig('PROXIO_404_BACK')}
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {/* <!-- ====== 404 Section End --> */}
+        </>
+    )
+}
+
+/**
+ * 博客列表
+ */
+const LayoutPostList = props => {
+    const { posts, category, tag, page = 1, postCount } = props
+    const slotTitle = category || tag
+    const POSTS_PER_PAGE = siteConfig('POSTS_PER_PAGE', 12, props?.NOTION_CONFIG)
+    const totalPage =
+        Math.ceil((postCount ?? posts?.length ?? 0) / POSTS_PER_PAGE) || 1
+
+    return (
+        <>
+            {/* <!-- ====== Blog Section Start --> */}
+            <section className='bg-white pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]'>
+                <div className='container mx-auto'>
+                    {/* 区块标题文字 */}
+                    <div className='-mx-4 flex flex-wrap justify-center'>
+                        <div className='w-full px-4'>
+                            <div className='mx-auto mb-[60px] max-w-[485px] text-center'>
+                                {slotTitle && (
+                                    <h2 className='mb-4 text-3xl font-bold text-dark dark:text-white sm:text-4xl md:text-[40px] md:leading-[1.2]'>
+                                        {slotTitle}
+                                    </h2>
+                                )}
+
+                                {!slotTitle && (
+                                    <>
+                                        <span className='mb-2 block text-lg font-semibold text-primary'>
+                                            {siteConfig('PROXIO_BLOG_TITLE')}
+                                        </span>
+                                        <h2 className='mb-4 text-3xl font-bold text-dark dark:text-white sm:text-4xl md:text-[40px] md:leading-[1.2]'>
+                                            {siteConfig('PROXIO_BLOG_TEXT_1')}
+                                        </h2>
+
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    {/* 博客列表 此处优先展示4篇文章 */}
+                    <div className='-mx-4 flex flex-wrap'>
+                        {posts?.map((item, index) => {
+                            return (
+                                <div key={index} className='w-full px-4 md:w-1/2 lg:w-1/3'>
+                                    <div
+                                        className='wow fadeInUp group mb-10'
+                                        data-wow-delay='.1s'>
+                                        <div className='mb-8 overflow-hidden rounded-[5px]'>
+                                            <Link href={item?.href} className='block'>
+                                                <img
+                                                    src={item.pageCoverThumbnail}
+                                                    alt={item.title}
+                                                    className='w-full transition group-hover:rotate-6 group-hover:scale-125'
+                                                />
+                                            </Link>
+                                        </div>
+                                        <div>
+                                            <span className='mb-6 inline-block rounded-[5px] bg-primary px-4 py-0.5 text-center text-xs font-medium leading-loose text-white'>
+                                                {item.publishDay}
+                                            </span>
+                                            <h3>
+                                                <Link
+                                                    href={item?.href}
+                                                    className='mb-4 inline-block text-xl font-semibold text-dark hover:text-primary dark:text-white dark:hover:text-primary sm:text-2xl lg:text-xl xl:text-2xl'>
+                                                    {item.title}
+                                                </Link>
+                                            </h3>
+                                            <p className='max-w-[370px] text-base text-body-color dark:text-dark-6'>
+                                                {item.summary}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                    {totalPage > 1 && (
+                        <div className='mt-6'>
+                            <Pagination page={page} totalPage={totalPage} />
+                        </div>
+                    )}
+                </div>
+            </section>
+            {/* <!-- ====== Blog Section End --> */}
+        </>
+    )
+}
+/**
+ * 分类列表
+ * @param {*} props
+ * @returns
+ */
+const LayoutCategoryIndex = props => {
+    const { categoryOptions } = props
+    const { locale } = useGlobal()
+    return (
+        <section className='bg-white pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]'>
+            <div className='container mx-auto  min-h-96'>
+                <span className='mb-2 text-lg font-semibold text-primary flex justify-center items-center '>
+                    {locale.COMMON.CATEGORY}
+                </span>
+                <div
+                    id='category-list'
+                    className='duration-200 flex flex-wrap justify-center items-center '>
+                    {categoryOptions?.map(category => {
+                        return (
+                            <Link
+                                key={category.name}
+                                href={`/category/${category.name}`}
+                                passHref
+                                legacyBehavior>
+                                <h2
+                                    className={
+                                        'hover:text-black text-2xl font-semibold text-dark sm:text-4xl md:text-[40px] md:leading-[1.2] dark:hover:text-white dark:text-gray-300 dark:hover:bg-gray-600 px-5 cursor-pointer py-2 hover:bg-gray-100'
+                                    }>
+                                    <i className='mr-4 fas fa-folder' />
+                                    {category.name}({category.count})
+                                </h2>
+                            </Link>
+                        )
+                    })}
+                </div>
+            </div>
+        </section>
+    )
+}
+
+/**
+ * 标签列表
+ * @param {*} props
+ * @returns
+ */
+const LayoutTagIndex = props => {
+    const { tagOptions } = props
+    const { locale } = useGlobal()
+    return (
+        <section className='bg-white pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]'>
+            <div className='container mx-auto  min-h-96'>
+                <span className='mb-2 text-lg font-semibold text-primary flex justify-center items-center '>
+                    {locale.COMMON.TAGS}
+                </span>
+                <div
+                    id='tags-list'
+                    className='duration-200 flex flex-wrap justify-center items-center'>
+                    {tagOptions.map(tag => {
+                        return (
+                            <div key={tag.name} className='p-2'>
+                                <Link
+                                    key={tag}
+                                    href={`/tag/${encodeURIComponent(tag.name)}`}
+                                    passHref
+                                    className={`cursor-pointer inline-block rounded hover:bg-gray-500 hover:text-white duration-200  mr-2 py-1 px-2 text-md whitespace-nowrap dark:hover:text-white text-gray-600 hover:shadow-xl dark:border-gray-400 notion-${tag.color}_background dark:bg-gray-800`}>
+                                    <div className='font-light dark:text-gray-400'>
+                                        <i className='mr-1 fas fa-tag' />{' '}
+                                        {tag.name + (tag.count ? `(${tag.count})` : '')}{' '}
+                                    </div>
+                                </Link>
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
+        </section>
+    )
+}
+/**
+ * 登录页面
+ * @param {*} props
+ * @returns
+ */
+const LayoutSignIn = () => {
+    const enableClerk = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+    const title = siteConfig('PROXIO_SIGNIN', '登录')
+    const description = siteConfig(
+        'PROXIO_SIGNIN_DESCRITION',
+        '这里是演示页面，NotionNext目前不提供会员登录功能'
+    )
+    return (
+        <>
+            <div className='grow mt-20'>
+                <Banner title={title} description={description} />
+                {/* clerk预置表单 */}
+                {enableClerk && (
+                    <div className='flex justify-center py-6'>
+                        <SignIn />
+                    </div>
+                )}
+
+                {/* 自定义登录表单 */}
+                {!enableClerk && <SignInForm />}
+            </div>
+        </>
+    )
+}
+
+/**
+ * 注册页面
+ * @param {*} props
+ * @returns
+ */
+const LayoutSignUp = () => {
+    const enableClerk = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+
+    const title = siteConfig('PROXIO_SIGNIN', '注册')
+    const description = siteConfig(
+        'PROXIO_SIGNIN_DESCRITION',
+        '这里是演示页面，NotionNext目前不提供会员注册功能'
+    )
+    return (
+        <>
+            <div className='grow mt-20'>
+                <Banner title={title} description={description} />
+
+                {/* clerk预置表单 */}
+                {enableClerk && (
+                    <div className='flex justify-center py-6'>
+                        <SignUp />
+                    </div>
+                )}
+
+                {/* 自定义登录表单 */}
+                {!enableClerk && <SignUpForm />}
+            </div>
+        </>
+    )
+}
+
+export {
+    Layout404,
+    LayoutArchive,
+    LayoutBase,
+    LayoutCategoryIndex,
+    LayoutDashboard,
+    LayoutIndex,
+    LayoutPostList,
+    LayoutSearch,
+    LayoutSignIn,
+    LayoutSignUp,
+    LayoutSlug,
+    LayoutTagIndex,
+    CONFIG as THEME_CONFIG
+}
