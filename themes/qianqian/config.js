@@ -3,9 +3,15 @@
  * 参考 dewx.top 风格 - 现代化杂志布局
  */
 const CONFIG = {
-    // 大陆网络优化：关闭重型特效（可按需开启）
+    // 线上性能优先：重型特效默认关闭，可按需逐项开启
     QIANQIAN_EFFECTS_ENABLE: false,
-    PROXIO_WELCOME_COVER_ENABLE: true, //是否显示页面进入的欢迎文字
+    QIANQIAN_LENIS_ENABLE: false,
+    QIANQIAN_WOW_ENABLE: false,
+    QIANQIAN_AOS_ENABLE: false,
+    QIANQIAN_SALESMARTLY_ENABLE: false,
+    QIANQIAN_WIDGET_PET_ENABLE: false,
+    QIANQIAN_BUSUANZI_ENABLE: false,
+    PROXIO_WELCOME_COVER_ENABLE: false, //是否显示页面进入的欢迎文字
     PROXIO_WELCOME_TEXT: '进入千逐的构建现场：AI Product · Systems · Community', // 欢迎文字，留空则不启用
 
     // 英雄区块导航
@@ -61,7 +67,7 @@ const CONFIG = {
     PROXIO_BLOG_TEXT_1: '最近的实践记录与文章',
 
     // 首页网格交互背景
-    PROXIO_GRID_BG_ENABLE: true,
+    PROXIO_GRID_BG_ENABLE: false,
 
     // 区块默认内容显示文章的summary文本，但也支持用自定义图片或logo德国替换掉占位显示内容
     PROXIO_BLOG_PLACEHOLDER_IMG_URL_1: '', // 填写要替换成的图片，支持图床或直接上传到项目中，示例  /images/feature-1.webp
@@ -258,7 +264,7 @@ const CONFIG = {
 
     // 页脚显示开关
     PROXIO_FOOTER_POWEREDBY_ENABLE: false, // 是否显示 Powered by NotionNext
-    PROXIO_FOOTER_BUSUANZI_ENABLE: true, // 是否显示站点 PV/UV（Busuanzi）
+    PROXIO_FOOTER_BUSUANZI_ENABLE: false, // 是否显示站点 PV/UV（Busuanzi）
 
     // 404页面的提示语
     PROXIO_404_TITLE: '我们似乎找不到您要找的页面。',
