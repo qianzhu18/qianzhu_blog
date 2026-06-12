@@ -6,6 +6,7 @@ import { useGlobal } from '@/lib/global'
 import throttle from 'lodash.throttle'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import CONFIG from '../config'
 
 /**
  * 站点图标
@@ -14,6 +15,7 @@ import { useEffect, useState } from 'react'
 export const Logo = props => {
   const { siteInfo, white } = props
   const router = useRouter()
+  const avatarUrl = siteConfig('QIANQIAN_AVATAR_URL', siteInfo?.icon, CONFIG)
 
   const { isDarkMode } = useGlobal()
   const [logoTextColor, setLogoTextColor] = useState('text-white')
@@ -45,7 +47,7 @@ export const Logo = props => {
       <div className='navbar-logo flex items-center w-full py-5 cursor-pointer'>
         <LazyImage
           priority
-          src={siteInfo?.icon}
+          src={avatarUrl}
           width={24}
           height={20}
           alt={siteConfig('AUTHOR')}

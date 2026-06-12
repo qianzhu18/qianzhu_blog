@@ -3,6 +3,7 @@ import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import Link from 'next/link'
 import SocialButton from './SocialButton'
+import CONFIG from '../config'
 
 const normalizeTags = tags => {
   if (!Array.isArray(tags)) return []
@@ -21,7 +22,10 @@ export const Aside = ({ post, siteInfo }) => {
   )
   const author = siteConfig('AUTHOR')
   const bio = siteConfig('BIO')
-  const avatar = siteConfig('AVATAR') || siteInfo?.icon
+  const avatar =
+    siteConfig('QIANQIAN_AVATAR_URL', siteInfo?.icon, CONFIG) ||
+    siteConfig('AVATAR') ||
+    siteInfo?.icon
 
   return (
     <div className='space-y-4'>

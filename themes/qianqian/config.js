@@ -12,6 +12,7 @@ const CONFIG = {
     QIANQIAN_SALESMARTLY_ENABLE: false,
     QIANQIAN_WIDGET_PET_ENABLE: false,
     QIANQIAN_BUSUANZI_ENABLE: false,
+    QIANQIAN_AVATAR_URL: '/images/qianzhu-avatar.jpg',
     PROXIO_WELCOME_COVER_ENABLE: false, //是否显示页面进入的欢迎文字
     PROXIO_WELCOME_TEXT: '进入千逐的构建现场：AI Product · Systems · Community', // 欢迎文字，留空则不启用
 
@@ -216,7 +217,7 @@ const CONFIG = {
     PROXIO_ABOUT_TEXT_1: '我习惯站在产品、技术与社区的交叉点思考问题',
     PROXIO_ABOUT_TEXT_2:
         '我是千逐，也使用 qianzhu / Lucien 这个名字。我习惯站在产品、技术与社区的交叉点思考问题：既关心需求和用户，也关心系统如何被真正搭起来、跑起来，并在真实反馈中不断迭代。现在我主要关注三件事：AI 产品与 Agentic Engineering、社区驱动的协作实践，以及 AI × Web3 与开放系统探索。',
-    PROXIO_ABOUT_PHOTO_URL: 'https://imagehost.qianzhu.online/api/rfile/千逐（卡通版）.jpg',
+    PROXIO_ABOUT_PHOTO_URL: '/images/qianzhu-avatar.jpg',
     PROXIO_ABOUT_KEY_1: 'AI Product',
     PROXIO_ABOUT_VAL_1: '需求分析 · Rapid MVP',
     PROXIO_ABOUT_KEY_2: 'Agentic Engineering',
