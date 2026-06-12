@@ -134,11 +134,18 @@ const ExternalPlugin = props => {
   const currentTheme = NOTION_CONFIG?.THEME || theme || siteConfig('THEME')
   const isQianqianTheme = currentTheme === 'qianqian'
   const qianqianAosEnabled = siteConfig('QIANQIAN_AOS_ENABLE', false)
+  const qianqianAnimateCssEnabled = siteConfig(
+    'QIANQIAN_ANIMATE_CSS_ENABLE',
+    false
+  )
   const qianqianBusuanziEnabled = siteConfig(
     'QIANQIAN_BUSUANZI_ENABLE',
     false
   )
   const shouldLoadAos = isQianqianTheme ? qianqianAosEnabled : true
+  const shouldLoadAnimateCss = isQianqianTheme
+    ? qianqianAnimateCssEnabled
+    : Boolean(ANIMATE_CSS_URL)
   const shouldLoadBusuanzi = isQianqianTheme
     ? ANALYTICS_BUSUANZI_ENABLE && qianqianBusuanziEnabled
     : ANALYTICS_BUSUANZI_ENABLE
@@ -179,7 +186,7 @@ const ExternalPlugin = props => {
           loadExternalResource('/css/img-shadow.css', 'css')
         }
 
-        if (ANIMATE_CSS_URL) {
+        if (shouldLoadAnimateCss && ANIMATE_CSS_URL) {
           loadExternalResource(ANIMATE_CSS_URL, 'css')
         }
 
@@ -196,7 +203,13 @@ const ExternalPlugin = props => {
     return () => {
       cancelTasks.forEach(cancel => cancel?.())
     }
-  }, [ANIMATE_CSS_URL, IMG_SHADOW, externalCssList, externalJsList])
+  }, [
+    ANIMATE_CSS_URL,
+    IMG_SHADOW,
+    externalCssList,
+    externalJsList,
+    shouldLoadAnimateCss
+  ])
 
   const router = useRouter()
   useEffect(() => {
