@@ -21,7 +21,7 @@ import IconFont from './IconFont'
 const ExternalPlugin = props => {
   // 读取自Notion的配置
   const { NOTION_CONFIG } = props
-  const { lang } = useGlobal()
+  const { lang, theme } = useGlobal()
   const DISABLE_PLUGIN = siteConfig('DISABLE_PLUGIN', null, NOTION_CONFIG)
   const THEME_SWITCH = siteConfig('THEME_SWITCH', null, NOTION_CONFIG)
   const DEBUG = siteConfig('DEBUG', null, NOTION_CONFIG)
@@ -131,6 +131,17 @@ const ExternalPlugin = props => {
 
   const UMAMI_HOST = siteConfig('UMAMI_HOST', null, NOTION_CONFIG)
   const UMAMI_ID = siteConfig('UMAMI_ID', null, NOTION_CONFIG)
+  const currentTheme = NOTION_CONFIG?.THEME || theme || siteConfig('THEME')
+  const isQianqianTheme = currentTheme === 'qianqian'
+  const qianqianAosEnabled = siteConfig('QIANQIAN_AOS_ENABLE', false)
+  const qianqianBusuanziEnabled = siteConfig(
+    'QIANQIAN_BUSUANZI_ENABLE',
+    false
+  )
+  const shouldLoadAos = isQianqianTheme ? qianqianAosEnabled : true
+  const shouldLoadBusuanzi = isQianqianTheme
+    ? ANALYTICS_BUSUANZI_ENABLE && qianqianBusuanziEnabled
+    : ANALYTICS_BUSUANZI_ENABLE
 
   const externalCssList = useMemo(() => {
     return Array.isArray(CUSTOM_EXTERNAL_CSS)
@@ -233,7 +244,7 @@ const ExternalPlugin = props => {
       {ANALYTICS_ACKEE_TRACKER && <Ackee />}
       {ANALYTICS_GOOGLE_ID && <Gtag />}
       {ANALYTICS_VERCEL && <Analytics />}
-      {ANALYTICS_BUSUANZI_ENABLE && <Busuanzi />}
+      {shouldLoadBusuanzi && <Busuanzi />}
       {FACEBOOK_APP_ID && FACEBOOK_PAGE_ID && <Messenger />}
       {FIREWORKS && <Fireworks />}
       {SAKURA && <Sakura />}
@@ -251,7 +262,7 @@ const ExternalPlugin = props => {
       {TIANLI_KEY && <TianliGPT />}
       <VConsole />
       {ENABLE_NPROGRSS && <LoadingProgress />}
-      <AosAnimation />
+      {shouldLoadAos && <AosAnimation />}
       {ANALYTICS_51LA_ID && ANALYTICS_51LA_CK && <LA51 />}
       {COZE_BOT_ID && <Coze />}
 

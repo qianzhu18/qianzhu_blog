@@ -98,6 +98,10 @@ const LayoutBase = props => {
     const router = useRouter()
     const [mobileToolbarCompact, setMobileToolbarCompact] = useState(false)
     const [mobileCategoryPanelOpen, setMobileCategoryPanelOpen] = useState(false)
+    const lenisEnabled = siteConfig('QIANQIAN_LENIS_ENABLE', false, CONFIG)
+    const wowEnabled = siteConfig('QIANQIAN_WOW_ENABLE', false, CONFIG)
+    const salesmartlyEnabled = siteConfig('QIANQIAN_SALESMARTLY_ENABLE', false, CONFIG)
+    const widgetPetEnabled = siteConfig('QIANQIAN_WIDGET_PET_ENABLE', false, CONFIG)
     const mobileToolbarCompactRef = useRef(false)
     const mobileCategoryPanelOpenRef = useRef(false)
     const lastMobileScrollYRef = useRef(0)
@@ -119,8 +123,10 @@ const LayoutBase = props => {
 
     // 加载wow动画
     useEffect(() => {
-        loadWowJS()
-    }, [])
+        if (wowEnabled) {
+            loadWowJS()
+        }
+    }, [wowEnabled])
 
     useEffect(() => {
         const hasAlgolia = Boolean(
@@ -295,9 +301,9 @@ const LayoutBase = props => {
             <FloatingWidgetDock />
 
             {/* 鼠标阻尼动画 */}
-            <Lenis />
-            {/* 数字桌宠组件（为大陆网络优化默认关闭，可在配置中开启） */}
-            {siteConfig('WIDGET_PET', false, CONFIG) && <Live2D />}
+            {lenisEnabled && <Lenis />}
+            {/* 数字桌宠组件（默认关闭，可在配置中开启） */}
+            {widgetPetEnabled && <Live2D />}
             {/* 千浅主题特效系统（为大陆网络优化默认关闭，可在配置中开启） */}
             {siteConfig('QIANQIAN_EFFECTS_ENABLE', false, CONFIG) && (
                 <Script 
@@ -310,17 +316,21 @@ const LayoutBase = props => {
                     }}
                 />
             )}
-            {/* ================== SalesSmartly 聊天插件集成 ================== */}
-            <Script id='salesmartly-config' strategy='beforeInteractive'>
-                {`
-                    window.__ssc = window.__ssc || {};
-                    window.__ssc.setting = { hideIcon: true };
-                `}
-            </Script>
-            <Script
-                src='https://plugin-code.salesmartly.com/js/project_604859_624202_1768654219.js'
-                strategy='lazyOnload'
-            />
+            {salesmartlyEnabled && (
+                <>
+                    {/* ================== SalesSmartly 聊天插件集成 ================== */}
+                    <Script id='salesmartly-config' strategy='beforeInteractive'>
+                        {`
+                            window.__ssc = window.__ssc || {};
+                            window.__ssc.setting = { hideIcon: true };
+                        `}
+                    </Script>
+                    <Script
+                        src='https://plugin-code.salesmartly.com/js/project_604859_624202_1768654219.js'
+                        strategy='lazyOnload'
+                    />
+                </>
+            )}
             {/* <MadeWithButton/> */}
         </div>
     )
