@@ -4,11 +4,14 @@ import TagItemMini from './TagItemMini'
 import LazyImage from '@/components/LazyImage'
 import { formatDateFmt } from '@/lib/utils/formatDate'
 import Comment from '@/components/Comment'
+import { siteConfig } from '@/lib/config'
+import CONFIG from '../config'
 
 const BlogPostCard = ({ post, index, siteInfo }) => {
   const [showComment, setShowComment] = useState(false)
   const publishDate = post?.publishDate || post?.publishDay
   const coverImage = post?.pageCover || post?.pageCoverThumbnail
+  const avatarUrl = siteConfig('QIANQIAN_AVATAR_URL', siteInfo?.icon, CONFIG)
 
   const toggleComment = () => {
     setShowComment(prev => !prev)
@@ -24,7 +27,7 @@ const BlogPostCard = ({ post, index, siteInfo }) => {
           <Link href='/about'>
             <div className='relative w-10 h-10 cursor-pointer'>
               <LazyImage
-                src={siteInfo?.icon}
+                src={avatarUrl}
                 className='rounded-full object-cover border border-gray-200 dark:border-gray-700'
                 alt={siteInfo?.title}
               />

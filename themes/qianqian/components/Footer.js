@@ -22,6 +22,7 @@ export const Footer = ({ title }) => {
     CONFIG.PROXIO_FOOTER_SLOGAN,
     CONFIG
   )
+  const avatarUrl = siteConfig('QIANQIAN_AVATAR_URL', siteInfo?.icon, CONFIG)
 
   return (
     <footer
@@ -33,7 +34,7 @@ export const Footer = ({ title }) => {
           <div className='gap-y-2 flex flex-col items-start dark:text-gray-200'>
             <div className='flex gap-x-1'>
               <LazyImage
-                src={siteInfo?.icon}
+                src={avatarUrl}
                 className='rounded-full'
                 width={24}
                 alt={siteConfig('AUTHOR')}
